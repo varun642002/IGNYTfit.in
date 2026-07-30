@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AboutIgnyt } from "@/components/home/AboutIgnyt";
+import { AppIdentity } from "@/components/home/AppIdentity";
 import { AppPreview } from "@/components/home/AppPreview";
 import { Comparison } from "@/components/home/Comparison";
 import { CoreFeatures } from "@/components/home/CoreFeatures";
@@ -34,6 +35,10 @@ export default function HomePage() {
           and how to get it. Everything here is public; nothing is behind a
           sign-in. */}
       <Hero />
+      {/* Immediately below the fold, before any marketing section: the name and
+          purpose as labelled facts, for a reviewer who needs to check them
+          rather than read them. */}
+      <AppIdentity />
       <Stats />
       <CoreFeatures />
       <HowItWorks />
