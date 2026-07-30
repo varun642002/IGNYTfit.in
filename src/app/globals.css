@@ -490,6 +490,54 @@
     opacity: 1;
   }
 
+  /* --------------------------------------------------- word mask reveal
+   *
+   * Headings that rise word by word from behind a clipping edge. Used on
+   * marketing section headings ONLY — never on legal documents, form labels,
+   * navigation or anything somebody is trying to act on rather than read.
+   *
+   * It is a MASK, not a fade: each word sits in an `overflow: hidden` box and
+   * slides up from below it. Nothing is ever rendered at partial opacity, so
+   * this cannot produce the low-contrast text that a staggered fade does, and
+   * a reader who lands mid-animation still sees full-strength type.
+   *
+   * The padding/negative-margin pairs are load-bearing, on BOTH axes. The
+   * clipping box is only as tall as the line box, and these headings are set at
+   * a 1.04 line-height — so without extra room the box cuts the ascenders off
+   * "S" and "l" at the top and the descenders off "g", "y" and "p" at the
+   * bottom. The negative margins take the space back out of the layout, so the
+   * heading's leading is unaffected.
+   *
+   * The word still rises from fully below the box: the keyframe travels 110%,
+   * which clears the added padding.
+   */
+  .word-mask {
+    display: inline-block;
+    overflow: hidden;
+    padding-top: 0.2em;
+    margin-top: -0.2em;
+    padding-bottom: 0.16em;
+    margin-bottom: -0.16em;
+    vertical-align: bottom;
+  }
+
+  .word-mask > span {
+    display: inline-block;
+    will-change: transform;
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .word-mask > span {
+        animation: word-rise linear both;
+        animation-timeline: view();
+        /* Each word finishes slightly after the one before it. Capped at ten
+           in the component, past which the stagger stops reading as rhythm. */
+        animation-range: entry 4% cover calc(16% + (var(--i, 0) * 1.5%));
+      }
+    }
+  }
+
   /* ------------------------------------------- self-drawing data graphics
    *
    * The charts, rings and bars inside the phone mockups draw themselves as they
@@ -631,6 +679,18 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+/* Transform only — see the note on `.word-mask` for why there is no opacity
+   here. `110%` rather than `100%` so the word clears the padding added to
+   protect descenders. */
+@keyframes word-rise {
+  from {
+    transform: translate3d(0, 110%, 0);
+  }
+  to {
+    transform: none;
   }
 }
 

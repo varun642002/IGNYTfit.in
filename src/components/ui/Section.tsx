@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
+import { WordReveal } from "@/components/ui/WordReveal";
 import { cn } from "@/lib/utils";
 
 /**
@@ -92,17 +93,41 @@ export function SectionHeading({
         </Eyebrow>
       ) : null}
 
-      <Tag
-        id={id ? `${id}-heading` : undefined}
-        className={cn(
-          "text-fade-down font-black leading-[1.04]",
-          Tag === "h1"
-            ? "text-[clamp(2.6rem,7vw,4.75rem)]"
-            : "text-[clamp(2rem,4.8vw,3.35rem)]",
-        )}
-      >
-        {title}
-      </Tag>
+      {/*
+        A plain-string heading is upgraded to the word-mask reveal
+        automatically; anything containing JSX (a gradient span, a line break)
+        is rendered as given, because it cannot be split on whitespace without
+        destroying the markup.
+
+        This is why the reveal is confined to marketing sections without anyone
+        having to remember: the legal suite and the forms use their own heading
+        markup and never go through SectionHeading at all.
+      */}
+      {typeof title === "string" ? (
+        <WordReveal
+          as={Tag}
+          id={id ? `${id}-heading` : undefined}
+          text={title}
+          className={cn(
+            "text-fade-down font-black leading-[1.04]",
+            Tag === "h1"
+              ? "text-[clamp(2.6rem,7vw,4.75rem)]"
+              : "text-[clamp(2rem,4.8vw,3.35rem)]",
+          )}
+        />
+      ) : (
+        <Tag
+          id={id ? `${id}-heading` : undefined}
+          className={cn(
+            "text-fade-down font-black leading-[1.04]",
+            Tag === "h1"
+              ? "text-[clamp(2.6rem,7vw,4.75rem)]"
+              : "text-[clamp(2rem,4.8vw,3.35rem)]",
+          )}
+        >
+          {title}
+        </Tag>
+      )}
 
       {lead ? (
         <p

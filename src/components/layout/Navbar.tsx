@@ -30,8 +30,10 @@ import { cn } from "@/lib/utils";
 export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const progressRef = useRef<HTMLSpanElement>(null);
+  const lastY = useRef(0);
 
   useEffect(() => {
     let frame = 0;
@@ -40,6 +42,25 @@ export function Navbar() {
       frame = 0;
       const y = window.scrollY;
       setScrolled(y > 10);
+
+      /*
+       * Hide on the way down, return on the way up.
+       *
+       * This gives long pages back the 64px the header occupies, and the bar is
+       * never more than one upward flick away — which is why it is acceptable
+       * on a site where the header carries the primary call to action.
+       *
+       * The 8px threshold matters: without it, the sub-pixel scroll jitter that
+       * a smooth-scroll library produces flips the direction every frame and
+       * the header strobes. It also never hides in the first 300px, where the
+       * reader is still in the hero and the nav is the only orientation they
+       * have.
+       */
+      const delta = y - lastY.current;
+      if (Math.abs(delta) > 8) {
+        setHidden(delta > 0 && y > 300);
+        lastY.current = y;
+      }
 
       const scrollable =
         document.documentElement.scrollHeight - window.innerHeight;
@@ -96,8 +117,18 @@ export function Navbar() {
   const isActive = (path: string) =>
     path === "/" ? pathname === "/" : pathname.startsWith(path);
 
+  /* The sheet must never be left off-screen: if it is open, the header stays
+     put regardless of scroll direction. */
+  const tucked = hidden && !menuOpen;
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-50",
+        "transition-transform duration-500 ease-glide motion-reduce:transition-none",
+        tucked ? "-translate-y-full" : "translate-y-0",
+      )}
+    >
       {/* Reading progress. Purely decorative — the same information is in the
           scrollbar — so it is hidden from assistive technology. */}
       <span

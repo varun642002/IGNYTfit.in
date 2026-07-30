@@ -3,6 +3,7 @@ import { Rss } from "lucide-react";
 import { BlogIndex } from "@/components/blog/BlogIndex";
 import { DownloadCta } from "@/components/home/DownloadCta";
 import { breadcrumbSchema, JsonLd } from "@/components/seo/JsonLd";
+import { Aurora } from "@/components/ui/Aurora";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
 import { sortedPosts } from "@/lib/blog";
@@ -50,6 +51,7 @@ export default function BlogPage() {
 
       <PageHero
         eyebrow="Blog"
+        tone="flare"
         title={
           <>
             Training and nutrition,{" "}
@@ -59,19 +61,23 @@ export default function BlogPage() {
         lead="Short, practical articles on the things people actually get stuck on — protein targets, progression, scale weight, fasting windows. No supplements to sell, no miracle protocols."
       />
 
-      <Container className="py-16 sm:py-20">
-        <BlogIndex posts={sortedPosts} />
+      <section aria-label="Articles" className="relative py-20 sm:py-24">
+        <Aurora tone="arc" className="opacity-40" drift={false} />
 
-        <p className="mt-14 flex justify-center">
-          <a
-            href="/blog/rss.xml"
-            className="inline-flex items-center gap-2 rounded-pill border border-hairline bg-carbon/70 px-5 py-3 text-[14px] font-semibold text-ash transition-colors hover:border-flare/50 hover:text-flare"
-          >
-            <Rss aria-hidden className="size-4" />
-            Subscribe via RSS
-          </a>
-        </p>
-      </Container>
+        <Container>
+          <BlogIndex posts={sortedPosts} />
+
+          <p className="mt-16 flex justify-center">
+            <a
+              href="/blog/rss.xml"
+              className="inline-flex items-center gap-2.5 rounded-pill border border-hairline bg-carbon/70 px-5 py-3 text-[14px] font-semibold text-ash transition-[color,border-color,transform] duration-300 ease-glide hover:-translate-y-0.5 hover:border-arc/50 hover:text-chalk"
+            >
+              <Rss aria-hidden className="size-4" />
+              Subscribe via RSS
+            </a>
+          </p>
+        </Container>
+      </section>
 
       <DownloadCta />
     </>
