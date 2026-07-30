@@ -1,8 +1,8 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { Aurora } from "@/components/ui/Aurora";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { Reveal } from "@/components/ui/Reveal";
+import { Particles } from "@/components/ui/Particles";
 import { cn } from "@/lib/utils";
 
 /**
@@ -55,39 +55,57 @@ export function PageHero({
         }}
       />
 
+      {/* The same drifting ember field as the home hero. Renders nothing below
+          the "full" motion tier, so a low-power device or a reduced-motion
+          preference pays nothing for it. */}
+      <Particles className="pointer-events-none absolute inset-0 -z-10 size-full" count={30} />
+
       <Container className="text-center">
         {/*
-          Above-the-fold text renders directly, never inside a Reveal.
+          The staged entrance from the home page, applied here so every page
+          opens the same way: eyebrow, heading, lead, then the actions, each
+          90ms after the last.
 
-          A scroll reveal starts its children hidden and clears that on scroll;
-          for a hero — which is already in view on load — that means the largest
-          contentful paint is gated on something that may never fire. Only the
-          call-to-action row below animates.
+          `.stage` is a plain CSS animation on load — NOT a scroll reveal. That
+          distinction is load-bearing for a hero: a scroll reveal starts its
+          children hidden and clears that only when the element enters the
+          viewport, which for content already in view on load means the largest
+          contentful paint waits on something that may never fire. This plays
+          during first paint instead.
         */}
         <div className="mx-auto max-w-3xl">
           {eyebrow ? (
-            <Eyebrow tone={tone} className="mb-6">
-              {eyebrow}
-            </Eyebrow>
+            <div className="stage" style={{ "--d": 0 } as CSSProperties}>
+              <Eyebrow tone={tone} className="mb-6">
+                {eyebrow}
+              </Eyebrow>
+            </div>
           ) : null}
 
           <h1
             id="page-hero-heading"
-            className="text-fade-down text-[clamp(2.4rem,6vw,4.15rem)] font-black leading-[1.04] tracking-[-0.04em]"
+            className="stage text-fade-down text-[clamp(2.4rem,6vw,4.15rem)] font-black leading-[1.04] tracking-[-0.04em]"
+            style={{ "--d": 1 } as CSSProperties}
           >
             {title}
           </h1>
 
           {lead ? (
-            <p className="mx-auto mt-7 max-w-2xl text-[16.5px] leading-[1.72] text-ash sm:text-[18px]">
+            <p
+              className="stage mx-auto mt-7 max-w-2xl text-[16.5px] leading-[1.72] text-ash sm:text-[18px]"
+              style={{ "--d": 2 } as CSSProperties}
+            >
               {lead}
             </p>
           ) : null}
 
           {children ? (
-            <Reveal className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <div
+              className="stage mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
+              style={{ "--d": 3 } as CSSProperties}
+            >
               {children}
-            </Reveal>
+            </div>
           ) : null}
         </div>
       </Container>

@@ -1,9 +1,10 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import Link from "next/link";
 import { CalendarClock, Mail } from "lucide-react";
 import { Aurora } from "@/components/ui/Aurora";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Particles } from "@/components/ui/Particles";
 import { Surface } from "@/components/ui/Surface";
 import { legalRoutes } from "@/lib/routes";
 import { legalUpdatedLabel, site } from "@/lib/site";
@@ -161,22 +162,48 @@ export function LegalPage({
         aria-labelledby="legal-title"
         className="relative overflow-hidden border-b border-hairline-soft py-20 sm:py-24"
       >
-        <Aurora tone="arc" drift={false} className="opacity-60" />
+        {/* The same ambient layer every other hero carries — drifting bloom and
+            the ember field — so the legal suite does not read as a different
+            website. Both are gated on the motion tier and render nothing at all
+            below "full". */}
+        <Aurora tone="arc" className="opacity-60" />
+        <Particles
+          className="pointer-events-none absolute inset-0 -z-10 size-full"
+          count={24}
+        />
 
         <Container>
-          <Eyebrow tone="arc" live={false} className="mb-5">
-            Legal
-          </Eyebrow>
+          {/*
+            The same staged entrance the other heroes use, so the legal suite
+            opens like the rest of the site rather than appearing abruptly.
+
+            It stops at the header. The document body below — the sections, the
+            prose, the table of contents — is deliberately still: these are
+            pages somebody may have to read carefully, and animating the text
+            of a privacy policy would be pure friction.
+          */}
+          <div className="stage" style={{ "--d": 0 } as CSSProperties}>
+            <Eyebrow tone="arc" live={false} className="mb-5">
+              Legal
+            </Eyebrow>
+          </div>
           <h1
             id="legal-title"
-            className="text-fade-down text-[clamp(2.1rem,5vw,3.4rem)] font-black leading-[1.06] tracking-[-0.035em]"
+            className="stage text-fade-down text-[clamp(2.1rem,5vw,3.4rem)] font-black leading-[1.06] tracking-[-0.035em]"
+            style={{ "--d": 1 } as CSSProperties}
           >
             {title}
           </h1>
-          <p className="mt-6 max-w-2xl text-[16.5px] leading-[1.72] text-ash">
+          <p
+            className="stage mt-6 max-w-2xl text-[16.5px] leading-[1.72] text-ash"
+            style={{ "--d": 2 } as CSSProperties}
+          >
             {summary}
           </p>
-          <p className="mt-7 inline-flex items-center gap-2 rounded-pill border border-hairline bg-carbon/70 px-4 py-2 text-[13px] text-ash-dim">
+          <p
+            className="stage mt-7 inline-flex items-center gap-2 rounded-pill border border-hairline bg-carbon/70 px-4 py-2 text-[13px] text-ash-dim"
+            style={{ "--d": 3 } as CSSProperties}
+          >
             <CalendarClock aria-hidden className="size-4" />
             Last updated{" "}
             <time dateTime={site.legalUpdated}>{legalUpdatedLabel}</time>
@@ -217,11 +244,23 @@ export function LegalPage({
 
           <article className="max-w-3xl">
             {sections.map((section, index) => (
+              /*
+                Each section rises as it enters, on the same scroll timeline as
+                every other list on the site, so the legal suite reads with the
+                same rhythm as the rest.
+
+                `.rise-item` moves and fades only — it can never leave text
+                hidden — and the fade completes near the viewport edge, so no
+                paragraph is ever parked at partial opacity where somebody might
+                be trying to read it. That is the one property a legal document
+                cannot compromise on.
+              */
               <section
                 key={section.id}
                 id={section.id}
                 aria-labelledby={`${section.id}-heading`}
-                className="scroll-mt-32 border-b border-hairline-soft py-9 first:pt-0 last:border-b-0"
+                className="rise-item scroll-mt-32 border-b border-hairline-soft py-9 first:pt-0 last:border-b-0"
+                style={{ "--i": Math.min(index, 3) } as CSSProperties}
               >
                 <h2
                   id={`${section.id}-heading`}
