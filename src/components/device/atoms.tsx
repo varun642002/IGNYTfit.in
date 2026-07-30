@@ -482,32 +482,65 @@ export function Stat({
   );
 }
 
-/** Bottom tab bar. The active tab is passed by index. */
+/**
+ * Bottom tab bar.
+ *
+ * THESE LABELS MIRROR THE SHIPPED APP and must not be invented: Home, Workout,
+ * Food Log, Progress, Profile. An earlier pass used "Train / Food / Body / You",
+ * which was shorter and fitted better and was simply wrong — a mockup whose
+ * navigation does not match the product is not a mockup of the product.
+ *
+ * The active tab is blue, not orange. IGNYT's interface is blue-led; orange
+ * appears on records, streaks and volume, not on primary navigation.
+ */
 export function TabBar({ active = 0 }: { active?: number }) {
-  /* Simple geometric glyphs rather than an icon font: at 4cqw these read as
+  /* Simple geometric glyphs rather than an icon font: at this size they read as
      shapes anyway, and it keeps the mockups free of a runtime dependency. */
-  const tabs = ["Home", "Train", "Food", "Body", "You"];
+  const tabs = ["Home", "Workout", "Food Log", "Progress", "Profile"];
 
   return (
-    <div className="mt-auto flex items-center justify-between rounded-[5cqw] border border-white/7 bg-white/4 px-[4cqw] py-[2.6cqw]">
+    <div className="mt-auto flex items-center justify-between rounded-[5cqw] border border-white/7 bg-white/4 px-[3cqw] py-[2.6cqw]">
       {tabs.map((tab, index) => (
         <div key={tab} className="flex flex-col items-center gap-[1.2cqw]">
           <div
             className={cn(
               "size-[3.6cqw] rounded-[1.1cqw]",
-              index === active ? "bg-flare" : "bg-white/22",
+              index === active ? "bg-arc" : "bg-white/22",
             )}
           />
           <span
             className={cn(
-              "text-[2.3cqw] font-bold leading-none",
-              index === active ? "text-chalk" : "text-ash-dim",
+              "text-[2.1cqw] font-bold leading-none",
+              index === active ? "text-arc" : "text-ash-dim",
             )}
           >
             {tab}
           </span>
         </div>
       ))}
+    </div>
+  );
+}
+
+/**
+ * The app's brand header, as it actually appears: a short rule, the tagline
+ * "TRAIN WITH INTENT" in blue, and the IGNYT wordmark beneath it.
+ *
+ * Reproduced here because it is the first thing anyone sees in the real app,
+ * and a mockup without it does not look like IGNYT.
+ */
+export function AppHeader() {
+  return (
+    <div className="pt-[1cqw]">
+      <div className="flex items-center gap-[2cqw]">
+        <span className="h-[0.7cqw] w-[7cqw] rounded-pill bg-arc" />
+        <span className="text-[2.6cqw] font-bold uppercase tracking-[0.18em] text-arc">
+          Train with intent
+        </span>
+      </div>
+      <p className="mt-[0.8cqw] text-[7cqw] font-black leading-none tracking-[-0.02em]">
+        IGNYT
+      </p>
     </div>
   );
 }

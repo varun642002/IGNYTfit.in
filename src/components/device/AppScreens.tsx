@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import {
+  AppHeader,
   Bars,
   Chip,
   Head,
@@ -11,6 +12,7 @@ import {
   Stat,
   TabBar,
   Tile,
+  type Accent,
 } from "@/components/device/atoms";
 import type { ScreenId } from "@/lib/screens";
 
@@ -32,51 +34,88 @@ import type { ScreenId } from "@/lib/screens";
 
 /* -------------------------------------------------------------- dashboard */
 
+/**
+ * The Home screen, following the shipped layout: brand header, a greeting card
+ * with the weekly-goal ring, then "Today's summary" as a two-column grid of
+ * tinted tiles.
+ *
+ * The tile tints are the app's own: calories green, workout violet, steps
+ * orange, active minutes blue, water cyan, sleep violet.
+ */
 function Dashboard() {
+  const SUMMARY: Array<{
+    value: string;
+    unit?: string;
+    label: string;
+    goal: string;
+    tint: string;
+    accent: Accent;
+  }> = [
+    { value: "1,842", label: "Calories", goal: "/ 2,553 kcal", tint: "rgba(61,220,151,0.09)", accent: "good" },
+    { value: "1", unit: "/ 1", label: "Workout", goal: "Completed", tint: "rgba(139,110,255,0.10)", accent: "arc" },
+    { value: "8,431", label: "Steps", goal: "/ 10,000", tint: "rgba(255,106,26,0.09)", accent: "flare" },
+    { value: "64", unit: "min", label: "Active Minutes", goal: "/ 60 min", tint: "rgba(61,123,255,0.10)", accent: "arc" },
+    { value: "2.1", unit: "L", label: "Water", goal: "/ 3.0 L", tint: "rgba(85,216,255,0.09)", accent: "cyan" },
+    { value: "7h 12", label: "Sleep", goal: "Health Connect", tint: "rgba(139,110,255,0.10)", accent: "arc" },
+  ];
+
   return (
     <Screen>
-      <Head title="Today" meta="Thursday, 30 July" />
-
-      <Tile lit="flare">
-        <div className="flex items-center gap-[4cqw]">
-          <Ring value={0.72} size={26} accent="flare">
-            <span className="text-[4.4cqw] font-black leading-none" data-numeric>
-              1,842
-            </span>
-            <span className="mt-[0.8cqw] text-[2.3cqw] font-bold text-ash-dim">
-              KCAL
-            </span>
-          </Ring>
-          <div className="flex-1 space-y-[2.4cqw]">
-            <Meter label="Protein" value={0.78} detail="148 / 190 g" accent="arc" index={0} />
-            <Meter label="Carbs" value={0.64} detail="176 / 275 g" accent="flare" index={1} />
-            <Meter label="Fat" value={0.55} detail="41 / 74 g" accent="good" index={2} />
-          </div>
-        </div>
-      </Tile>
-
-      <div className="grid grid-cols-3 gap-[2.6cqw]">
-        <Tile className="p-[3.2cqw]">
-          <Stat value="8,431" caption="Steps" accent="arc" />
-        </Tile>
-        <Tile className="p-[3.2cqw]">
-          <Stat value="2.1" unit="L" caption="Water" accent="cyan" />
-        </Tile>
-        <Tile className="p-[3.2cqw]">
-          <Stat value="78.4" unit="kg" caption="Weight" accent="good" />
-        </Tile>
-      </div>
+      <AppHeader />
 
       <Tile>
-        <div className="flex items-center justify-between">
-          <p className="text-[3.4cqw] font-bold">Push Day · Week 6</p>
-          <Chip accent="flare">Resume</Chip>
-        </div>
-        <div className="mt-[3cqw] space-y-[2.6cqw]">
-          <Row title="Bench Press" meta="4 × 8 · 82.5 kg" value="Done" accent="flare" done />
-          <Row title="Incline Dumbbell" meta="3 × 10 · 30 kg" value="2/3" accent="flare" glyph="2" />
+        <div className="flex items-center justify-between gap-[3cqw]">
+          <div className="min-w-0">
+            <p className="text-[4.4cqw] font-black leading-tight tracking-[-0.02em]">
+              Good afternoon, Athlete
+            </p>
+            <p className="mt-[1.4cqw] text-[2.9cqw] font-medium text-ash">
+              Consistency creates results.
+            </p>
+            <div className="mt-[2.6cqw] flex gap-[2cqw]">
+              <Chip accent="flare">🔥 21 days</Chip>
+              <Chip accent="good">On track</Chip>
+            </div>
+          </div>
+          <Ring value={1} size={24} accent="arc">
+            <span className="text-[4cqw] font-black leading-none" data-numeric>
+              100%
+            </span>
+          </Ring>
         </div>
       </Tile>
+
+      <div className="flex items-center justify-between">
+        <p className="text-[2.7cqw] font-bold uppercase tracking-[0.14em] text-ash-dim">
+          Today&rsquo;s summary
+        </p>
+        <span className="text-[2.7cqw] font-bold text-arc">View All</span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-[2.6cqw]">
+        {SUMMARY.map((item) => (
+          <div
+            key={item.label}
+            className="rounded-[4cqw] border border-white/6 p-[3.4cqw]"
+            style={{ backgroundColor: item.tint }}
+          >
+            <p className="text-[5cqw] font-black leading-none tracking-[-0.03em]" data-numeric>
+              {item.value}
+              {item.unit ? (
+                <span className="ml-[1cqw] text-[2.7cqw] font-bold text-ash">
+                  {item.unit}
+                </span>
+              ) : null}
+            </p>
+            <p className="mt-[1.6cqw] text-[2.8cqw] font-semibold leading-none">
+              {item.label}
+            </p>
+            <p className="mt-[1cqw] text-[2.4cqw] font-medium leading-none text-ash-dim">
+              {item.goal}
+            </p>
+          </div>
+        ))}
+      </div>
 
       <TabBar active={0} />
     </Screen>
