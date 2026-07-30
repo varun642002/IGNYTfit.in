@@ -26,6 +26,18 @@ const FACTS: Array<{ label: string; value: React.ReactNode }> = [
   { label: "Application type", value: "Android mobile application" },
   { label: "Category", value: "Health & Fitness" },
   {
+    /* Rendered as a pill rather than plain text, matching the coming-soon badge
+       in the download section — the two state the same fact and should not look
+       like unrelated claims. */
+    label: "Application status",
+    value: (
+      <span className="inline-flex items-center gap-2 rounded-full border border-warn/30 bg-warn/10 px-3 py-1 text-[13px] font-semibold text-warn">
+        <span aria-hidden className="size-1.5 rounded-full bg-warn" />
+        Pending Google Play release
+      </span>
+    ),
+  },
+  {
     label: "Purpose",
     value:
       "Fitness and nutrition tracking — workouts, calories, macros, hydration, fasting, body weight and progress.",
