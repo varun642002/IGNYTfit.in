@@ -39,14 +39,21 @@ export const site = {
    * these two are written for a search result and for a Google OAuth reviewer
    * skimming the tab title, so they lead with the product category.
    */
-  seoTitle: "IGNYT – Complete Fitness & Nutrition Tracker",
+  /* Bare product name, not "IGNYT – Complete Fitness & Nutrition Tracker".
+     Google's OAuth verification compares the application name on the home page
+     against the consent screen, and <title> was the last signal that was not a
+     literal match — application-name, og:site_name, the h1, the JSON-LD name
+     and the manifest name were all already exactly "IGNYT".
+
+     This costs search-result keywords. The meta description still carries the
+     full explanation, and the descriptive title is not worth a third failed
+     verification. */
+  seoTitle: "IGNYT",
   seoDescription:
     "IGNYT is a complete fitness and nutrition tracking application that helps users monitor workouts, calories, macros, hydration, fasting, body weight, progress, and Google Health Connect data.",
-  /* The social card now carries the full title rather than a shortened one.
-     Google's verification compares the application name on the home page with
-     the one on the consent screen, so every surface that states a name states
-     the same one. */
-  ogTitle: "IGNYT – Complete Fitness & Nutrition Tracker",
+  /* Same reasoning as seoTitle: every surface that states a name now states
+     exactly the name, and nothing else. The description carries the pitch. */
+  ogTitle: "IGNYT",
   ogDescription:
     "Track workouts, nutrition, calories, hydration, fasting, progress, and Health Connect data with IGNYT.",
 
