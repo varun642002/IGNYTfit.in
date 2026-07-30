@@ -622,37 +622,52 @@
          range leaves content mid-transition for as long as the section is tall,
          which on this site is most of a viewport. Everything settles by the
          time it has fully entered. */
+      /*
+       * TRANSFORM ONLY. NEVER ANIMATE OPACITY HERE.
+       *
+       * A scroll-driven animation with `fill: both` sits at its start state
+       * until its timeline resolves — and inside a `content-visibility: auto`
+       * section the browser skips the subtree, so the timeline may not resolve
+       * at all. With an opacity keyframe that leaves real content stuck at
+       * `opacity: 0`: invisible text, on a page that looks finished.
+       *
+       * That is exactly what happened. Fourteen elements on /about alone were
+       * measured at zero opacity while fully on screen.
+       *
+       * Transform-only cannot fail that way. If the timeline never resolves the
+       * element is simply offset by 34px — still fully opaque, still readable,
+       * still selectable. The reveal degrades to "slightly out of position"
+       * instead of to "gone", and that is the only acceptable failure mode for
+       * an effect that wraps body copy.
+       *
+       * The same reasoning retired the word-mask heading reveal. If a third
+       * version of this is ever attempted, apply the rule first: a reveal may
+       * move content, and may not hide it.
+       */
       .rise {
-        animation:
-          rise-up linear both,
-          fade-in linear both;
-        animation-timeline: view(), view();
-        animation-range:
-          entry 0% entry 85%,
-          entry 0% entry 50%;
+        animation: rise-up linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 85%;
       }
 
       /* Children of a `.rise-group` stagger by pushing each one's range
          slightly later. `--i` is set inline by <Reveal.Item>. */
+      /* Transform only, for the reason above. */
       .rise-item {
-        animation:
-          rise-up linear both,
-          fade-in linear both;
-        animation-timeline: view(), view();
+        animation: rise-up linear both;
+        animation-timeline: view();
         /* Capped so the tenth item still lands by `entry 100%`. */
-        animation-range:
-          entry 0% entry calc(55% + (var(--i, 0) * 4%)),
-          entry 0% entry 50%;
+        animation-range: entry 0% entry calc(55% + (var(--i, 0) * 4%));
       }
 
       .rise-l {
-        animation-name: rise-left, fade-in;
+        animation-name: rise-left;
       }
       .rise-r {
-        animation-name: rise-right, fade-in;
+        animation-name: rise-right;
       }
       .rise-scale {
-        animation-name: rise-scale, fade-in;
+        animation-name: rise-scale;
       }
     }
   }
