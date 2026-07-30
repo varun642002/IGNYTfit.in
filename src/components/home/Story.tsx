@@ -91,16 +91,20 @@ const ACCENT_BG = {
 } as const;
 
 export function Story({
-  visuals,
+  visuals = [],
 }: {
   /**
    * One server-rendered device per beat, in the same order as BEATS.
    *
-   * Passed in as already-rendered markup rather than built here, so the four
-   * app screens stay server components — this file is the only client boundary
-   * in the section, and it holds nothing but an index.
+   * Currently empty, and deliberately so. Every screenshot the home page can
+   * show is already spent — six in the hero carousel and six more in the
+   * product tour — and a screen may not appear twice on one surface. Rather
+   * than repeat one here, this scene runs on typography alone, which is how it
+   * was first built and reads perfectly well.
+   *
+   * Pass devices in if new captures become available.
    */
-  visuals: ReactNode[];
+  visuals?: ReactNode[];
 }) {
   const sceneRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLSpanElement>(null);

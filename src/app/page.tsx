@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import { AppScreen } from "@/components/device/AppScreens";
-import { PhoneShell } from "@/components/device/PhoneShell";
 import { AppIdentity } from "@/components/home/AppIdentity";
 import { BuiltFor } from "@/components/home/BuiltFor";
 import { DownloadCta } from "@/components/home/DownloadCta";
 import { Features } from "@/components/home/Features";
 import { Hero } from "@/components/home/Hero";
-import { Screenshots } from "@/components/home/Screenshots";
 import { Showcase } from "@/components/home/Showcase";
 import { Stats } from "@/components/home/Stats";
 import { Story } from "@/components/home/Story";
@@ -53,21 +50,17 @@ export default function HomePage() {
       <Hero />
       <Showcase />
 
-      {/* The four devices are rendered here, on the server, and handed to the
-          scene as markup — so <Story> stays the section's only client component
-          and none of the app screens cross the boundary. The order matches the
-          beats inside it: train, eat, measure, keep. */}
-      <Story
-        visuals={(["workout", "food-log", "weight", "settings"] as const).map(
-          (id) => (
-            <PhoneShell key={id} glow={false}>
-              <AppScreen id={id} />
-            </PhoneShell>
-          ),
-        )}
-      />
+      {/* No devices: every screenshot this page can show is already spent on
+          the hero carousel and the product tour, and a screen may not appear
+          twice on one surface. The scene runs on typography, which is how it
+          was first built. See the note on <Story>'s `visuals` prop. */}
+      <Story />
       <Features />
-      <Screenshots />
+
+      {/* The screenshot rail that used to sit here is gone. It rendered drawn
+          mockups, and every real capture the home page can show is already
+          spent on the hero and the product tour. /screenshots is the full
+          catalogue, and the tour links to it. */}
       <WhyIgnyt />
       <Stats />
       <BuiltFor />

@@ -51,6 +51,7 @@ export function PhoneScene({
   showSelector = true,
   layout = "stacked",
   deviceClassName,
+  realShots = false,
 }: {
   slides: SceneSlide[];
   className?: string;
@@ -64,6 +65,14 @@ export function PhoneScene({
    */
   layout?: "stacked" | "split";
   deviceClassName?: string;
+  /**
+   * Set when the slides are real screenshots rather than vector screens.
+   *
+   * Suppresses the frame's camera housing: a capture already contains the
+   * device's own status bar, and drawing a notch over it hides part of the
+   * actual interface.
+   */
+  realShots?: boolean;
 }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -137,7 +146,11 @@ export function PhoneScene({
           data-decor="ambient"
           className={cn(tier === "full" && "animate-drift")}
         >
-          <PhoneShell label={active.description} overlay={overlay}>
+          <PhoneShell
+            label={active.description}
+            overlay={overlay}
+            notch={!realShots}
+          >
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.div
                 key={active.id}

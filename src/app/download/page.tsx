@@ -23,7 +23,7 @@ import {
   WifiOff,
   type LucideIcon,
 } from "lucide-react";
-import { AppScreen } from "@/components/device/AppScreens";
+import { ShotScreen } from "@/components/device/ShotScreen";
 import { PhoneShell } from "@/components/device/PhoneShell";
 import { appSchema, breadcrumbSchema, JsonLd } from "@/components/seo/JsonLd";
 import { Accordion } from "@/components/ui/Accordion";
@@ -462,9 +462,10 @@ export default function DownloadPage() {
           <Reveal direction="left" className="mx-auto">
             <PhoneShell
               className="w-[250px] xl:w-[286px]"
+              notch={false}
               label="The IGNYT dashboard as it appears after setup"
             >
-              <AppScreen id="dashboard" />
+              <ShotScreen id="home" sizes="286px" />
             </PhoneShell>
           </Reveal>
         </div>

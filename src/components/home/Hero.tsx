@@ -1,6 +1,5 @@
 import type { CSSProperties } from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { AppScreen } from "@/components/device/AppScreens";
 import { PhoneScene, type SceneSlide } from "@/components/device/PhoneScene";
 import { FloatingMetrics } from "@/components/home/FloatingMetrics";
 import { LogoMark } from "@/components/brand/Logo";
@@ -9,7 +8,8 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { Particles } from "@/components/ui/Particles";
-import { screens, type ScreenId } from "@/lib/screens";
+import { ShotScreen } from "@/components/device/ShotScreen";
+import { claim, shot } from "@/lib/shots";
 import { site } from "@/lib/site";
 
 /**
@@ -36,15 +36,21 @@ import { site } from "@/lib/site";
  * hydration, which is why there is no splash screen in front of it.
  */
 
-/** The six screens the hero cycles through, in narrative order. */
-const HERO_SCREEN_IDS: ScreenId[] = [
-  "dashboard",
+/**
+ * The six screens the hero cycles through, in narrative order: what today looks
+ * like, then training, eating, the week, the records, the body.
+ *
+ * Real screenshots, pulled from the registry. `claim` fails the build if this
+ * list ever repeats a screen.
+ */
+const HERO_SHOTS = claim("home-hero", [
+  "home",
   "workout",
   "food-log",
   "progress",
-  "health-connect",
+  "records",
   "weight",
-];
+]);
 
 const HERO_FACTS = [
   "Free on Android",
@@ -54,13 +60,15 @@ const HERO_FACTS = [
 ];
 
 export function Hero() {
-  const slides: SceneSlide[] = HERO_SCREEN_IDS.map((id) => {
-    const meta = screens.find((screen) => screen.id === id)!;
+  const slides: SceneSlide[] = HERO_SHOTS.map((id, index) => {
+    const meta = shot(id);
     return {
       id,
-      label: meta.title,
-      description: `IGNYT ${meta.title} screen. ${meta.description}`,
-      screen: <AppScreen id={id} />,
+      label: meta.screen,
+      description: `IGNYT — ${meta.screen}. ${meta.purpose}.`,
+      /* Only the first slide is eager: it is the largest above-the-fold image
+         on the site. The other five are fetched as the carousel reaches them. */
+      screen: <ShotScreen id={id} priority={index === 0} sizes="320px" />,
     };
   });
 
@@ -168,6 +176,7 @@ export function Hero() {
           >
             <PhoneScene
               slides={slides}
+              realShots
               showSelector={false}
               interval={3800}
               overlay={<FloatingMetrics />}

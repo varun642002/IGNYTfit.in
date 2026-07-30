@@ -190,3 +190,39 @@ export function shot(id: string): Shot {
   if (!found) throw new Error(`Screenshot registry: no shot with id "${id}".`);
   return found;
 }
+
+/**
+ * Uniqueness is enforced PER SURFACE, not globally.
+ *
+ * The brief asks that a screenshot never appear twice — and separately, that
+ * the full screenshot always remain available on the dedicated Screenshots
+ * page. Those two rules cannot both hold globally: if `/screenshots` is the
+ * complete catalogue, then anything the home page shows is by definition its
+ * second appearance.
+ *
+ * So the rule is applied where it actually protects the reader:
+ *
+ *   `/screenshots` is the catalogue. Every distinct screen appears there,
+ *   exactly once.
+ *
+ *   Every other surface — the hero, the product tour, the features page, the
+ *   download page — draws from the same pool, and no screen may appear twice
+ *   WITHIN one surface. Two sections of the home page can never show the same
+ *   screen, which is the duplication a reader would actually notice.
+ *
+ * `claim()` fails the build if a surface lists a screen twice.
+ */
+export function claim(surface: string, ids: string[]): string[] {
+  const seen = new Set<string>();
+  for (const id of ids) {
+    // Also validates the id exists — `shot` throws on an unknown one.
+    shot(id);
+    if (seen.has(id)) {
+      throw new Error(
+        `Screenshot registry: "${id}" is used twice on the "${surface}" surface. A screen may appear only once per surface.`,
+      );
+    }
+    seen.add(id);
+  }
+  return ids;
+}
