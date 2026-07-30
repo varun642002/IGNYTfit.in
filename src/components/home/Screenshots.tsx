@@ -5,7 +5,7 @@ import { Aurora } from "@/components/ui/Aurora";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/Section";
-import { featuredScreens } from "@/lib/screens";
+import { featuredScreens, screens } from "@/lib/screens";
 
 /**
  * The screenshot rail on the home page.
@@ -49,7 +49,7 @@ export function Screenshots() {
             href="/screenshots"
             className="inline-flex items-center gap-2 text-[15px] font-semibold text-arc transition-colors hover:text-arc-bright"
           >
-            See all 16 screens
+            See all {screens.length} screens
             <ArrowRight aria-hidden className="size-4" />
           </Link>
         </Reveal>

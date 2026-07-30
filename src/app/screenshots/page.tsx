@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DownloadCta } from "@/components/home/DownloadCta";
+import { RealGallery } from "@/components/screenshots/RealGallery";
 import { ScreenGallery } from "@/components/screenshots/ScreenGallery";
 import { breadcrumbSchema, JsonLd } from "@/components/seo/JsonLd";
 import { ButtonLink } from "@/components/ui/Button";
@@ -31,9 +32,12 @@ export default function ScreenshotsPage() {
 
       <PageHero
         eyebrow="Screenshots"
+        /* Never hard-code the count here. It said "Sixteen" while the lead
+           below read from `screens.length` and said nineteen, because three
+           screens were added and only one of the two numbers moved. */
         title={
           <>
-            Sixteen screens.{" "}
+            Every screen.{" "}
             <span className="text-arc-gradient">One fitness system.</span>
           </>
         }
@@ -45,7 +49,32 @@ export default function ScreenshotsPage() {
         </ButtonLink>
       </PageHero>
 
-      {/* Two rails of eight rather than one of sixteen. A single rail that long
+      {/* The real build first. Whatever the vector mockups gain in sharpness,
+          a prospective user wants to see the actual application before they
+          see an illustration of it. */}
+      <section
+        aria-labelledby="screens-real-heading"
+        className="cv-auto border-b border-hairline-soft py-20 sm:py-24"
+      >
+        <Container wide>
+          <h2
+            id="screens-real-heading"
+            className="text-[clamp(1.6rem,3.4vw,2.2rem)] font-black tracking-[-0.03em]"
+          >
+            The app itself
+          </h2>
+          <p className="mt-4 max-w-2xl text-[16px] leading-[1.7] text-ash">
+            Screenshots from the current Android build — training plans, food
+            logging, analytics, achievements, habits and the tools underneath
+            them.
+          </p>
+          <div className="mt-12">
+            <RealGallery />
+          </div>
+        </Container>
+      </section>
+
+      {/* Two rails of eight rather than one long one. A single rail that long
           takes a dozen swipes to reach the end and gives no sense of how much is
           left; splitting it into "during a session" and "the result" makes the
           set legible at a glance. */}

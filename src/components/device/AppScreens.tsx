@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import {
+  ACCENT,
   AppHeader,
   Bars,
   Chip,
@@ -15,6 +16,7 @@ import {
   type Accent,
 } from "@/components/device/atoms";
 import type { ScreenId } from "@/lib/screens";
+import { cn } from "@/lib/utils";
 
 /**
  * Every IGNYT app screen, drawn as live markup.
@@ -124,69 +126,115 @@ function Dashboard() {
 
 /* ---------------------------------------------------------------- workout */
 
+/**
+ * The Workout tab, following the shipped layout: the week's four headline
+ * figures, quick actions, routine filters, then the routine list.
+ *
+ * This is the app's training home, not a live logging session — an earlier
+ * version drew a set-by-set logging screen here, which is a real screen but not
+ * this tab.
+ */
 function Workout() {
+  const WEEK: Array<{ value: string; unit?: string; label: string; sub: string; accent: Accent }> = [
+    { value: "7", label: "Workouts", sub: "Goal 5", accent: "arc" },
+    { value: "6h 43m", label: "Total Time", sub: "Goal 5h", accent: "good" },
+    { value: "17", label: "PRs", sub: "This Week", accent: "flare" },
+    { value: "32,304", unit: "kg", label: "Volume", sub: "+56% vs last week", accent: "arc" },
+  ];
+
   return (
     <Screen>
-      <Head
-        title="Push Day"
-        meta="Week 6 · 34:12 elapsed"
-        action={<Chip accent="flare">Rest 1:30</Chip>}
-      />
+      <AppHeader />
 
-      <Tile lit="flare">
-        <p className="text-[3.6cqw] font-bold">Bench Press</p>
-        <p className="mt-[1cqw] text-[2.8cqw] font-medium text-ash-dim">
-          Barbell · 4 sets
+      <div className="flex items-center justify-between">
+        <p className="text-[2.7cqw] font-bold uppercase tracking-[0.14em] text-ash-dim">
+          This week
         </p>
-        <div className="mt-[3.2cqw] space-y-[2cqw]">
-          {[
-            ["1", "82.5 kg", "8", true],
-            ["2", "82.5 kg", "8", true],
-            ["3", "82.5 kg", "7", true],
-            ["4", "82.5 kg", "—", false],
-          ].map(([set, load, reps, done]) => (
-            <div
-              key={set as string}
-              className="flex items-center gap-[3cqw] rounded-[2.6cqw] bg-white/4 px-[3cqw] py-[2.2cqw]"
-            >
-              <span className="w-[6cqw] text-[2.9cqw] font-bold text-ash-dim">
-                {set as string}
-              </span>
-              <span className="flex-1 text-[3.2cqw] font-bold" data-numeric>
-                {load as string}
-              </span>
-              <span className="w-[10cqw] text-[3.2cqw] font-bold" data-numeric>
-                {reps as string}
-              </span>
-              <span
-                className={
-                  done
-                    ? "flex size-[5cqw] items-center justify-center rounded-[1.6cqw] bg-flare text-[2.8cqw] font-black text-[#200800]"
-                    : "size-[5cqw] rounded-[1.6cqw] border border-white/18"
-                }
-              >
-                {done ? "✓" : ""}
-              </span>
-            </div>
-          ))}
-        </div>
-      </Tile>
+        <span className="text-[2.7cqw] font-bold text-arc">Week 1 of 8 ›</span>
+      </div>
 
-      <Tile>
-        <div className="flex items-baseline justify-between">
-          <p className="text-[3.2cqw] font-bold">Session volume</p>
-          <span className="text-[3.2cqw] font-black text-flare" data-numeric>
-            7,240 kg
+      <div className="grid grid-cols-2 gap-[2.6cqw]">
+        {WEEK.map((item) => (
+          <Tile key={item.label} className="p-[3.4cqw]">
+            <span
+              className="grid size-[7cqw] place-items-center rounded-[2.2cqw]"
+              style={{
+                backgroundColor: `${ACCENT[item.accent].stroke}1f`,
+                color: ACCENT[item.accent].stroke,
+              }}
+            >
+              <span className="text-[3cqw] font-black">●</span>
+            </span>
+            <p className="mt-[2.4cqw] text-[5cqw] font-black leading-none tracking-[-0.03em]" data-numeric>
+              {item.value}
+              {item.unit ? (
+                <span className="ml-[0.8cqw] text-[2.6cqw] font-bold text-ash">
+                  {item.unit}
+                </span>
+              ) : null}
+            </p>
+            <p className="mt-[1.4cqw] text-[2.8cqw] font-semibold leading-none">
+              {item.label}
+            </p>
+            <p
+              className={cn(
+                "mt-[1cqw] text-[2.4cqw] font-medium leading-none",
+                item.sub.startsWith("+") ? "text-good" : "text-ash-dim",
+              )}
+            >
+              {item.sub}
+            </p>
+          </Tile>
+        ))}
+      </div>
+
+      <p className="text-[2.7cqw] font-bold uppercase tracking-[0.14em] text-ash-dim">
+        Quick actions
+      </p>
+      <div className="grid grid-cols-4 gap-[2cqw]">
+        {["New Routine", "Favorites", "Library", "Start Empty"].map((action) => (
+          <div
+            key={action}
+            className="rounded-[3cqw] border border-white/7 bg-white/4 px-[1.6cqw] py-[2.8cqw] text-center"
+          >
+            <p className="text-[3.4cqw] font-black leading-none text-arc">+</p>
+            <p className="mt-[1.6cqw] text-[2.2cqw] font-bold leading-tight">
+              {action}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex gap-[1.8cqw]">
+        {["All", "Push", "Pull", "Legs", "Upper"].map((filter, index) => (
+          <Chip key={filter} accent={index === 0 ? "arc" : undefined}>
+            {filter}
+          </Chip>
+        ))}
+      </div>
+
+      <Tile className="p-[3.4cqw]">
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-[3.6cqw] font-bold leading-none">Run</p>
+            <p className="mt-[1.4cqw] text-[2.6cqw] font-medium text-ash-dim">
+              1 Exercise · 4 min · Outdoor Running
+            </p>
+          </div>
+          <span className="text-[2.4cqw] text-ash-dim">★</span>
+        </div>
+        <div className="mt-[3cqw] flex items-end justify-between">
+          <div>
+            <p className="text-[2.2cqw] font-bold uppercase tracking-[0.12em] text-ash-dim">
+              Last performed
+            </p>
+            <p className="mt-[0.8cqw] text-[2.8cqw] font-semibold">7 days ago</p>
+          </div>
+          <span className="grid size-[8cqw] place-items-center rounded-pill bg-arc text-[3cqw] font-black text-[#00102e]">
+            ▶
           </span>
         </div>
-        <div className="mt-[2.6cqw]">
-          <Bars values={[0.4, 0.55, 0.62, 0.58, 0.74, 0.68, 0.88]} accent="flare" height={18} highlight={6} />
-        </div>
       </Tile>
-
-      <Chip accent="flare" className="self-start">
-        ⚡ New PR · Bench Press +2.5 kg
-      </Chip>
 
       <TabBar active={1} />
     </Screen>
@@ -243,45 +291,108 @@ function Exercise() {
 
 /* --------------------------------------------------------------- food log */
 
+/**
+ * The Food Log tab, following the shipped layout: a date stepper, the calorie
+ * budget card with its ring and remaining figure, the three nutrition shortcuts
+ * (Diet Plan, Insights, Recipes), then meals with per-item macros.
+ */
 function FoodLog() {
   return (
     <Screen>
-      <Head title="Food" meta="1,842 of 2,550 kcal" />
+      <div className="flex items-center gap-[2cqw]">
+        <span className="grid size-[7cqw] shrink-0 place-items-center rounded-pill border border-white/8 text-[2.6cqw] text-ash">
+          ‹
+        </span>
+        <span className="flex-1 rounded-pill border border-white/8 bg-white/4 py-[2cqw] text-center text-[2.9cqw] font-semibold">
+          Thursday, July 30, 2026
+        </span>
+        <span className="grid size-[7cqw] shrink-0 place-items-center rounded-pill border border-white/8 text-[2.6cqw] text-ash">
+          ›
+        </span>
+      </div>
 
-      <Tile lit="good">
-        <div className="flex items-center justify-between">
-          <Stat value="708" unit="kcal" caption="Remaining" accent="good" />
-          <Ring value={0.72} size={22} accent="good">
-            <span className="text-[3cqw] font-black" data-numeric>
-              72%
+      <Tile lit="arc">
+        <div className="flex items-center gap-[3.4cqw]">
+          <Ring value={0.72} size={24} accent="good">
+            <span className="text-[4cqw] font-black leading-none" data-numeric>
+              1,842
+            </span>
+            <span className="mt-[0.6cqw] text-[2.1cqw] font-bold text-ash-dim">
+              KCAL EATEN
             </span>
           </Ring>
+          <div className="min-w-0 flex-1">
+            <p className="text-[2.9cqw] font-medium text-ash">
+              Eat up to{" "}
+              <span className="font-black text-arc" data-numeric>
+                2,553
+              </span>{" "}
+              Cal
+            </p>
+            <div className="mt-[2cqw] h-[1.6cqw] overflow-hidden rounded-pill bg-white/8">
+              <div className="h-full w-[72%] rounded-pill bg-arc" />
+            </div>
+            <p className="mt-[1.6cqw] text-[2.5cqw] font-medium text-ash-dim">
+              72% of daily goal
+            </p>
+          </div>
+          <div className="shrink-0 text-right">
+            <p className="text-[2.3cqw] font-medium text-ash-dim">Remaining</p>
+            <p className="text-[4.2cqw] font-black leading-tight" data-numeric>
+              711
+            </p>
+            <p className="text-[2.2cqw] font-medium text-ash-dim">kcal</p>
+          </div>
         </div>
       </Tile>
 
-      <div className="space-y-[2.4cqw]">
+      <div className="grid grid-cols-3 gap-[2.4cqw]">
         {[
-          ["Breakfast", "Oats, whey, banana", "612 kcal", "B"],
-          ["Lunch", "Chicken, rice, greens", "742 kcal", "L"],
-          ["Snack", "Greek yoghurt, almonds", "288 kcal", "S"],
-          ["Dinner", "Not logged yet", "—", "D"],
-        ].map(([meal, detail, kcal, glyph]) => (
-          <Tile key={meal} className="p-[3.2cqw]">
-            <Row
-              title={meal}
-              meta={detail}
-              value={kcal}
-              accent="good"
-              glyph={glyph}
-            />
+          ["Diet Plan", "Build your meal plan"],
+          ["Insights", "See your progress"],
+          ["Recipes", "Healthy recipes"],
+        ].map(([title, sub]) => (
+          <Tile key={title} className="p-[3cqw]">
+            <p className="text-[2.9cqw] font-bold leading-tight">{title}</p>
+            <p className="mt-[1cqw] text-[2.2cqw] font-medium leading-tight text-ash-dim">
+              {sub}
+            </p>
           </Tile>
         ))}
       </div>
 
-      <div className="flex gap-[2cqw]">
-        <Chip accent="good">＋ Quick add</Chip>
-        <Chip>Repeat yesterday</Chip>
-      </div>
+      <Tile className="p-[3.4cqw]">
+        <div className="flex items-center justify-between">
+          <p className="text-[3.2cqw] font-bold">🌞 Breakfast</p>
+          <p className="text-[2.7cqw] font-bold text-arc" data-numeric>
+            695 of 638 Cal
+          </p>
+        </div>
+        <div className="mt-[3cqw] space-y-[2.6cqw]">
+          {[
+            ["Instant Oats", "50 g", "P 7g  C 34g  F 4g", "190"],
+            ["Whey Protein", "100 g", "P 80g  C 8g  F 6g", "400"],
+            ["Banana", "118 piece", "P 1g  C 27g  F 0g", "105"],
+          ].map(([name, qty, macros, kcal]) => (
+            <div key={name} className="flex items-center gap-[2.6cqw]">
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[3cqw] font-bold leading-tight">
+                  {name}
+                </p>
+                <p className="mt-[0.6cqw] text-[2.3cqw] font-medium leading-tight text-ash-dim">
+                  {qty} · {macros}
+                </p>
+              </div>
+              <span className="shrink-0 text-[2.9cqw] font-bold" data-numeric>
+                {kcal}
+                <span className="ml-[0.6cqw] text-[2.1cqw] text-ash-dim">
+                  kcal
+                </span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </Tile>
 
       <TabBar active={2} />
     </Screen>
@@ -666,50 +777,110 @@ function Weight() {
 
 /* --------------------------------------------------------------- progress */
 
+/**
+ * The Progress tab: the week's four figures with goal bars, the training-volume
+ * chart with its range selector, then personal records.
+ */
 function Progress() {
   return (
     <Screen>
-      <Head title="Progress" meta="Last 12 weeks" />
+      <div>
+        <p className="text-[5.6cqw] font-black leading-none tracking-[-0.03em]">
+          Progress
+        </p>
+        <p className="mt-[1.4cqw] text-[2.8cqw] font-medium leading-none text-ash">
+          Your training, body and performance insights
+        </p>
+      </div>
 
-      <div className="grid grid-cols-3 gap-[2.6cqw]">
-        <Tile className="p-[3.2cqw]">
-          <Stat value="68" caption="Sessions" accent="flare" />
+      <div className="grid grid-cols-2 gap-[2.6cqw]">
+        <Tile className="p-[3.4cqw]">
+          <p className="text-[5cqw] font-black leading-none" data-numeric>
+            7
+          </p>
+          <p className="mt-[1.4cqw] text-[2.7cqw] font-semibold leading-none">
+            Workouts
+          </p>
+          <div className="mt-[2cqw] h-[1.2cqw] overflow-hidden rounded-pill bg-white/8">
+            <div className="h-full w-full rounded-pill bg-arc" />
+          </div>
+          <p className="mt-[1.4cqw] text-[2.3cqw] text-ash-dim">of 5</p>
         </Tile>
-        <Tile className="p-[3.2cqw]">
-          <Stat value="21" caption="Streak" accent="arc" />
+        <Tile className="p-[3.4cqw]">
+          <p className="text-[5cqw] font-black leading-none" data-numeric>
+            6h 43m
+          </p>
+          <p className="mt-[1.4cqw] text-[2.7cqw] font-semibold leading-none">
+            Training Time
+          </p>
+          <div className="mt-[2cqw] h-[1.2cqw] overflow-hidden rounded-pill bg-white/8">
+            <div className="h-full w-full rounded-pill bg-good" />
+          </div>
+          <p className="mt-[1.4cqw] text-[2.3cqw] text-ash-dim">of 5h 0m</p>
         </Tile>
-        <Tile className="p-[3.2cqw]">
-          <Stat value="12" caption="PRs" accent="good" />
+        <Tile className="p-[3.4cqw]">
+          <p className="text-[5cqw] font-black leading-none" data-numeric>
+            32,304
+            <span className="ml-[0.8cqw] text-[2.6cqw] font-bold text-ash">
+              kg
+            </span>
+          </p>
+          <p className="mt-[1.4cqw] text-[2.7cqw] font-semibold leading-none">
+            Volume
+          </p>
+          <p className="mt-[1.4cqw] text-[2.4cqw] font-semibold text-good">
+            ▲ +56% vs last week
+          </p>
+        </Tile>
+        <Tile className="p-[3.4cqw]">
+          <p className="text-[5cqw] font-black leading-none" data-numeric>
+            17
+          </p>
+          <p className="mt-[1.4cqw] text-[2.7cqw] font-semibold leading-none">
+            PRs
+          </p>
+          <p className="mt-[1.4cqw] text-[2.4cqw] font-semibold text-flare">
+            ▲ +6 vs last week
+          </p>
         </Tile>
       </div>
 
-      <Tile lit="flare">
-        <div className="flex items-baseline justify-between">
-          <p className="text-[3.2cqw] font-bold">Weekly volume</p>
-          <span className="text-[3cqw] font-bold text-flare" data-numeric>
-            +18%
-          </span>
+      <Tile>
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-[3.2cqw] font-bold">Training Volume</p>
+            <p className="mt-[1.4cqw] text-[4.4cqw] font-black leading-none" data-numeric>
+              27,304
+              <span className="ml-[0.8cqw] text-[2.6cqw] font-bold text-ash">
+                kg
+              </span>
+            </p>
+            <p className="mt-[1.2cqw] text-[2.4cqw] font-semibold text-good">
+              ▲ +56% vs last week
+            </p>
+          </div>
+          <Chip>This Week ⌄</Chip>
         </div>
-        <div className="mt-[2.8cqw]">
+        <div className="mt-[3cqw]">
           <Bars
-            values={[0.34, 0.42, 0.38, 0.52, 0.48, 0.61, 0.58, 0.7, 0.66, 0.79, 0.86, 0.95]}
-            accent="flare"
-            height={22}
-            highlight={11}
+            values={[1, 0.42, 0.24, 0.04, 0.04, 0.04, 0.04]}
+            accent="arc"
+            height={20}
+            labels={["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
           />
         </div>
       </Tile>
 
       <Tile>
-        <p className="text-[3.2cqw] font-bold">Recent records</p>
+        <p className="text-[3.2cqw] font-bold">Personal records</p>
         <div className="mt-[2.8cqw] space-y-[2.2cqw]">
-          <Row title="Bench Press" meta="82.5 kg × 8" value="+2.5" accent="flare" glyph="⚡" />
-          <Row title="Back Squat" meta="120 kg × 5" value="+5.0" accent="flare" glyph="⚡" />
-          <Row title="Deadlift" meta="150 kg × 3" value="+2.5" accent="flare" glyph="⚡" />
+          <Row title="Machine Shrugs" meta="Jul 28" value="60 kg" accent="arc" glyph="▲" />
+          <Row title="Back Squat" meta="Jul 27" value="120 kg" accent="arc" glyph="▲" />
+          <Row title="Lat Pulldown" meta="Jul 24" value="70 kg" accent="arc" glyph="▲" />
         </div>
       </Tile>
 
-      <TabBar active={4} />
+      <TabBar active={3} />
     </Screen>
   );
 }
@@ -764,46 +935,100 @@ function Notifications() {
 
 /* ---------------------------------------------------------------- profile */
 
+/**
+ * The Profile tab: identity, the four lifetime figures, current body progress,
+ * then the account list.
+ *
+ * The body figures here are illustrative, like every other number in these
+ * mockups. The reference screenshot showed a real person's weight and a BMI
+ * classification, which is not something to publish on a marketing page.
+ */
 function Profile() {
   return (
     <Screen>
-      <Head title="Profile" meta="Lean bulk · Week 3" />
-
-      <Tile lit="arc">
-        <div className="flex items-center gap-[3.4cqw]">
-          <div className="flex size-[13cqw] items-center justify-center rounded-pill bg-[linear-gradient(140deg,#3d7bff,#1b47c4)] text-[5cqw] font-black">
-            V
-          </div>
-          <div>
-            <p className="text-[4cqw] font-black leading-none">Varun</p>
-            <p className="mt-[1.4cqw] text-[2.8cqw] font-semibold text-ash-dim">
-              178 cm · 78.4 kg · 24 yrs
-            </p>
-          </div>
+      <div className="flex items-center gap-[3.4cqw]">
+        <div className="grid size-[13cqw] shrink-0 place-items-center rounded-pill bg-[linear-gradient(140deg,#3d7bff,#1b47c4)] text-[4.6cqw] font-black">
+          A
         </div>
-      </Tile>
-
-      <Tile>
-        <p className="text-[3.2cqw] font-bold">Daily targets</p>
-        <div className="mt-[3cqw] space-y-[2.6cqw]">
-          <Meter label="Calories" value={0.72} detail="2,550" accent="flare" index={0} />
-          <Meter label="Protein" value={0.78} detail="190 g" accent="arc" index={1} />
-          <Meter label="Water" value={0.7} detail="3.0 L" accent="cyan" index={2} />
-          <Meter label="Steps" value={0.84} detail="10,000" accent="good" index={3} />
+        <div>
+          <p className="text-[4.6cqw] font-black leading-none">Athlete</p>
+          <p className="mt-[1.4cqw] text-[2.8cqw] font-medium text-ash">
+            Stronger every day.
+          </p>
         </div>
-      </Tile>
+      </div>
 
-      <Tile>
-        <p className="text-[3.2cqw] font-bold">Achievements</p>
-        <div className="mt-[2.8cqw] flex gap-[2.4cqw]">
-          {["⚡", "🔥", "💧", "🏆"].map((badge) => (
-            <div
-              key={badge}
-              className="flex size-[10cqw] items-center justify-center rounded-[3cqw] border border-white/9 bg-white/5 text-[4.2cqw]"
-            >
-              {badge}
+      <Tile className="p-[3.4cqw]">
+        <div className="flex items-center justify-between">
+          {[
+            ["21", "Day Streak", "flare"],
+            ["327", "Workouts", "arc"],
+            ["836", "PRs", "flare"],
+            ["318", "Total hrs", "arc"],
+          ].map(([value, label, accent]) => (
+            <div key={label as string} className="text-center">
+              <p
+                className={cn(
+                  "text-[4.2cqw] font-black leading-none",
+                  accent === "flare" ? "text-flare" : "text-arc",
+                )}
+                data-numeric
+              >
+                {value as string}
+              </p>
+              <p className="mt-[1.2cqw] text-[2.2cqw] font-semibold leading-none text-ash-dim">
+                {label as string}
+              </p>
             </div>
           ))}
+        </div>
+      </Tile>
+
+      <div className="flex items-center justify-between">
+        <p className="text-[2.7cqw] font-bold uppercase tracking-[0.14em] text-ash-dim">
+          Current progress
+        </p>
+        <span className="text-[2.7cqw] font-bold text-arc">View All</span>
+      </div>
+
+      <Tile>
+        <div className="grid grid-cols-2 gap-y-[3.4cqw]">
+          {[
+            ["Weight", "78.4", "kg", "▼ 2.4 kg vs last 30 days", "good"],
+            ["Body Fat", "14.2", "%", "▼ 1.1% vs last 30 days", "good"],
+            ["Muscle Mass", "67.3", "kg", "▲ 0.8 kg vs last 30 days", "arc"],
+            ["BMI", "24.1", "", "Healthy range", "good"],
+          ].map(([label, value, unit, delta, tone]) => (
+            <div key={label as string}>
+              <p className="text-[2.7cqw] font-semibold text-ash">
+                {label as string}
+              </p>
+              <p className="mt-[1cqw] text-[4.4cqw] font-black leading-none" data-numeric>
+                {value as string}
+                {unit ? (
+                  <span className="ml-[0.7cqw] text-[2.4cqw] font-bold text-ash">
+                    {unit as string}
+                  </span>
+                ) : null}
+              </p>
+              <p
+                className={cn(
+                  "mt-[1.2cqw] text-[2.3cqw] font-semibold leading-none",
+                  tone === "good" ? "text-good" : "text-arc",
+                )}
+              >
+                {delta as string}
+              </p>
+            </div>
+          ))}
+        </div>
+      </Tile>
+
+      <Tile className="p-[3.2cqw]">
+        <div className="space-y-[2.6cqw]">
+          <Row title="Personal Information" meta="Update your profile details" accent="arc" glyph="›" />
+          <Row title="Fitness Goals" meta="View and edit your goals" accent="arc" glyph="›" />
+          <Row title="Achievements" meta="Badges, milestones & records" accent="flare" glyph="›" />
         </div>
       </Tile>
 
@@ -867,6 +1092,212 @@ function Settings() {
   );
 }
 
+/* ----------------------------------------------------------- achievements */
+
+/** Achievements & Records, reached from Progress. Twenty badges in total. */
+function Achievements() {
+  return (
+    <Screen>
+      <Chip className="self-start">← Progress</Chip>
+
+      <div className="flex items-center gap-[2.6cqw]">
+        <span className="grid size-[9cqw] place-items-center rounded-[2.6cqw] bg-flare/15 text-[4cqw]">
+          🏆
+        </span>
+        <p className="text-[4.8cqw] font-black leading-none tracking-[-0.025em]">
+          Achievements
+        </p>
+      </div>
+
+      <Tile lit="arc">
+        <div className="flex items-baseline justify-between">
+          <p className="text-[3.2cqw] font-bold">14 of 20 unlocked</p>
+          <span className="text-[3.4cqw] font-black text-arc" data-numeric>
+            70%
+          </span>
+        </div>
+        <div className="mt-[2.4cqw] h-[1.8cqw] overflow-hidden rounded-pill bg-white/10">
+          <div className="h-full w-[70%] rounded-pill bg-arc" />
+        </div>
+      </Tile>
+
+      <div className="space-y-[2.2cqw]">
+        {[
+          ["14-Day Streak", "Train 14 days in a row", "Jul 19"],
+          ["7-Day Streak", "Train 7 days in a row", "Jul 12"],
+          ["First Workout", "Complete your first workout", "Jul 11"],
+          ["25 Workouts", "Log 25 workouts", "Jul 11"],
+          ["50 Workouts", "Log 50 workouts", "Jul 11"],
+        ].map(([title, meta, date]) => (
+          <Tile key={title} className="p-[3cqw]">
+            <Row title={title} meta={meta} value={date} accent="flare" glyph="🏆" />
+          </Tile>
+        ))}
+      </div>
+
+      <TabBar active={3} />
+    </Screen>
+  );
+}
+
+/* ----------------------------------------------------------------- habits */
+
+/** Habit Tracker — "Build consistency. Build you." */
+function Habits() {
+  return (
+    <Screen>
+      <Chip className="self-start">← Progress</Chip>
+
+      <div>
+        <div className="flex items-center gap-[2.6cqw]">
+          <span className="grid size-[9cqw] place-items-center rounded-[2.6cqw] bg-flare/15 text-[3.6cqw]">
+            🔁
+          </span>
+          <p className="text-[4.8cqw] font-black leading-none tracking-[-0.025em]">
+            Habit Tracker
+          </p>
+        </div>
+        <p className="mt-[1.8cqw] text-[2.8cqw] font-medium text-ash">
+          Build consistency. Build you.
+        </p>
+      </div>
+
+      <Tile className="p-[3cqw]">
+        <div className="flex items-center gap-[2.4cqw]">
+          <span className="flex-1 rounded-[2.6cqw] border border-white/9 px-[3cqw] py-[2.4cqw] text-[2.7cqw] text-ash-dim">
+            New habit (e.g. Drink 3L water)
+          </span>
+          <span className="rounded-[2.6cqw] bg-arc px-[3.4cqw] py-[2.4cqw] text-[2.7cqw] font-bold text-[#00102e]">
+            + Add
+          </span>
+        </div>
+      </Tile>
+
+      <div className="space-y-[2.4cqw]">
+        {[
+          ["Training", "🔥 12 day streak", "Best: 14 · 5/7 this week", "arc"],
+          ["Clean diet", "🔥 9 day streak", "Best: 11 · 6/7 this week", "good"],
+          ["Sleep", "🔥 6 day streak", "Best: 8 · 4/7 this week", "arc"],
+        ].map(([name, streak, best, accent]) => (
+          <Tile key={name as string} className="p-[3.2cqw]">
+            <div className="flex items-center gap-[3cqw]">
+              <span
+                className="grid size-[8cqw] shrink-0 place-items-center rounded-[2.4cqw] text-[3cqw]"
+                style={{
+                  backgroundColor: `${ACCENT[accent as Accent].stroke}1f`,
+                }}
+              >
+                ✓
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-[3.2cqw] font-bold leading-tight">
+                  {name as string}
+                </p>
+                <p className="mt-[0.8cqw] text-[2.4cqw] font-medium leading-tight text-ash-dim">
+                  {streak as string} · {best as string}
+                </p>
+              </div>
+              <span className="size-[5.4cqw] shrink-0 rounded-[1.8cqw] border border-white/18" />
+            </div>
+          </Tile>
+        ))}
+      </div>
+
+      <TabBar active={3} />
+    </Screen>
+  );
+}
+
+/* ------------------------------------------------------------------ tools */
+
+/** The Tools tab — "Everything you need to train smarter". */
+function Tools() {
+  return (
+    <Screen>
+      <div>
+        <p className="text-[5.6cqw] font-black leading-none tracking-[-0.03em]">
+          Tools
+        </p>
+        <p className="mt-[1.4cqw] text-[2.8cqw] font-medium leading-none text-ash">
+          Everything you need to train smarter
+        </p>
+      </div>
+
+      <Tile className="p-[3.2cqw]">
+        <div className="flex items-center justify-around">
+          {[
+            ["21", "Day Streak"],
+            ["327", "Workouts"],
+            ["836", "PRs"],
+          ].map(([value, label]) => (
+            <div key={label} className="text-center">
+              <p className="text-[4.4cqw] font-black leading-none text-arc" data-numeric>
+                {value}
+              </p>
+              <p className="mt-[1.2cqw] text-[2.3cqw] font-semibold leading-none text-ash-dim">
+                {label}
+              </p>
+            </div>
+          ))}
+        </div>
+      </Tile>
+
+      <p className="text-[2.6cqw] font-bold uppercase tracking-[0.14em] text-ash-dim">
+        Training
+      </p>
+      <div className="grid grid-cols-2 gap-[2.4cqw]">
+        {[
+          ["Training Plan", "HYROX schedule & routines"],
+          ["Library", "Exercises & equipment"],
+          ["Goals", "Smart goal engine & targets"],
+          ["Log Weight", "Weight, trend & history"],
+        ].map(([title, sub]) => (
+          <Tile key={title} className="p-[3cqw]">
+            <p className="text-[2.9cqw] font-bold leading-tight">{title}</p>
+            <p className="mt-[1cqw] text-[2.2cqw] font-medium leading-tight text-ash-dim">
+              {sub}
+            </p>
+          </Tile>
+        ))}
+      </div>
+
+      <p className="text-[2.6cqw] font-bold uppercase tracking-[0.14em] text-ash-dim">
+        Health
+      </p>
+      <Tile lit="arc" className="p-[3.2cqw]">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-[3cqw] font-bold">Health Connect</p>
+            <p className="mt-[1cqw] text-[2.3cqw] font-medium text-ash-dim">
+              Sync with apps, track all metrics
+            </p>
+          </div>
+          <Chip accent="arc">✓ Connected</Chip>
+        </div>
+      </Tile>
+
+      <p className="text-[2.6cqw] font-bold uppercase tracking-[0.14em] text-ash-dim">
+        Nutrition
+      </p>
+      <div className="grid grid-cols-2 gap-[2.4cqw]">
+        {[
+          ["Food Log", "Meals, macros & budget"],
+          ["Calculator", "BMI, BMR, TDEE & macros"],
+        ].map(([title, sub]) => (
+          <Tile key={title} className="p-[3cqw]">
+            <p className="text-[2.9cqw] font-bold leading-tight">{title}</p>
+            <p className="mt-[1cqw] text-[2.2cqw] font-medium leading-tight text-ash-dim">
+              {sub}
+            </p>
+          </Tile>
+        ))}
+      </div>
+
+      <TabBar active={0} />
+    </Screen>
+  );
+}
+
 /* ----------------------------------------------------------------- router */
 
 const SCREENS: Record<ScreenId, () => React.JSX.Element> = {
@@ -886,6 +1317,9 @@ const SCREENS: Record<ScreenId, () => React.JSX.Element> = {
   notifications: Notifications,
   profile: Profile,
   settings: Settings,
+  achievements: Achievements,
+  habits: Habits,
+  tools: Tools,
 };
 
 /** Renders one app screen by id. */

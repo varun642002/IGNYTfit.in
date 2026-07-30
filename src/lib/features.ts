@@ -1,15 +1,22 @@
 import {
   BellRing,
+  Calculator,
+  CalendarDays,
+  Camera,
   ChartNoAxesColumn,
+  ChefHat,
   CloudUpload,
   Droplets,
   Dumbbell,
+  FileBarChart,
   Flame,
   HeartPulse,
   Leaf,
+  LibraryBig,
   Moon,
   NotebookPen,
   Pill,
+  Repeat,
   Scale,
   Target,
   Timer,
@@ -147,6 +154,62 @@ export const features: Feature[] = [
       "Streaks, milestones and long-run consistency badges — earned for showing up repeatedly rather than for one good week.",
     icon: Trophy,
     accent: "flare",
+  },
+  {
+    id: "habit-tracker",
+    title: "Habit tracker",
+    description:
+      "The behaviours underneath the training. Each habit keeps its own streak, its personal best, and weekly and monthly completion counts.",
+    icon: Repeat,
+    accent: "good",
+  },
+  {
+    id: "training-plans",
+    title: "Training plans",
+    description:
+      "Structured multi-week programmes, including HYROX schedules, running alongside your own routines with adherence tracked against the plan.",
+    icon: CalendarDays,
+    accent: "flare",
+  },
+  {
+    id: "exercise-library",
+    title: "Exercise library",
+    description:
+      "Every movement with its equipment, target muscles and technique cues — and your own history against each one.",
+    icon: LibraryBig,
+    accent: "arc",
+  },
+  {
+    id: "calculator",
+    title: "Body calculator",
+    description:
+      "BMI, BMR, TDEE and macro splits worked out from your own measurements, so targets start from arithmetic rather than a guess.",
+    icon: Calculator,
+    accent: "arc",
+  },
+  {
+    id: "reports",
+    title: "Reports",
+    description:
+      "Weekly and monthly summaries pulling training, nutrition and body data into one review you can actually act on.",
+    icon: FileBarChart,
+    accent: "arc",
+  },
+  {
+    id: "progress-photos",
+    title: "Progress photos",
+    description:
+      "A dated photo timeline stored on your device, because twelve weeks of change is easier to see than to read off a chart.",
+    icon: Camera,
+    accent: "good",
+  },
+  {
+    id: "recipes",
+    title: "Recipes",
+    description:
+      "Meals with their macros already worked out, ready to log in one tap and to drop straight into a diet plan.",
+    icon: ChefHat,
+    accent: "good",
   },
   {
     id: "health-connect",
