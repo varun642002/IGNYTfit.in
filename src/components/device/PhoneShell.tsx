@@ -30,6 +30,7 @@ export function PhoneShell({
   overlay,
   glow = true,
   label,
+  notch = true,
 }: {
   children: ReactNode;
   className?: string;
@@ -37,6 +38,15 @@ export function PhoneShell({
   glow?: boolean;
   /** Accessible description of what the screen shows. */
   label?: string;
+  /**
+   * Draws the camera housing over the top of the glass.
+   *
+   * Turn it OFF for real screenshots. A captured screenshot already contains
+   * the device's own status bar, and painting a notch on top of it covers part
+   * of the actual interface — which misrepresents the app. The frame is
+   * presentation; the screenshot inside it stays untouched.
+   */
+  notch?: boolean;
 }) {
   return (
     <div className={cn("relative", className)}>
@@ -100,13 +110,15 @@ export function PhoneShell({
             />
           </div>
 
-          {/* Camera housing */}
-          <div
-            aria-hidden
-            className="absolute left-1/2 top-[2.4%] h-[3.1%] w-[26%] -translate-x-1/2 rounded-pill bg-black"
-          >
-            <div className="absolute right-[14%] top-1/2 size-[38%] -translate-y-1/2 rounded-pill bg-[#0d1420] shadow-[inset_0_0_0_1px_rgb(61_123_255/0.28)]" />
-          </div>
+          {/* Camera housing. Never drawn over a real screenshot — see `notch`. */}
+          {notch ? (
+            <div
+              aria-hidden
+              className="absolute left-1/2 top-[2.4%] h-[3.1%] w-[26%] -translate-x-1/2 rounded-pill bg-black"
+            >
+              <div className="absolute right-[14%] top-1/2 size-[38%] -translate-y-1/2 rounded-pill bg-[#0d1420] shadow-[inset_0_0_0_1px_rgb(61_123_255/0.28)]" />
+            </div>
+          ) : null}
         </div>
 
         {/* Side hardware. Purely decorative, but their absence is noticed even

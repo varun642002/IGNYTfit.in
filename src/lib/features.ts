@@ -1,4 +1,5 @@
 import {
+  Activity,
   BellRing,
   Calculator,
   CalendarDays,
@@ -9,6 +10,7 @@ import {
   Droplets,
   Dumbbell,
   FileBarChart,
+  Flag,
   Flame,
   HeartPulse,
   Leaf,
@@ -167,9 +169,25 @@ export const features: Feature[] = [
     id: "training-plans",
     title: "Training plans",
     description:
-      "Structured multi-week programmes, including HYROX schedules, running alongside your own routines with adherence tracked against the plan.",
+      "Structured multi-week programmes, including an eight-week HYROX schedule at beginner, intermediate and advanced levels, with progress tracked week by week.",
     icon: CalendarDays,
     accent: "flare",
+  },
+  {
+    id: "race-simulation",
+    title: "HYROX race simulation",
+    description:
+      "A live stopwatch through the full race format — eight runs and eight stations, with a 90-minute estimate to pace yourself against.",
+    icon: Flag,
+    accent: "flare",
+  },
+  {
+    id: "heart-rate-zones",
+    title: "Heart rate zones",
+    description:
+      "Your maximum heart rate from your age, split into five training zones — from active recovery to maximum effort — each with its percentage band and exact bpm range.",
+    icon: Activity,
+    accent: "arc",
   },
   {
     id: "exercise-library",
