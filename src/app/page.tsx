@@ -35,10 +35,6 @@ export default function HomePage() {
           and how to get it. Everything here is public; nothing is behind a
           sign-in. */}
       <Hero />
-      {/* Immediately below the fold, before any marketing section: the name and
-          purpose as labelled facts, for a reviewer who needs to check them
-          rather than read them. */}
-      <AppIdentity />
       <Stats />
       <CoreFeatures />
       <HowItWorks />
@@ -49,6 +45,18 @@ export default function HomePage() {
       <LovedFor />
       <AboutIgnyt />
       <DownloadCta />
+      {/* Last on the page. The name and purpose as labelled facts — for a
+          reviewer who needs to check them rather than read them, and for anyone
+          looking for the support address or the policy links.
+
+          It sat directly below the hero. Moving it down does not weaken the
+          verification case: the purpose is already stated above the fold in the
+          hero and in the meta description, and nothing in Google's homepage
+          requirements asks for a particular position. It reads better here —
+          a fact table is a footer-ish thing, and putting it between the hero
+          and the first real section interrupted the page for every visitor who
+          is not a reviewer. */}
+      <AppIdentity />
     </>
   );
 }

@@ -40,7 +40,7 @@ const ACCENTS = {
 
 const CORE_FEATURES: CoreFeature[] = [
   {
-    id: "workout-tracking",
+    id: "core-workout-tracking",
     title: "Workout Tracking",
     Icon: Dumbbell,
     accent: "ember",
@@ -54,7 +54,7 @@ const CORE_FEATURES: CoreFeature[] = [
     ],
   },
   {
-    id: "nutrition-tracking",
+    id: "core-nutrition-tracking",
     title: "Nutrition Tracking",
     Icon: Apple,
     accent: "good",
@@ -68,7 +68,7 @@ const CORE_FEATURES: CoreFeature[] = [
     ],
   },
   {
-    id: "health-connect",
+    id: "core-health-connect",
     title: "Google Health Connect",
     Icon: HeartPulse,
     accent: "pulse",
@@ -83,7 +83,7 @@ const CORE_FEATURES: CoreFeature[] = [
     ],
   },
   {
-    id: "progress-analytics",
+    id: "core-progress-analytics",
     title: "Progress Analytics",
     Icon: TrendingUp,
     accent: "cyan",
@@ -96,7 +96,7 @@ const CORE_FEATURES: CoreFeature[] = [
     ],
   },
   {
-    id: "premium-features",
+    id: "core-premium-features",
     title: "Premium Features",
     Icon: Crown,
     accent: "warn",

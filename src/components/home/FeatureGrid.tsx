@@ -71,9 +71,9 @@ export function FeatureCard({
 
 export function FeatureGrid() {
   return (
-    <Section id="features">
+    <Section id="all-features">
       <SectionHeading
-        id="features"
+        id="all-features"
         eyebrow="Why choose IGNYT"
         title={
           <>
