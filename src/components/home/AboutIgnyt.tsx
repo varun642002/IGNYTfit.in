@@ -1,5 +1,5 @@
 import { Award, GraduationCap, Sparkles, Users } from "lucide-react";
-import { BoltBadge } from "@/components/brand/Logo";
+import { LogoMark } from "@/components/brand/Logo";
 import { Card } from "@/components/ui/Card";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Section, SectionHeading } from "@/components/ui/Section";
@@ -53,12 +53,13 @@ export function AboutIgnyt() {
         anyone building a healthier lifestyle.
       </p>
 
-      {/* The full badge — ring, bolt and banded wordmark — at the one size on
-          the page where it can be read rather than recognised. */}
+      {/* The official mark at the one size on the page where its own wordmark
+          and ring can be read rather than merely recognised. */}
       <div className="mt-12 flex justify-center">
-        <BoltBadge
+        <LogoMark
           title="IGNYT"
-          className="size-40 text-white sm:size-48"
+          size={192}
+          className="size-40 rounded-tile sm:size-48"
         />
       </div>
 

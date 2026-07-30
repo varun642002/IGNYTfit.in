@@ -1,180 +1,84 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
- * The IGNYT bolt, on a 512×512 grid.
+ * The official IGNYT logo, as supplied.
  *
- * Exported so the favicon, the Open Graph image and the in-page logo all draw
- * the identical mark — there is exactly one definition of the brand shape.
+ * `public/logo-official.png` is the master and the only definition of the mark
+ * anywhere in this project. Every icon the site ships — the manifest icons, the
+ * Apple touch icon, the favicon — is a resize of that one file, produced by
+ * `npm run icons`. Nothing here is redrawn, traced or reconstructed, so there
+ * is no second version of the logo that can drift away from the real one.
  *
- * The mark is two identical arrowheads, the lower one the upper rotated 180°
- * about the centre. That is a property of the artwork, not a coincidence, so
- * the half is defined once and the second is produced by a transform — the two
- * cannot drift apart under editing.
+ * The artwork is square with its own near-black ground, which matches the
+ * site's `#08090d` surface. It therefore needs no tile, plate or container
+ * behind it — the earlier ember gradient tile existed to hold a bare bolt
+ * glyph, and the supplied mark already carries its own.
  */
-const BOLT_HALF = "M372 36 L190 206 L256 206 L250 290 L330 290 Z";
-
-/** Both halves as one path string, for consumers that cannot apply a transform
- *  (Satori's OG renderer, favicon generators). Same geometry, written out. */
-export const BOLT_PATH = `${BOLT_HALF} M140 476 L322 306 L256 306 L262 222 L182 222 Z`;
-
-export const BOLT_VIEWBOX = "0 0 512 512";
+export const LOGO_SRC = "/logo-official.png";
 
 /**
- * Bolt mark on its own. Inherits `currentColor`, so it can be tinted by the
- * surrounding text colour.
+ * The mark on its own.
+ *
+ * `sizes` is set from the rendered width so Next.js serves an appropriately
+ * scaled file rather than the 1254px master to a 36px navbar slot.
  */
-export function BoltMark({
+export function LogoMark({
   className,
+  size = 36,
+  priority = false,
   title,
 }: {
   className?: string;
+  /** Rendered pixel size — drives the responsive `sizes` hint. */
+  size?: number;
+  /** Set on the above-the-fold instance only. */
+  priority?: boolean;
   /** Provide only when the mark stands alone as a meaningful image. */
   title?: string;
 }) {
   return (
-    <svg
-      viewBox={BOLT_VIEWBOX}
-      className={className}
-      fill="currentColor"
-      role={title ? "img" : "presentation"}
+    <Image
+      src={LOGO_SRC}
+      alt={title ?? ""}
       aria-hidden={title ? undefined : true}
-      aria-label={title}
-      focusable="false"
-    >
-      {title ? <title>{title}</title> : null}
-      <path d={BOLT_HALF} />
-      <path d={BOLT_HALF} transform="rotate(180 256 256)" />
-    </svg>
+      width={size}
+      height={size}
+      sizes={`${size}px`}
+      priority={priority}
+      className={cn("rounded-[10px] object-contain", className)}
+    />
   );
 }
 
 /**
- * The full badge: ring, bolt, and the wordmark banded across the middle — the
- * mark as it appears on the app icon and social avatars.
+ * Full lockup: mark + "IGNYT" wordmark.
  *
- * The ring is a dashed stroke rather than two arc paths so the gaps stay
- * centred on the horizontal axis at any size; the band's rules run through
- * those gaps, which is what makes the wordmark read as cutting the ring rather
- * than sitting on top of it.
- */
-export function BoltBadge({
-  className,
-  title,
-}: {
-  className?: string;
-  title?: string;
-}) {
-  return (
-    <svg
-      viewBox={BOLT_VIEWBOX}
-      className={className}
-      role={title ? "img" : "presentation"}
-      aria-hidden={title ? undefined : true}
-      aria-label={title}
-      focusable="false"
-    >
-      {title ? <title>{title}</title> : null}
-
-      {/* Ring — one repeat is half the circumference, offset so a gap lands at
-          3 o'clock and the other at 9 o'clock. */}
-      <circle
-        cx="256"
-        cy="256"
-        r="200"
-        fill="none"
-        stroke="currentColor"
-        strokeOpacity="0.3"
-        strokeWidth="11"
-        strokeDasharray="538 90"
-        strokeDashoffset="45"
-      />
-
-      {/* Flanking rules, on the wordmark's optical centre line. */}
-      <g stroke="currentColor" strokeOpacity="0.3" strokeWidth="11">
-        <line x1="34" y1="262" x2="96" y2="262" />
-        <line x1="416" y1="262" x2="478" y2="262" />
-      </g>
-
-      {/* dx nudges the string right by half the tracking: letter-spacing is
-          applied after the final glyph too, so a centred string sits visibly
-          left of centre without it. */}
-      <text
-        x="256"
-        y="262"
-        dx="9"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fill="currentColor"
-        fillOpacity="0.3"
-        fontSize="86"
-        fontWeight="800"
-        letterSpacing="18"
-        fontFamily="system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-      >
-        IGNYT
-      </text>
-
-      <g fill="#ffffff">
-        <path d={BOLT_HALF} />
-        <path d={BOLT_HALF} transform="rotate(180 256 256)" />
-      </g>
-    </svg>
-  );
-}
-
-/**
- * Bolt inside the brand tile — the way the icon appears on a device home
- * screen. Used by the navbar and footer.
- *
- * Near-black with a white bolt, matching the current artwork. The tile was an
- * ember gradient; the ring carries the identity now, so the ember is spent on
- * the shadow rather than on the whole surface.
- */
-function LogoTile({ className }: { className?: string }) {
-  return (
-    <span
-      className={cn(
-        "relative grid shrink-0 place-items-center overflow-hidden rounded-[10px]",
-        "border border-white/12 bg-[#0a0b0f]",
-        "shadow-[0_6px_18px_-8px_rgba(0,0,0,0.9)]",
-        className,
-      )}
-    >
-      {/* Gloss highlight — keeps the tile from reading as a flat black square. */}
-      <span
-        aria-hidden
-        className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent"
-      />
-      {/* Ring, scaled to the tile so the mark still reads at 36px. */}
-      <span
-        aria-hidden
-        className="absolute inset-[13%] rounded-full border border-white/15"
-      />
-      <BoltMark className="relative h-[70%] w-[70%] text-white" />
-    </span>
-  );
-}
-
-/**
- * Full lockup: tile + "IGNYT" wordmark.
- *
- * The wordmark is real text, not an outlined path, so it stays crisp at every
- * size and remains selectable and searchable.
+ * The wordmark beside the mark is real text, not part of the image, so it stays
+ * crisp at every size and remains selectable and searchable. The logo artwork
+ * contains its own wordmark too, but at navbar size that is illegible detail —
+ * it reads as texture and the text carries the name.
  */
 export function Logo({
   className,
-  tileClassName,
+  markClassName,
   wordClassName,
   showWord = true,
+  priority = false,
 }: {
   className?: string;
-  tileClassName?: string;
+  markClassName?: string;
   wordClassName?: string;
   showWord?: boolean;
+  priority?: boolean;
 }) {
   return (
     <span className={cn("inline-flex items-center gap-2.5", className)}>
-      <LogoTile className={cn("h-9 w-9", tileClassName)} />
+      <LogoMark
+        size={36}
+        priority={priority}
+        className={cn("size-9 shrink-0", markClassName)}
+      />
       {showWord ? (
         <span
           className={cn(

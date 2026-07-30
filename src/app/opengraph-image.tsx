@@ -1,5 +1,6 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { ImageResponse } from "next/og";
-import { BOLT_PATH, BOLT_VIEWBOX } from "@/components/brand/Logo";
 import { site } from "@/lib/site";
 
 export const alt = `${site.name} — ${site.tagline}`;
@@ -16,8 +17,18 @@ export const contentType = "image/png";
  * Note: `next/og` uses Satori, which supports only a flex-based subset of CSS
  * — no `gap` shorthand on some versions, no grid, and every element that has
  * more than one child needs an explicit `display: flex`.
+ *
+ * The logo is the supplied master, read off disk and inlined as a data URI.
+ * Satori cannot fetch a relative URL during a build, and the alternative —
+ * redrawing the mark as inline paths, which is what this did before — is
+ * exactly the second copy of the logo this project should not have.
  */
-export default function OpengraphImage() {
+export default async function OpengraphImage() {
+  const logo = await readFile(
+    path.join(process.cwd(), "public", "logo-official.png"),
+  );
+  const logoSrc = `data:image/png;base64,${logo.toString("base64")}`;
+
   return new ImageResponse(
     <div
       style={{
@@ -69,16 +80,15 @@ export default function OpengraphImage() {
             width: 96,
             height: 96,
             borderRadius: 26,
-            background: "linear-gradient(135deg, #ff6a2b 0%, #c9350a 100%)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             marginRight: 26,
+            overflow: "hidden",
           }}
         >
-          <svg width="58" height="58" viewBox={BOLT_VIEWBOX} fill="#ffffff">
-            <path d={BOLT_PATH} />
-          </svg>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoSrc} width={96} height={96} alt="" />
         </div>
         <div
           style={{

@@ -1,4 +1,4 @@
-import { BoltMark } from "@/components/brand/Logo";
+import { LogoMark } from "@/components/brand/Logo";
 import { cn } from "@/lib/utils";
 
 /**
@@ -42,7 +42,7 @@ export function LoadingState({
           aria-hidden
           className="absolute inset-0 animate-pulse-ring rounded-full bg-ember/30"
         />
-        <BoltMark className="relative h-9 w-9 animate-pulse text-ember" />
+        <LogoMark size={36} className="relative size-9 animate-pulse" />
       </span>
       <p className="text-[14px] font-semibold text-text-dim">{label}</p>
     </div>

@@ -83,7 +83,7 @@ export function Navbar() {
           className="shrink-0 rounded-lg"
           aria-label="IGNYT — home"
         >
-          <Logo />
+          <Logo priority />
         </Link>
 
         <nav aria-label="Primary" className="hidden lg:block">

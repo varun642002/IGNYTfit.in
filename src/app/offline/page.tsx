@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CloudOff, RefreshCw, Smartphone } from "lucide-react";
-import { BoltMark } from "@/components/brand/Logo";
+import { LogoMark } from "@/components/brand/Logo";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { createMetadata } from "@/lib/seo";
@@ -35,7 +35,7 @@ export default function OfflinePage() {
       />
 
       <Container className="text-center">
-        <BoltMark className="mx-auto h-12 w-12 text-ember" />
+        <LogoMark size={48} className="mx-auto size-12" />
 
         <span className="mt-8 inline-flex items-center gap-2 rounded-full border border-line bg-surface/70 px-3.5 py-1.5 text-[12px] font-semibold text-text-mute">
           <CloudOff aria-hidden className="size-3.5 text-pulse-strong" />

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ArrowLeft, Compass } from "lucide-react";
-import { BoltMark } from "@/components/brand/Logo";
+import { LogoMark } from "@/components/brand/Logo";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { navRoutes } from "@/lib/routes";
@@ -26,7 +26,7 @@ export default function NotFound() {
       />
 
       <Container className="text-center">
-        <BoltMark className="mx-auto h-14 w-14 text-ember" />
+        <LogoMark size={56} className="mx-auto size-14" />
 
         {/* Watermark numeral. It is real, visible text, so it has to meet the
             3:1 large-text contrast floor rather than fading into the

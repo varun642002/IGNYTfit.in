@@ -38,15 +38,19 @@ export default function GlobalError({
         }}
       >
         <main style={{ maxWidth: 480 }}>
-          <svg
-            viewBox="0 0 512 512"
+          {/* Plain <img>, not next/image: global-error replaces the root layout
+              when the app itself has failed, so it must not depend on anything
+              that could be the thing that broke. The file is the same official
+              logo master every other surface uses.
+              eslint-disable-next-line @next/next/no-img-element */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo-official.png"
             width="52"
             height="52"
-            fill="#ff5a1f"
-            aria-hidden
-          >
-            <path d="M344 92 L198 216 L252 216 L168 420 L314 296 L258 296 Z" />
-          </svg>
+            alt=""
+            style={{ borderRadius: 12 }}
+          />
           <h1
             style={{
               fontSize: 28,
