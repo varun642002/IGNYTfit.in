@@ -31,9 +31,19 @@ const FACTS: Array<{ label: string; value: React.ReactNode }> = [
       "Fitness and nutrition tracking — workouts, calories, macros, hydration, fasting, body weight and progress.",
   },
   {
-    label: "Health data",
+    label: "Data requested",
     value:
-      "Reads and writes supported Google Health Connect data types, only after the user grants permission, and only for the features the user chooses to use.",
+      "Google Health Connect: steps, distance, active energy, calories burned, exercise sessions, weight, hydration, and — where the device supports them — sleep and heart rate.",
+  },
+  {
+    /* Google's verification asks the home page to "explain with transparency
+       the purpose for which your app requests user data" — which is a separate
+       question from what the app does, and from which data it reads. This
+       answers it directly: what each permission is used for, and what happens
+       to the data afterwards. */
+    label: "Why that data is requested",
+    value:
+      "Solely to display and calculate the user's own fitness figures inside the app: steps and active energy complete the daily calorie balance against food logged, exercise sessions populate workout history, and weight and hydration feed the progress charts. Permission is requested only for the data types a feature actually needs, at the point that feature is used, and can be revoked at any time from device settings. The data is never used for advertising, marketing or profiling, is never sold or shared with data brokers, and is not used to train any model.",
   },
   {
     label: "Website",
