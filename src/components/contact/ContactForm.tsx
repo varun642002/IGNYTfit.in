@@ -146,11 +146,11 @@ export function ContactForm() {
 
   const fieldClasses = (invalid: boolean) =>
     cn(
-      "w-full rounded-tile border bg-surface/70 px-4 py-3 text-[15px] text-text",
-      "placeholder:text-text-dim transition-colors duration-200",
+      "w-full rounded-panel border bg-carbon/70 px-4 py-3 text-[15px] text-chalk",
+      "placeholder:text-ash-dim transition-colors duration-200",
       invalid
         ? "border-bad/60 focus:border-bad"
-        : "border-line focus:border-pulse/70",
+        : "border-hairline focus:border-arc/70",
     );
 
   return (
@@ -175,9 +175,9 @@ export function ContactForm() {
         <div>
           <label
             htmlFor={`${formId}-name`}
-            className="mb-2 block text-[13.5px] font-semibold text-text"
+            className="mb-2 block text-[13.5px] font-semibold text-chalk"
           >
-            Name <span className="text-ember">*</span>
+            Name <span className="text-flare">*</span>
           </label>
           <input
             id={`${formId}-name`}
@@ -203,9 +203,9 @@ export function ContactForm() {
         <div>
           <label
             htmlFor={`${formId}-email`}
-            className="mb-2 block text-[13.5px] font-semibold text-text"
+            className="mb-2 block text-[13.5px] font-semibold text-chalk"
           >
-            Email <span className="text-ember">*</span>
+            Email <span className="text-flare">*</span>
           </label>
           <input
             id={`${formId}-email`}
@@ -234,9 +234,9 @@ export function ContactForm() {
       <div>
         <label
           htmlFor={`${formId}-subject`}
-          className="mb-2 block text-[13.5px] font-semibold text-text"
+          className="mb-2 block text-[13.5px] font-semibold text-chalk"
         >
-          Subject <span className="text-ember">*</span>
+          Subject <span className="text-flare">*</span>
         </label>
         <select
           id={`${formId}-subject`}
@@ -271,9 +271,9 @@ export function ContactForm() {
       <div>
         <label
           htmlFor={`${formId}-message`}
-          className="mb-2 block text-[13.5px] font-semibold text-text"
+          className="mb-2 block text-[13.5px] font-semibold text-chalk"
         >
-          Message <span className="text-ember">*</span>
+          Message <span className="text-flare">*</span>
         </label>
         <textarea
           id={`${formId}-message`}
@@ -299,7 +299,7 @@ export function ContactForm() {
         ) : (
           <p
             id={`${formId}-message-hint`}
-            className="mt-2 text-[13px] text-text-dim"
+            className="mt-2 text-[13px] text-ash-dim"
           >
             Never include passwords or account recovery codes.
           </p>
@@ -321,11 +321,11 @@ export function ContactForm() {
           )}
         </Button>
 
-        <p className="text-[13px] text-text-dim">
+        <p className="text-[13px] text-ash-dim">
           Or email{" "}
           <a
             href={`mailto:${site.email.support}`}
-            className="font-semibold text-text-mute hover:text-ember"
+            className="font-semibold text-ash hover:text-flare"
           >
             {site.email.support}
           </a>
@@ -335,7 +335,7 @@ export function ContactForm() {
       {/* Result announcement */}
       <div aria-live="polite" className="min-h-0">
         {status === "success" ? (
-          <p className="flex items-start gap-2.5 rounded-tile border border-good/35 bg-good/10 p-4 text-[14px] text-text-mute">
+          <p className="flex items-start gap-2.5 rounded-panel border border-good/35 bg-good/10 p-4 text-[14px] text-ash">
             <CheckCircle2
               aria-hidden
               className="mt-0.5 size-4 shrink-0 text-good"
@@ -345,7 +345,7 @@ export function ContactForm() {
           </p>
         ) : null}
         {status === "error" ? (
-          <p className="flex items-start gap-2.5 rounded-tile border border-bad/35 bg-bad/10 p-4 text-[14px] text-text-mute">
+          <p className="flex items-start gap-2.5 rounded-panel border border-bad/35 bg-bad/10 p-4 text-[14px] text-ash">
             <TriangleAlert
               aria-hidden
               className="mt-0.5 size-4 shrink-0 text-bad"
@@ -353,7 +353,7 @@ export function ContactForm() {
             That did not go through. Please email{" "}
             <a
               href={`mailto:${site.email.support}`}
-              className="font-semibold text-text hover:text-ember"
+              className="font-semibold text-chalk hover:text-flare"
             >
               {site.email.support}
             </a>{" "}

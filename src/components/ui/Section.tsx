@@ -1,12 +1,19 @@
 import type { ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
+import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
 
 /**
- * Vertical rhythm for a page section. `id` doubles as the anchor target and
- * as the `aria-labelledby` hook for the heading, so every section is a
- * properly labelled landmark for screen readers.
+ * Vertical rhythm for a page section.
+ *
+ * `id` does triple duty: anchor target, `aria-labelledby` hook, and the id the
+ * heading derives its own from. Passing it means the section is a properly
+ * labelled landmark, which is how a screen-reader user skims this page.
+ *
+ * Spacing is large and increases with viewport width. Generous vertical space
+ * is most of what separates a product launch page from a documentation site,
+ * and it is the first thing to get eroded — resist tightening these.
  */
 export function Section({
   id,
@@ -14,28 +21,43 @@ export function Section({
   containerClassName,
   children,
   as = "section",
+  wide = false,
+  /** Skips content-visibility. Set on any section holding a pinned scene. */
+  eager = false,
 }: {
   id?: string;
   className?: string;
   containerClassName?: string;
   children: ReactNode;
   as?: "section" | "div";
+  wide?: boolean;
+  eager?: boolean;
 }) {
   const Tag = as;
   return (
     <Tag
       id={id}
       aria-labelledby={id ? `${id}-heading` : undefined}
-      className={cn("relative py-20 sm:py-28", className)}
+      className={cn(
+        "relative py-24 sm:py-32 lg:py-40",
+        !eager && "cv-auto",
+        className,
+      )}
     >
-      <Container className={containerClassName}>{children}</Container>
+      <Container wide={wide} className={containerClassName}>
+        {children}
+      </Container>
     </Tag>
   );
 }
 
 /**
- * Eyebrow + title + optional lead paragraph, in the one arrangement used
- * across the whole site.
+ * Eyebrow + title + optional lead, in the single arrangement used site-wide.
+ *
+ * The display sizes are `clamp()`ed rather than stepped through breakpoints, so
+ * the heading scales continuously with the viewport instead of jumping at
+ * arbitrary widths. `text-fade-down` gives long headings a subtle top-to-bottom
+ * falloff, which reads as depth on a black page.
  */
 export function SectionHeading({
   id,
@@ -45,8 +67,9 @@ export function SectionHeading({
   align = "center",
   className,
   as: Tag = "h2",
+  tone = "arc",
 }: {
-  /** Must match the parent `Section`'s id so `aria-labelledby` resolves. */
+  /** Must match the parent Section's id so `aria-labelledby` resolves. */
   id?: string;
   eyebrow?: string;
   title: ReactNode;
@@ -54,33 +77,28 @@ export function SectionHeading({
   align?: "center" | "left";
   className?: string;
   as?: "h1" | "h2";
+  tone?: "arc" | "flare";
 }) {
   return (
     <Reveal
       className={cn(
-        "max-w-3xl",
-        align === "center" ? "mx-auto text-center" : "text-left",
+        align === "center" ? "mx-auto max-w-3xl text-center" : "max-w-3xl",
         className,
       )}
     >
       {eyebrow ? (
-        <p
-          className={cn(
-            "mb-4 inline-flex items-center rounded-full border border-line bg-surface/70 px-3.5 py-1.5",
-            "text-[11px] font-bold uppercase tracking-[0.18em] text-ember",
-          )}
-        >
+        <Eyebrow tone={tone} className="mb-5">
           {eyebrow}
-        </p>
+        </Eyebrow>
       ) : null}
 
       <Tag
         id={id ? `${id}-heading` : undefined}
         className={cn(
-          "font-black leading-[1.08]",
+          "text-fade-down font-black leading-[1.04]",
           Tag === "h1"
-            ? "text-[clamp(2.35rem,6.4vw,4.2rem)]"
-            : "text-[clamp(1.85rem,4.4vw,3rem)]",
+            ? "text-[clamp(2.6rem,7vw,4.75rem)]"
+            : "text-[clamp(2rem,4.8vw,3.35rem)]",
         )}
       >
         {title}
@@ -89,8 +107,8 @@ export function SectionHeading({
       {lead ? (
         <p
           className={cn(
-            "mt-5 text-[15.5px] leading-relaxed text-text-mute sm:text-lg",
-            align === "center" && "mx-auto",
+            "mt-6 text-[16px] leading-[1.7] text-ash sm:text-[18px]",
+            align === "center" && "mx-auto max-w-2xl",
           )}
         >
           {lead}

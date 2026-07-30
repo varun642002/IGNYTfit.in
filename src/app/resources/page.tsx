@@ -118,16 +118,16 @@ function ResourceGrid({ items }: { items: Resource[] }) {
           className="h-full"
         >
           <Card interactive className="h-full p-7">
-            <span className="grid size-11 place-items-center rounded-tile border border-ember/30 bg-ember/12 text-ember">
+            <span className="grid size-11 place-items-center rounded-panel border border-flare/30 bg-flare/12 text-flare">
               <item.Icon aria-hidden className="size-5" strokeWidth={2.1} />
             </span>
             <h3 className="mt-5 text-[17.5px] font-bold">{item.title}</h3>
-            <p className="mt-2.5 text-[14.5px] leading-relaxed text-text-mute">
+            <p className="mt-2.5 text-[14.5px] leading-relaxed text-ash">
               {item.body}
             </p>
             <Link
               href={item.href}
-              className="mt-5 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-ember hover:underline"
+              className="mt-5 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-flare hover:underline"
             >
               {item.cta}
               <ArrowRight aria-hidden className="size-3.5" />
@@ -154,7 +154,7 @@ export default function ResourcesPage() {
         title={
           <>
             Everything you need to{" "}
-            <span className="text-gradient">get set up and stay set up</span>
+            <span className="text-flare-gradient">get set up and stay set up</span>
           </>
         }
         lead="Setup guides, how the numbers are calculated, how to get your data out, and the policies that govern all of it — in one place."
@@ -162,7 +162,7 @@ export default function ResourcesPage() {
         <ButtonLink href="/download" size="lg">
           Install IGNYT
         </ButtonLink>
-        <ButtonLink href="/blog" variant="secondary" size="lg">
+        <ButtonLink href="/blog" variant="outline" size="lg">
           Read the blog
         </ButtonLink>
       </PageHero>
@@ -176,7 +176,7 @@ export default function ResourcesPage() {
         <ResourceGrid items={GUIDES} />
       </Section>
 
-      <Section id="reference" className="bg-ink-soft/60">
+      <Section id="reference" className="bg-void-2/60">
         <SectionHeading
           id="reference"
           eyebrow="Reference"
@@ -205,17 +205,17 @@ export default function ResourcesPage() {
               className="h-full"
             >
               <Card interactive className="h-full p-6">
-                <Badge tone="pulse">{post.category}</Badge>
+                <Badge tone="arc">{post.category}</Badge>
                 <h3 className="mt-4 text-[17px] font-bold leading-snug">
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="hover:text-ember"
+                    className="hover:text-flare"
                   >
                     {post.title}
                     <span className="absolute inset-0" aria-hidden />
                   </Link>
                 </h3>
-                <p className="mt-2.5 text-[14px] leading-relaxed text-text-mute">
+                <p className="mt-2.5 text-[14px] leading-relaxed text-ash">
                   {post.description}
                 </p>
               </Card>
@@ -224,14 +224,14 @@ export default function ResourcesPage() {
         </RevealGroup>
 
         <div className="mt-12 flex justify-center">
-          <ButtonLink href="/blog" variant="secondary">
+          <ButtonLink href="/blog" variant="outline">
             All articles
             <ArrowRight aria-hidden className="size-4" />
           </ButtonLink>
         </div>
       </Section>
 
-      <Section id="support" className="bg-ink-soft/60">
+      <Section id="support" className="bg-void-2/60">
         <SectionHeading
           id="support"
           eyebrow="Still stuck"

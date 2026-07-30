@@ -1,17 +1,20 @@
 import type { ReactNode } from "react";
+import { Surface } from "@/components/ui/Surface";
 import { cn } from "@/lib/utils";
 
 /**
- * The surface every panel on the site is built from.
+ * Kept as a thin alias over <Surface> so the pages that were already written
+ * against `Card` keep working.
  *
- * `interactive` adds the lift-and-glow hover treatment. Keep it off for
- * non-clickable content so hover affordances stay honest.
+ * There is exactly one card implementation on this site, and it is Surface.
+ * Prefer it directly in new code; this exists so a rebuild did not have to
+ * touch every list item on every page to rename one component.
  */
 export function Card({
   children,
   className,
   interactive = false,
-  as: Tag = "div",
+  as = "div",
 }: {
   children: ReactNode;
   className?: string;
@@ -19,45 +22,41 @@ export function Card({
   as?: "div" | "li" | "article";
 }) {
   return (
-    <Tag
-      className={cn(
-        "relative overflow-hidden rounded-card border border-line bg-surface/70",
-        "backdrop-blur-[2px]",
-        interactive &&
-          cn(
-            "group transition-[transform,border-color,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
-            "hover:-translate-y-1.5 hover:border-ember/45",
-            "hover:shadow-[0_24px_60px_-28px_rgba(255,90,31,0.55)]",
-          ),
-        className,
-      )}
-    >
+    <Surface as={as} interactive={interactive} className={className}>
       {children}
-    </Tag>
+    </Surface>
   );
 }
 
+/**
+ * Small uppercase status pill.
+ *
+ * `neutral` is the default for a reason: a badge that is always coloured stops
+ * distinguishing anything. Reserve `flare` for the one status on a page that
+ * actually matters.
+ */
 export function Badge({
   children,
   className,
-  tone = "ember",
+  tone = "neutral",
 }: {
   children: ReactNode;
   className?: string;
-  tone?: "ember" | "pulse" | "good" | "neutral";
+  tone?: "flare" | "arc" | "good" | "warn" | "neutral";
 }) {
   const tones = {
-    ember: "border-ember/35 bg-ember/12 text-ember",
-    pulse: "border-pulse/35 bg-pulse/12 text-pulse-strong",
+    flare: "border-flare/35 bg-flare/12 text-flare",
+    arc: "border-arc/35 bg-arc/12 text-arc-bright",
     good: "border-good/35 bg-good/12 text-good",
-    neutral: "border-line bg-surface-2 text-text-mute",
+    warn: "border-warn/35 bg-warn/12 text-warn",
+    neutral: "border-hairline bg-carbon-2 text-ash",
   };
 
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1",
-        "text-[11px] font-bold uppercase tracking-[0.14em]",
+        "inline-flex items-center gap-1.5 rounded-pill border px-3 py-1",
+        "text-[11px] font-bold uppercase tracking-[0.16em]",
         tones[tone],
         className,
       )}

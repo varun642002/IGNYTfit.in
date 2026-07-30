@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
@@ -11,28 +12,32 @@ import { site } from "@/lib/site";
  * name IGNYT configured for your OAuth consent screen does not match the app
  * name on your home page".
  *
- * The prose above already answers both, but prose has to be interpreted. This
- * does not: the application name appears as a labelled value equal to the
- * string on the consent screen, and the purpose appears as a labelled value
- * next to it. A reviewer — or a matcher — does not have to infer which words on
- * the page are the product's name.
+ * The prose elsewhere on this page answers both, but prose has to be
+ * interpreted. This does not: the application name appears as a labelled value
+ * equal to the string on the consent screen, and the purpose appears as a
+ * labelled value beside it. A reviewer — or a matcher — never has to infer
+ * which words on the page are the product's name.
  *
- * Deliberately plain. It reads as a fact table rather than marketing, which is
- * the point: everything else on this page is trying to sell, and this is the
- * one block that is only trying to be checkable.
+ * Deliberately plainer than everything around it. It reads as a fact table
+ * rather than as marketing, which is exactly the point: the rest of this page
+ * is trying to sell, and this block is only trying to be checkable. Resist the
+ * urge to make it prettier.
+ *
+ * THE COPY BELOW IS VERBATIM AND LOAD-BEARING. It was written against specific
+ * verification feedback. Restyle it freely; do not reword it.
  */
-const FACTS: Array<{ label: string; value: React.ReactNode }> = [
+const FACTS: Array<{ label: string; value: ReactNode }> = [
   { label: "Application name", value: site.name },
   { label: "Application type", value: "Android mobile application" },
   { label: "Category", value: "Health & Fitness" },
   {
-    /* Rendered as a pill rather than plain text, matching the coming-soon badge
-       in the download section — the two state the same fact and should not look
-       like unrelated claims. */
+    /* A pill rather than plain text, matching the badge in the download
+       section — the two state the same fact and must not read as two
+       unrelated claims. */
     label: "Application status",
     value: (
-      <span className="inline-flex items-center gap-2 rounded-full border border-warn/30 bg-warn/10 px-3 py-1 text-[13px] font-semibold text-warn">
-        <span aria-hidden className="size-1.5 rounded-full bg-warn" />
+      <span className="inline-flex items-center gap-2 rounded-pill border border-flare/30 bg-flare/10 px-3 py-1 text-[13px] font-semibold text-flare">
+        <span aria-hidden className="size-1.5 rounded-pill bg-flare" />
         Pending Google Play release
       </span>
     ),
@@ -48,11 +53,10 @@ const FACTS: Array<{ label: string; value: React.ReactNode }> = [
       "Google Health Connect: steps, distance, active energy, calories burned, exercise sessions, weight, hydration, and — where the device supports them — sleep and heart rate.",
   },
   {
-    /* Google's verification asks the home page to "explain with transparency
-       the purpose for which your app requests user data" — which is a separate
-       question from what the app does, and from which data it reads. This
-       answers it directly: what each permission is used for, and what happens
-       to the data afterwards. */
+    /* Verification asks the home page to "explain with transparency the purpose
+       for which your app requests user data" — a separate question from what
+       the app does and from which data it reads. This answers it directly: what
+       each permission is used for, and what happens to the data afterwards. */
     label: "Why that data is requested",
     value:
       "Solely to display and calculate the user's own fitness figures inside the app: steps and active energy complete the daily calorie balance against food logged, exercise sessions populate workout history, and weight and hydration feed the progress charts. Permission is requested only for the data types a feature actually needs, at the point that feature is used, and can be revoked at any time from device settings. The data is never used for advertising, marketing or profiling, is never sold or shared with data brokers, and is not used to train any model.",
@@ -60,10 +64,7 @@ const FACTS: Array<{ label: string; value: React.ReactNode }> = [
   {
     label: "Website",
     value: (
-      <a
-        href={site.url}
-        className="text-ember transition-colors hover:text-ember-strong"
-      >
+      <a href={site.url} className="text-arc transition-colors hover:text-arc-bright">
         {site.domain}
       </a>
     ),
@@ -73,7 +74,7 @@ const FACTS: Array<{ label: string; value: React.ReactNode }> = [
     value: (
       <a
         href={`mailto:${site.email.support}`}
-        className="text-ember transition-colors hover:text-ember-strong"
+        className="text-arc transition-colors hover:text-arc-bright"
       >
         {site.email.support}
       </a>
@@ -83,27 +84,21 @@ const FACTS: Array<{ label: string; value: React.ReactNode }> = [
     label: "Policies",
     value: (
       <span className="inline-flex flex-wrap gap-x-3 gap-y-1">
-        <Link
-          href="/privacy"
-          className="text-ember transition-colors hover:text-ember-strong"
-        >
+        <Link href="/privacy" className="text-arc transition-colors hover:text-arc-bright">
           Privacy Policy
         </Link>
-        <span aria-hidden className="text-text-dim">
+        <span aria-hidden className="text-ash-dim">
           ·
         </span>
-        <Link
-          href="/terms"
-          className="text-ember transition-colors hover:text-ember-strong"
-        >
+        <Link href="/terms" className="text-arc transition-colors hover:text-arc-bright">
           Terms &amp; Conditions
         </Link>
-        <span aria-hidden className="text-text-dim">
+        <span aria-hidden className="text-ash-dim">
           ·
         </span>
         <Link
           href="/data-deletion"
-          className="text-ember transition-colors hover:text-ember-strong"
+          className="text-arc transition-colors hover:text-arc-bright"
         >
           Delete Account
         </Link>
@@ -117,29 +112,29 @@ export function AppIdentity() {
     <section
       id="app-identity"
       aria-labelledby="app-identity-heading"
-      className="scroll-mt-24 border-y border-line bg-surface/30 py-14 sm:py-16"
+      className="scroll-mt-28 border-y border-hairline-soft bg-void-2 py-16 sm:py-20"
     >
       <Container>
         <Reveal>
           <h2
             id="app-identity-heading"
-            className="text-[13px] font-bold uppercase tracking-[0.16em] text-text-dim"
+            className="text-[12px] font-bold uppercase tracking-[0.2em] text-ash-dim"
           >
             Application details
           </h2>
 
-          <dl className="mt-7 grid gap-x-10 gap-y-5 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)]">
+          <dl className="mt-8 grid gap-x-12 gap-y-6 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)]">
             {FACTS.map((fact) => (
               <div
                 key={fact.label}
-                className="flex flex-col gap-1 border-l-2 border-line pl-4"
+                className="flex flex-col gap-1.5 border-l-2 border-hairline pl-4"
               >
-                <dt className="text-[12px] font-semibold uppercase tracking-[0.1em] text-text-dim">
+                <dt className="text-[11.5px] font-semibold uppercase tracking-[0.12em] text-ash-dim">
                   {fact.label}
                 </dt>
-                <dd className="text-[15px] leading-relaxed text-text-mute">
+                <dd className="text-[15px] leading-[1.7] text-ash">
                   {fact.label === "Application name" ? (
-                    <strong className="text-[17px] font-black tracking-[0.08em] text-text">
+                    <strong className="text-[18px] font-black tracking-[0.1em] text-chalk">
                       {fact.value}
                     </strong>
                   ) : (

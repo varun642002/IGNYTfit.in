@@ -95,7 +95,7 @@ export default async function ArticlePage({
       />
 
       <article>
-        <header className="relative overflow-hidden border-b border-line/60 py-16 sm:py-20">
+        <header className="relative overflow-hidden border-b border-hairline/60 py-16 sm:py-20">
           <div
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-[-40%] -z-10 size-[680px] -translate-x-1/2 rounded-full blur-[110px]"
@@ -107,21 +107,21 @@ export default async function ArticlePage({
           <Container>
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-[13.5px] font-semibold text-text-mute transition-colors hover:text-ember"
+              className="inline-flex items-center gap-2 text-[13.5px] font-semibold text-ash transition-colors hover:text-flare"
             >
               <ArrowLeft aria-hidden className="size-4" />
               All articles
             </Link>
 
             <div className="mt-7 flex flex-wrap items-center gap-3">
-              <Badge tone="ember">{post.category}</Badge>
-              <span className="flex items-center gap-1.5 text-[13px] text-text-dim">
+              <Badge tone="flare">{post.category}</Badge>
+              <span className="flex items-center gap-1.5 text-[13px] text-ash-dim">
                 <Clock aria-hidden className="size-3.5" />
                 {post.readingMinutes} min read
               </span>
               <time
                 dateTime={post.published}
-                className="text-[13px] text-text-dim"
+                className="text-[13px] text-ash-dim"
               >
                 {formatPostDate(post.published)}
               </time>
@@ -130,7 +130,7 @@ export default async function ArticlePage({
             <h1 className="mt-5 max-w-4xl text-[clamp(2rem,4.6vw,3.2rem)] font-black leading-[1.08]">
               {post.title}
             </h1>
-            <p className="mt-5 max-w-2xl text-[17px] leading-relaxed text-text-mute">
+            <p className="mt-5 max-w-2xl text-[17px] leading-relaxed text-ash">
               {post.description}
             </p>
           </Container>
@@ -144,14 +144,14 @@ export default async function ArticlePage({
               <TriangleAlert aria-hidden className="size-4" />
               General information, not medical advice
             </p>
-            <p className="mt-2 text-[14.5px] leading-relaxed text-text-mute">
+            <p className="mt-2 text-[14.5px] leading-relaxed text-ash">
               This article is educational and is not a substitute for
               professional medical, nutritional or fitness advice. Consult a
               qualified professional before changing how you train or eat. See
               our{" "}
               <Link
                 href="/disclaimer"
-                className="font-semibold text-ember hover:underline"
+                className="font-semibold text-flare hover:underline"
               >
                 full disclaimer
               </Link>
@@ -162,7 +162,7 @@ export default async function ArticlePage({
 
         {related.length > 0 ? (
           <Container className="pb-16">
-            <h2 className="text-[12px] font-bold uppercase tracking-[0.16em] text-text-dim">
+            <h2 className="text-[12px] font-bold uppercase tracking-[0.16em] text-ash-dim">
               Keep reading
             </h2>
             <ul className="mt-5 grid list-none gap-4 md:grid-cols-2">
@@ -173,13 +173,13 @@ export default async function ArticlePage({
                     <h3 className="mt-3 text-[17px] font-bold leading-snug">
                       <Link
                         href={`/blog/${item.slug}`}
-                        className="hover:text-ember"
+                        className="hover:text-flare"
                       >
                         {item.title}
                         <span className="absolute inset-0" aria-hidden />
                       </Link>
                     </h3>
-                    <p className="mt-2 text-[14px] leading-relaxed text-text-mute">
+                    <p className="mt-2 text-[14px] leading-relaxed text-ash">
                       {item.description}
                     </p>
                   </Card>

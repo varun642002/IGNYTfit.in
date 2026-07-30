@@ -1,87 +1,98 @@
-import { ArrowRight, ShieldCheck, Smartphone, WifiOff } from "lucide-react";
+import { ShieldCheck, Smartphone, WifiOff } from "lucide-react";
+import { LogoMark } from "@/components/brand/Logo";
+import { Aurora, Seam } from "@/components/ui/Aurora";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { Magnetic } from "@/components/ui/Magnetic";
 import { PlayStoreButton } from "@/components/ui/PlayStoreButton";
 import { Reveal } from "@/components/ui/Reveal";
-
-const ASSURANCES = [
-  { Icon: Smartphone, label: "Android 8.0 and later" },
-  { Icon: WifiOff, label: "Works fully offline" },
-  { Icon: ShieldCheck, label: "No ads, never sold" },
-];
+import { site } from "@/lib/site";
 
 /**
- * Closing call to action. Reused verbatim at the foot of the home, features
- * and screenshots pages.
+ * The closing call to action.
+ *
+ * The release status is stated plainly rather than being hidden behind an
+ * enthusiastic button. IGNYT is not on Google Play yet, so a bare "Download
+ * now" would be a promise the next tap cannot keep — and the same fact is
+ * already stated in the Application details block, where a reviewer will
+ * compare the two. They must not disagree.
+ *
+ * This is the last thing on the page, so it carries the brightest light on the
+ * site: the bloom is at full strength and the mark sits directly in it.
  */
 export function DownloadCta() {
   return (
     <section
       id="download"
-      aria-labelledby="download-cta-heading"
-      className="scroll-mt-24 py-20 sm:py-28"
+      aria-labelledby="download-heading"
+      className="cv-auto relative scroll-mt-24 overflow-hidden py-28 sm:py-36"
     >
+      <Seam tone="flare" />
+      <Aurora tone="mixed" />
+
       <Container>
-        <Reveal>
-          <div className="ring-gradient relative overflow-hidden rounded-[32px] border border-line bg-[linear-gradient(150deg,#12151d_0%,#0b0d13_45%,#170e0a_100%)] px-6 py-16 text-center sm:px-14 sm:py-20">
-            <span
-              aria-hidden
-              className="pointer-events-none absolute -left-24 -top-24 size-[420px] rounded-full blur-[90px]"
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(255,90,31,0.28), transparent 68%)",
-              }}
-            />
-            <span
-              aria-hidden
-              className="pointer-events-none absolute -bottom-32 -right-24 size-[440px] rounded-full blur-[90px]"
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(62,130,247,0.24), transparent 68%)",
-              }}
-            />
-
-            <h2
-              id="download-cta-heading"
-              className="relative text-[clamp(1.9rem,4.6vw,3.1rem)] font-black leading-[1.08]"
-            >
-              Download <span className="text-gradient">IGNYT</span>
-            </h2>
-
-            <p className="relative mx-auto mt-6 max-w-xl text-[16px] leading-relaxed text-text-mute">
-              Download IGNYT and start tracking your workouts, nutrition,
-              health, and fitness progress in one powerful application.
-            </p>
-
-            {/* The listing is not public yet, so the store link is labelled for
-                what it currently is. Shipping a Play button that leads to a 404
-                is worse than saying "coming soon" — and an OAuth reviewer
-                clicking through to a dead listing reads as an incomplete app. */}
-            <div className="relative mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <PlayStoreButton />
-              <ButtonLink href="/download" variant="secondary" size="lg">
-                Installation guide
-                <ArrowRight aria-hidden className="size-4" />
-              </ButtonLink>
+        <Reveal className="mx-auto max-w-3xl text-center">
+          <div className="flex justify-center">
+            <div className="relative">
+              <span
+                aria-hidden
+                data-decor="ambient"
+                className="absolute inset-[-60%] animate-breathe rounded-pill blur-[52px]"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(255,106,26,0.34), transparent 70%)",
+                }}
+              />
+              <LogoMark size={80} className="relative size-20" />
             </div>
-
-            <p className="relative mt-5 inline-flex items-center gap-2 rounded-full border border-warn/30 bg-warn/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-warn">
-              <span aria-hidden className="size-1.5 rounded-full bg-warn" />
-              Coming soon to Google Play
-            </p>
-
-            <ul className="relative mt-10 flex flex-wrap items-center justify-center gap-x-7 gap-y-3">
-              {ASSURANCES.map(({ Icon, label }) => (
-                <li
-                  key={label}
-                  className="flex items-center gap-2 text-[13.5px] text-text-dim"
-                >
-                  <Icon aria-hidden className="size-4 text-good" />
-                  {label}
-                </li>
-              ))}
-            </ul>
           </div>
+
+          <h2
+            id="download-heading"
+            className="text-fade-down mt-9 text-[clamp(2.4rem,6.2vw,4.25rem)] font-black leading-[1.02] tracking-[-0.045em]"
+          >
+            Download IGNYT
+          </h2>
+
+          <p className="mx-auto mt-6 max-w-xl text-[17px] leading-[1.72] text-ash">
+            One free Android application for workouts, nutrition, calories,
+            macros, hydration, fasting, body weight, progress and Google Health
+            Connect. No account required to start, and nothing to pay.
+          </p>
+
+          <div className="mt-11 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Magnetic>
+              <PlayStoreButton size="lg" />
+            </Magnetic>
+            <Magnetic strength={0.18}>
+              <ButtonLink href="/download" size="lg" variant="outline">
+                Release details
+              </ButtonLink>
+            </Magnetic>
+          </div>
+
+          {/* Same wording as the Application details block. If one changes, the
+              other has to change with it. */}
+          <p className="mt-7 inline-flex items-center gap-2 rounded-pill border border-flare/30 bg-flare/10 px-4 py-2 text-[13px] font-semibold text-flare">
+            <span aria-hidden className="size-1.5 rounded-pill bg-flare" />
+            Pending Google Play release
+          </p>
+
+          <ul className="mt-12 flex flex-wrap items-center justify-center gap-x-9 gap-y-4">
+            {[
+              { icon: Smartphone, label: `Android ${site.app.minAndroid} or later` },
+              { icon: WifiOff, label: "Core features work offline" },
+              { icon: ShieldCheck, label: "Cloud backup off by default" },
+            ].map(({ icon: Icon, label }) => (
+              <li
+                key={label}
+                className="inline-flex items-center gap-2.5 text-[14px] font-medium text-ash"
+              >
+                <Icon aria-hidden className="size-4 text-arc" strokeWidth={2.2} />
+                {label}
+              </li>
+            ))}
+          </ul>
         </Reveal>
       </Container>
     </section>

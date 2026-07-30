@@ -53,7 +53,7 @@ export default function BlogPage() {
         title={
           <>
             Training and nutrition,{" "}
-            <span className="text-gradient">without the mythology</span>
+            <span className="text-flare-gradient">without the mythology</span>
           </>
         }
         lead="Short, practical articles on the things people actually get stuck on — protein targets, progression, scale weight, fasting windows. No supplements to sell, no miracle protocols."
@@ -65,7 +65,7 @@ export default function BlogPage() {
         <p className="mt-14 flex justify-center">
           <a
             href="/blog/rss.xml"
-            className="inline-flex items-center gap-2 rounded-btn border border-line bg-surface/70 px-5 py-3 text-[14px] font-semibold text-text-mute transition-colors hover:border-ember/50 hover:text-ember"
+            className="inline-flex items-center gap-2 rounded-pill border border-hairline bg-carbon/70 px-5 py-3 text-[14px] font-semibold text-ash transition-colors hover:border-flare/50 hover:text-flare"
           >
             <Rss aria-hidden className="size-4" />
             Subscribe via RSS

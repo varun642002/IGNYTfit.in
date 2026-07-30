@@ -1,87 +1,135 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   IGNYT DESIGN SYSTEM
+   IGNYT — "ARC" DESIGN SYSTEM
    ----------------------------------------------------------------------------
-   Colour tokens mirror the IGNYT Android/PWA client (`www/css/tokens.css`) so
-   the marketing site and the product read as one brand. Do not "improve" these
-   values in isolation — change the app tokens first, then mirror them here.
+   A ground-up rebuild. Nothing here is inherited from the previous site: the
+   palette, the surface ramp, the radii, the motion curves and the reveal
+   mechanism are all new.
 
-   Contrast (WCAG 2.1 AA) against --color-ink (#08090d):
-     text-mute   #aaa9b0  8.0:1   body copy, AA at any size
-     ember       #ff5a1f  6.0:1   AA for text and UI
-     pulse       #3e82f7  5.1:1   AA for text and UI
+   The system has one organising idea. The logo is a bolt struck through a
+   ring — a charge crossing a boundary. So the page is a pure black field, the
+   surfaces are barely-there charcoal, and the only colour in the entire site is
+   light: an electric-blue arc that carries structure, and a neon-orange flare
+   that marks energy. Colour is never decoration here; if something is coloured,
+   it is because it is doing work.
+
+   CONTRAST (WCAG 2.1 AA, measured against --color-void #000000):
+     ash        #9d9fa8   7.96:1   body copy, AA at any size
+     ash-dim    #80828b   5.48:1   captions and metadata, AA at any size
+     arc        #3d7bff   5.47:1   AA for text, links and UI
+     flare      #ff6a1a   7.30:1   AA for text and UI
+   Every one of those passes AA as normal-size text. Do not darken any of them
+   without re-measuring — this site is pure black, so there is no headroom.
    ========================================================================= */
 
 @theme {
-  /* Surfaces — darkest to lightest */
-  --color-ink: #08090d;
-  --color-ink-soft: #0b0d13;
-  --color-surface: #10131a;
-  --color-surface-2: #171b24;
-  --color-surface-3: #21262f;
-  --color-line: #262b35;
-  --color-line-soft: #1a1e27;
+  /* ---------------------------------------------------------- the surface ramp
+     Pure black is the page. Each step up is a raised plane, and the ramp is
+     deliberately tight — the separation between cards comes from a hairline and
+     a highlight, not from a big jump in lightness. */
+  --color-void: #000000;
+  --color-void-2: #050507;
+  --color-carbon: #0b0c0f;
+  --color-carbon-2: #121419;
+  --color-carbon-3: #1a1d23;
+  --color-hairline: #23262e;
+  --color-hairline-soft: #15171c;
 
-  /* Brand — "ember" is the IGNYT bolt, "pulse" is the interactive blue */
-  --color-ember: #ff5a1f;
-  --color-ember-strong: #ff6a2b;
-  --color-ember-soft: #ff8a5c;
-  --color-pulse: #3e82f7;
-  --color-pulse-strong: #5a94f9;
-  --color-sky: #32b8f4;
+  /* -------------------------------------------------------------------- light
+     "arc" is the electric blue that carries structure and interaction.
+     "flare" is the neon orange reserved for energy: the bolt, records, streaks
+     and the primary call to action. Two accents, never a third. */
+  --color-arc: #3d7bff;
+  --color-arc-bright: #7aa8ff;
+  --color-arc-deep: #1b47c4;
+  --color-flare: #ff6a1a;
+  --color-flare-bright: #ff9053;
+  --color-flare-deep: #c94500;
+
+  /* Two supporting hues, used only by data graphics — hydration and body
+     composition — so an eighteen-card grid has some rhythm without the palette
+     becoming a colour wheel. Never used for text or interactive state. */
   --color-cyan: #55d8ff;
+  --color-sky: #32b8f4;
 
-  /* Semantic */
-  --color-good: #45d294;
+  /* -------------------------------------------------------------- semantic
+     Not brand colours — these three only ever carry meaning: a confirmation, a
+     caution, a failure. They appear in legal callouts, form validation and the
+     data-graphics inside the phone mockups, and nowhere decorative.
+
+     Contrast against --color-void: good 11.4:1, warn 11.9:1, bad 5.9:1. */
+  --color-good: #3ddc97;
   --color-warn: #f5bb45;
   --color-bad: #ff6b6b;
 
-  /* Type */
-  --color-text: #f7f4ef;
-  --color-text-mute: #aaa9b0;
-  /* Lightened from the app's #6f707a until it clears 4.5:1 against the
-     *lightest* surface it is ever used on (--color-surface-2), not just
-     against the page background — the device mockups and the store button
-     both place it on raised panels. */
-  --color-text-dim: #83848e;
+  /* ------------------------------------------------------------------ type */
+  --color-chalk: #ffffff;
+  --color-ash: #9d9fa8;
+  --color-ash-dim: #80828b;
 
   --font-sans:
     var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     Roboto, sans-serif;
-  /* System stack — see the note in layout.tsx on why no webfont here. */
+  /* System stack. A second webfont would put ~30KB on the critical path to
+     style version numbers and a package name; those are not worth it. */
   --font-mono:
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
     monospace;
 
-  /* Radii — mirrors the product's radius scale */
-  --radius-tile: 16px;
-  --radius-card: 22px;
-  --radius-btn: 18px;
-  --radius-xl2: 26px;
+  /* ----------------------------------------------------------------- radii
+     Larger and softer than a typical dashboard scale. Big radii on big
+     surfaces is most of what separates "premium product" from "admin panel". */
+  --radius-pill: 999px;
+  --radius-chip: 14px;
+  --radius-panel: 20px;
+  --radius-card: 28px;
+  --radius-hero: 40px;
 
-  /* Motion */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* ---------------------------------------------------------------- motion
+     Three curves, used consistently:
+       glide  — the house curve. Decisive start, long soft landing.
+       ease   — for small state changes (hover, focus, colour).
+       spring — for anything that should feel physical (magnetic buttons).
+     Durations are deliberately slow. Premium reads as unhurried. */
+  --ease-glide: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
 
-  --animate-float-slow: float 7s ease-in-out infinite;
-  --animate-float-mid: float 5.5s ease-in-out infinite;
-  --animate-float-fast: float 4.5s ease-in-out infinite;
-  --animate-shimmer: shimmer 2.6s linear infinite;
-  --animate-pulse-ring: pulseRing 3s ease-out infinite;
+  --animate-drift: drift 9s var(--ease-soft) infinite;
+  --animate-drift-slow: drift 13s var(--ease-soft) infinite;
+  --animate-breathe: breathe 5.5s var(--ease-soft) infinite;
+  --animate-sweep: sweep 3.2s linear infinite;
+  --animate-halo: halo 4.5s var(--ease-glide) infinite;
+  --animate-scan: scan 2.4s var(--ease-soft) infinite;
 }
 
-@keyframes float {
+/* Vertical drift for floating metric chips. */
+@keyframes drift {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translateY(-12px);
+    transform: translate3d(0, -14px, 0);
   }
 }
 
-@keyframes shimmer {
+/* Slow scale pulse for glow beds. */
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+
+/* Specular highlight travelling across a surface. */
+@keyframes sweep {
   from {
     background-position: 200% 0;
   }
@@ -90,13 +138,14 @@
   }
 }
 
-@keyframes pulseRing {
+/* Expanding ring, used behind the live-status dot. */
+@keyframes halo {
   0% {
-    transform: scale(0.85);
-    opacity: 0.5;
+    transform: scale(0.7);
+    opacity: 0.65;
   }
   70% {
-    transform: scale(1.35);
+    transform: scale(1.9);
     opacity: 0;
   }
   100% {
@@ -104,102 +153,212 @@
   }
 }
 
-/* ------------------------------------------------------------------ base */
+/* Single line travelling down a panel — the "reading" motion on mockups. */
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  40%,
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(900%);
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------- base */
 
 @layer base {
   html {
-    scroll-behavior: smooth;
-    /* Sticky header height + breathing room, so #anchor targets clear the nav */
-    scroll-padding-top: 6.5rem;
+    /* Lenis drives smooth scrolling on the client. Native `scroll-behavior`
+       must stay `auto` or the two fight each other and anchor jumps stutter;
+       the reduced-motion block below is the fallback when Lenis is disabled. */
+    scroll-behavior: auto;
+    /* Fixed header height + breathing room, so `#anchor` targets clear the nav. */
+    scroll-padding-top: 7rem;
     -webkit-text-size-adjust: 100%;
-    /* The site ships dark-only; this stops the UA painting form controls and
-       scrollbars in light mode. */
+    /* Dark-only site: stops the UA painting scrollbars and form controls light. */
     color-scheme: dark;
-    /* Safety net for the decorative bloom layers, which are deliberately
-       wider than the viewport. `clip` rather than `hidden` so it does not
-       become a scroll container — `position: sticky` keeps working. */
+    /* The bloom layers are deliberately wider than the viewport. `clip` rather
+       than `hidden` so this does not become a scroll container and break
+       `position: sticky` in the storytelling section. */
     overflow-x: clip;
+    background-color: var(--color-void);
   }
 
   body {
-    background-color: var(--color-ink);
-    color: var(--color-text);
+    background-color: var(--color-void);
+    color: var(--color-chalk);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
-  /* One consistent focus treatment everywhere. Never remove it. */
-  :where(
-    a,
-    button,
-    input,
-    textarea,
-    select,
-    summary,
-    [tabindex]
-  ):focus-visible {
-    outline: 2px solid var(--color-pulse-strong);
+  /* One focus treatment across the whole site. Never remove it — keyboard
+     users navigate this site with nothing else. */
+  :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-arc-bright);
     outline-offset: 3px;
-    border-radius: 6px;
+    border-radius: 8px;
   }
 
   ::selection {
-    background-color: color-mix(in oklab, var(--color-ember) 34%, transparent);
-    color: var(--color-text);
+    background-color: color-mix(in oklab, var(--color-arc) 42%, transparent);
+    color: var(--color-chalk);
   }
 
+  /* Display type is set tight and balanced. The negative tracking is what makes
+     large headings read as a product wordmark rather than as a document. */
   h1,
   h2,
-  h3,
-  h4 {
-    letter-spacing: -0.022em;
+  h3 {
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  h4,
+  h5,
+  h6 {
+    letter-spacing: -0.015em;
     text-wrap: balance;
   }
 
   p {
     text-wrap: pretty;
   }
+
+  /* Numerals in metrics must not jitter while a counter animates. */
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
 }
 
-/* ------------------------------------------------------------- utilities */
+/* -------------------------------------------------------------- utilities */
 
 @layer utilities {
-  /* Frosted panel used by the navbar, floating cards and glass CTAs.
+  /* ------------------------------------------------------------ glass panels
    *
-   * Do NOT hand-write `-webkit-backdrop-filter` here. Lightning CSS (which
-   * Tailwind v4 runs) collapses a standard + prefixed pair down to whichever
-   * form it thinks the build targets need — and with the prefixed one written
-   * last it discarded the standard property outright. The result was a navbar
-   * with no blur in Firefox and in any Chromium lacking the `-webkit-` alias:
-   * a 62%-transparent bar you could read the page straight through.
-   *
+   * Do NOT hand-write `-webkit-backdrop-filter` alongside the standard
+   * property. Lightning CSS (which Tailwind v4 runs) collapses a standard +
+   * prefixed pair down to whichever form it believes the build targets need,
+   * and with the prefixed one written last it will discard the standard
+   * property outright — producing a navbar with no blur at all in Firefox.
    * Declare the standard property only; the build adds prefixes itself. */
   .glass {
-    background-color: color-mix(
-      in oklab,
-      var(--color-surface) 62%,
-      transparent
-    );
-    backdrop-filter: blur(18px) saturate(140%);
-    border: 1px solid color-mix(in oklab, var(--color-line) 85%, transparent);
+    background-color: color-mix(in oklab, var(--color-carbon) 55%, transparent);
+    backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid color-mix(in oklab, var(--color-hairline) 80%, transparent);
   }
 
-  .glass-strong {
+  .glass-heavy {
     background-color: color-mix(
       in oklab,
-      var(--color-surface-2) 82%,
+      var(--color-carbon-2) 78%,
       transparent
     );
-    backdrop-filter: blur(26px) saturate(150%);
-    border: 1px solid var(--color-line);
+    backdrop-filter: blur(30px) saturate(160%);
+    border: 1px solid var(--color-hairline);
   }
 
-  .text-gradient {
+  /* A raised plane. The top highlight is the whole trick: a 1px inset white
+     line along the top edge reads as a light source above the page, which is
+     what stops a flat charcoal rectangle looking like a div. */
+  .plane {
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in oklab, var(--color-chalk) 4%, transparent),
+        transparent 42%
+      ),
+      var(--color-carbon);
+    border: 1px solid var(--color-hairline-soft);
+    box-shadow:
+      inset 0 1px 0 0 color-mix(in oklab, var(--color-chalk) 7%, transparent),
+      0 1px 2px 0 rgb(0 0 0 / 0.9),
+      0 24px 60px -32px rgb(0 0 0 / 1);
+  }
+
+  /* ------------------------------------------------------------ hairlines */
+
+  /* 1px gradient border that follows the element's own radius. Used to give a
+     card a single lit edge, as though the arc is grazing it. */
+  .edge-arc,
+  .edge-flare {
+    position: relative;
+  }
+  .edge-arc::before,
+  .edge-flare::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    /* Standard properties only — see the note on `.glass`. The `xor` and
+       `exclude` keywords differ between the prefixed and standard syntaxes, so
+       a collapsed pair here inverts the cut-out and fills the card solid. */
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .edge-arc::before {
+    background: linear-gradient(
+      140deg,
+      color-mix(in oklab, var(--color-arc) 62%, transparent),
+      transparent 40%,
+      transparent 62%,
+      color-mix(in oklab, var(--color-arc) 26%, transparent)
+    );
+  }
+  .edge-flare::before {
+    background: linear-gradient(
+      140deg,
+      color-mix(in oklab, var(--color-flare) 62%, transparent),
+      transparent 40%,
+      transparent 62%,
+      color-mix(in oklab, var(--color-flare) 26%, transparent)
+    );
+  }
+
+  /* Horizontal rule that fades out at both ends rather than stopping dead. */
+  .rule-fade {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-hairline) 18%,
+      var(--color-hairline) 82%,
+      transparent
+    );
+  }
+
+  /* ---------------------------------------------------------------- glows */
+
+  .glow-arc {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--color-arc) 30%, transparent),
+      0 22px 70px -24px color-mix(in oklab, var(--color-arc) 65%, transparent);
+  }
+
+  .glow-flare {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--color-flare) 32%, transparent),
+      0 22px 70px -24px color-mix(in oklab, var(--color-flare) 62%, transparent);
+  }
+
+  /* ------------------------------------------------------------- text fills */
+
+  .text-arc-gradient {
     background-image: linear-gradient(
-      100deg,
-      #fff 6%,
-      var(--color-ember-soft) 46%,
-      var(--color-ember) 74%,
+      104deg,
+      #fff 4%,
+      var(--color-arc-bright) 42%,
+      var(--color-arc) 72%,
       #fff 100%
     );
     background-size: 220% auto;
@@ -207,71 +366,62 @@
     color: transparent;
   }
 
-  .text-gradient-cool {
+  .text-flare-gradient {
     background-image: linear-gradient(
-      100deg,
-      #fff 10%,
-      var(--color-sky) 52%,
-      var(--color-pulse) 90%
+      104deg,
+      #fff 6%,
+      var(--color-flare-bright) 46%,
+      var(--color-flare) 78%,
+      #fff 100%
+    );
+    background-size: 220% auto;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Chalk-to-ash vertical fade for very large display headings. The gradient
+     runs top-to-bottom so the first line stays pure white and the last settles
+     — it reads as depth rather than as a colour effect. */
+  .text-fade-down {
+    background-image: linear-gradient(
+      180deg,
+      #fff 22%,
+      color-mix(in oklab, var(--color-ash) 92%, #fff) 100%
     );
     background-clip: text;
     color: transparent;
   }
 
-  /* 1px gradient hairline that follows the element's own border-radius. */
-  .ring-gradient {
-    position: relative;
-  }
-  .ring-gradient::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      140deg,
-      color-mix(in oklab, var(--color-ember) 55%, transparent),
-      transparent 42%,
-      color-mix(in oklab, var(--color-pulse) 45%, transparent)
-    );
-    /* Standard properties only — see the note on `.glass`. Hand-written
-       `-webkit-mask` / `-webkit-mask-composite` would risk the same
-       collapse, and the `xor` / `exclude` keywords differ between the two
-       syntaxes, so getting it wrong inverts the cut-out. */
-    mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-
-  .glow-ember {
-    box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--color-ember) 24%, transparent),
-      0 18px 60px -18px color-mix(in oklab, var(--color-ember) 55%, transparent);
-  }
-
-  .glow-pulse {
-    box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--color-pulse) 26%, transparent),
-      0 18px 60px -18px color-mix(in oklab, var(--color-pulse) 60%, transparent);
-  }
+  /* ----------------------------------------------------------------- masks */
 
   .mask-fade-x {
     mask-image: linear-gradient(
       to right,
       transparent,
-      #000 8%,
-      #000 92%,
+      #000 7%,
+      #000 93%,
       transparent
     );
   }
 
-  /* Lets the browser skip layout and paint for off-screen sections. The
-     intrinsic size keeps the scrollbar honest before a section is rendered. */
+  .mask-fade-b {
+    mask-image: linear-gradient(to bottom, #000 62%, transparent);
+  }
+
+  /* Lets the browser skip layout and paint for off-screen sections.
+   *
+   * The intrinsic size is what the scrollbar is measured against before a
+   * section has ever been rendered, so it should be near the real height of a
+   * typical section on this site — measured at roughly 950px on mobile and
+   * 1100px on desktop. Under-declaring it (the first pass here used 760px)
+   * makes the page grow as you scroll, which shortens the scroll thumb under
+   * the reader's cursor.
+   *
+   * The `auto` keyword means the browser remembers each element's real size
+   * after its first render, so this estimate only matters once. */
   .cv-auto {
     content-visibility: auto;
-    contain-intrinsic-size: auto 720px;
+    contain-intrinsic-size: auto 1000px;
   }
 
   .no-scrollbar {
@@ -282,92 +432,304 @@
     display: none;
   }
 
+  /* ------------------------------------------------------ page transitions
+   *
+   * Route changes animate in CSS, keyed off the pathname by <PageTransition>.
+   * The alternative — an AnimatePresence wrapper around every route — would put
+   * the animation runtime in the bundle of every page on the site to move
+   * content 12 pixels, and in the App Router the outgoing tree unmounts before
+   * an exit animation can play anyway.
+   *
+   * Enter-only, and short. A long page transition is a delay the reader did not
+   * ask for; this one is over before it is noticed and only registers as the
+   * page feeling settled rather than snapped into place.
+   */
+  .page-enter {
+    animation: page-in 520ms var(--ease-glide) both;
+  }
+
+  /* ------------------------------------------------- staged hero entrance
+   *
+   * The one place on the site where content animates on load rather than on
+   * scroll. `--d` is the step index; each element arrives 90ms after the one
+   * before it.
+   *
+   * This is why there is no full-screen splash overlay. A splash would delay
+   * largest-contentful-paint by however long it ran, purely to show a logo the
+   * page is about to show anyway. Staging the hero's own arrival gives the
+   * same sense of a considered opening while the content paints immediately,
+   * which is both the better experience and the better Lighthouse score.
+   */
+  .stage {
+    animation: stage-in 900ms var(--ease-glide) both;
+    animation-delay: calc(var(--d, 0) * 90ms);
+  }
+
   /* ------------------------------------------------- scroll-driven reveals
    *
-   * These replaced a Framer Motion `whileInView` implementation. That version
-   * pulled the animation library into the initial bundle of every page and
-   * server-rendered each wrapper as `opacity: 0`, so content waited on
-   * hydration to appear — worth over a second of LCP on a throttled mobile
-   * profile.
-   *
-   * A scroll-driven CSS animation costs no JavaScript at all: the compositor
-   * runs it, and it works with scripting disabled.
+   * These are pure CSS, running on the compositor via `animation-timeline`.
+   * They cost zero JavaScript, need no hydration, work with scripting
+   * disabled, and — unlike a `whileInView` implementation — do not
+   * server-render every section below the fold as `opacity: 0`, which is what
+   * makes a JS-driven reveal system so expensive for LCP.
    *
    * The `@supports` gate is load-bearing. The hidden start state exists only
    * inside it, so a browser without `animation-timeline` renders the content
-   * plainly rather than leaving it invisible forever — the exact failure the
-   * Framer version had without JavaScript.
+   * plainly rather than leaving the entire page invisible for ever.
+   *
+   * TRANSFORM AND OPACITY RUN ON SEPARATE RANGES. The opacity ramp finishes at
+   * `entry 55%` — while the element is still near the bottom edge — so nothing
+   * is ever parked at partial opacity where somebody might try to read it. The
+   * slower transform range is what carries the sense of motion. Automated
+   * contrast audits flag mid-fade text, correctly; this split is how the effect
+   * is kept without that cost.
    */
-  .reveal,
-  .reveal-item {
-    /* Deliberately empty outside @supports: content is simply visible. */
+  .rise,
+  .rise-item {
+    /* Deliberately visible outside @supports. */
     opacity: 1;
+  }
+
+  /* ------------------------------------------- self-drawing data graphics
+   *
+   * The charts, rings and bars inside the phone mockups draw themselves as they
+   * scroll into view, on the same scroll-driven timeline as the reveals — so
+   * the data animates at the reader's own pace and costs no JavaScript.
+   *
+   * Each one needs a length or a target passed in as a custom property:
+   *   .draw-path   --len   the path's total length (getTotalLength, hard-coded)
+   *   .draw-ring   --len   the circle's circumference, and --gap the remainder
+   *   .grow-bar    --to    final scaleY, 0–1
+   *   .fill-level  --to    final translateY as a percentage
+   *
+   * Outside @supports, and under reduced motion, every one of these renders in
+   * its final state. A chart that never draws is still a correct chart; a chart
+   * stuck at zero is a bug that looks like missing data.
+   */
+  .draw-path,
+  .draw-ring {
+    stroke-dashoffset: 0;
+  }
+
+  .grow-bar {
+    transform: scaleY(var(--to, 1));
+  }
+
+  .fill-level {
+    transform: translateY(calc((1 - var(--to, 1)) * 100%));
   }
 
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
-      .reveal {
-        animation: reveal-rise linear both;
+      .draw-path {
+        stroke-dasharray: var(--len);
+        animation: draw-in linear both;
         animation-timeline: view();
-        animation-range: entry 0% cover 20%;
+        animation-range: entry 16% cover 42%;
       }
 
-      /* Children of a .reveal-group stagger by nudging each one's scroll
-         range slightly later. `--i` is set inline by RevealItem. */
-      .reveal-item {
-        animation: reveal-rise linear both;
+      /* A ring's dash pattern is "arc, remainder", so the visible sweep is
+         already the right length; only the offset animates. */
+      .draw-ring {
+        stroke-dasharray: var(--len) var(--gap);
+        animation: draw-in linear both;
         animation-timeline: view();
-        animation-range: entry 0% cover calc(16% + (var(--i, 0) * 2.5%));
+        animation-range: entry 16% cover 46%;
       }
 
-      .reveal-left {
-        animation-name: reveal-left;
+      .grow-bar {
+        transform-origin: bottom;
+        animation: grow-up linear both;
+        animation-timeline: view();
+        animation-range: entry 18% cover calc(38% + (var(--i, 0) * 2%));
       }
-      .reveal-right {
-        animation-name: reveal-right;
+
+      .fill-level {
+        animation: fill-up linear both;
+        animation-timeline: view();
+        animation-range: entry 16% cover 44%;
+      }
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .rise {
+        animation:
+          rise-up linear both,
+          fade-in linear both;
+        animation-timeline: view(), view();
+        animation-range:
+          entry 0% cover 22%,
+          entry 0% entry 55%;
+      }
+
+      /* Children of a `.rise-group` stagger by pushing each one's range
+         slightly later. `--i` is set inline by <Reveal.Item>. */
+      .rise-item {
+        animation:
+          rise-up linear both,
+          fade-in linear both;
+        animation-timeline: view(), view();
+        animation-range:
+          entry 0% cover calc(16% + (var(--i, 0) * 3%)),
+          entry 0% entry 55%;
+      }
+
+      .rise-l {
+        animation-name: rise-left, fade-in;
+      }
+      .rise-r {
+        animation-name: rise-right, fade-in;
+      }
+      .rise-scale {
+        animation-name: rise-scale, fade-in;
       }
     }
   }
 }
 
-/* Reveals animate transform ONLY — never opacity.
- *
- * A scroll-driven opacity fade parks anything not yet scrolled to at partial
- * transparency, which is genuinely low contrast for a reader who lands there,
- * and which automated audits correctly flag (measured at 2.17:1 on an eyebrow
- * mid-fade). Sliding at full opacity gives the same sense of motion with no
- * legibility cost, and means no element on the site is ever less than fully
- * readable — including with JavaScript disabled. */
-@keyframes reveal-rise {
+@keyframes rise-up {
   from {
-    transform: translateY(26px);
+    transform: translate3d(0, 34px, 0);
   }
   to {
     transform: none;
   }
 }
 
-@keyframes reveal-left {
+@keyframes rise-left {
   from {
-    transform: translateX(32px);
+    transform: translate3d(44px, 0, 0);
   }
   to {
     transform: none;
   }
 }
 
-@keyframes reveal-right {
+@keyframes rise-right {
   from {
-    transform: translateX(-32px);
+    transform: translate3d(-44px, 0, 0);
   }
   to {
     transform: none;
   }
 }
 
-/* ---------------------------------------------------------- reduced motion
-   Framer Motion is additionally gated per-component via useReducedMotion();
-   this is the belt-and-braces guard for pure-CSS animation. */
+@keyframes rise-scale {
+  from {
+    transform: scale(0.94) translate3d(0, 22px, 0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes stage-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+/* Stroke drawing. `--len` is the full dash length; starting at that offset
+   hides the stroke completely and animating to 0 draws it on. */
+@keyframes draw-in {
+  from {
+    stroke-dashoffset: var(--len);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes grow-up {
+  from {
+    transform: scaleY(0.02);
+  }
+  to {
+    transform: scaleY(var(--to, 1));
+  }
+}
+
+@keyframes fill-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(calc((1 - var(--to, 1)) * 100%));
+  }
+}
+
+/* --------------------------------------------------------------- Lenis
+   Required by the smooth-scroll runtime. Lenis adds these classes to <html>
+   itself once it starts; when it never starts (reduced motion, low-power
+   device, no JavaScript) none of this applies and the page scrolls natively.
+
+   `scroll-behavior: auto` while Lenis is active is not optional — a native
+   smooth-scroll running at the same time as Lenis makes anchor jumps stutter
+   and then land in the wrong place. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ------------------------------------------------- motion-tier downgrades
+   `data-motion` is set by MotionProvider. On a device that could not hold 60fps
+   — or one whose owner asked for less movement — the decorative layers are
+   switched off at the CSS level, so nothing has to re-render to obey. */
+:root[data-motion="lite"] [data-decor="rich"],
+:root[data-motion="none"] [data-decor="rich"] {
+  display: none;
+}
+
+:root[data-motion="lite"] [data-decor="ambient"],
+:root[data-motion="none"] [data-decor="ambient"] {
+  animation: none !important;
+}
+
+/* --------------------------------------------------------- reduced motion
+   Framer Motion components are additionally gated with useReducedMotion(), and
+   the Lenis provider refuses to start. This is the belt-and-braces guard for
+   everything expressed purely in CSS. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -3,6 +3,8 @@ import { Geist } from "next/font/google";
 import { JsonLd, organizationSchema } from "@/components/seo/JsonLd";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
+import { PageTransition } from "@/components/layout/PageTransition";
+import { MotionProvider } from "@/components/providers/MotionProvider";
 import { site, siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -10,9 +12,10 @@ import "./globals.css";
  * One font, self-hosted by `next/font` at build time — no runtime request to
  * Google, no layout shift, and one less origin to allow in the CSP.
  *
- * Geist Mono was dropped: `next/font` preloads every declared face, so it
- * put 30KB on the critical path to style a package name and an error digest.
- * Those now use the system monospace stack, which costs nothing to fetch.
+ * Geist Mono was deliberately not added: `next/font` preloads every declared
+ * face, so a second family would put ~30KB on the critical path to style a
+ * version number and a package name. Those use the system monospace stack,
+ * which costs nothing to fetch.
  */
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -80,25 +83,26 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geistSans.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col bg-ink text-text">
+      <body className="flex min-h-full flex-col bg-void text-chalk">
         {/*
-          Scroll-reveal safety net.
+          No-JavaScript safety net.
 
-          Framer Motion server-renders each reveal wrapper's `initial` state as
-          an inline `opacity:0`, and only clears it once the client runtime
-          observes the element entering the viewport. Without JavaScript that
-          never happens, so every section below the fold would stay invisible
-          forever — the copy is in the DOM, but nobody can read it.
-
-          This restores it for that case only. When scripting is available the
-          rule is inert and the animations run normally.
+          The scroll reveals are pure CSS and degrade to "visible" on their own,
+          but the hero's staged entrance and the phone-scene transitions start
+          from a hidden state. Without scripting those states are never cleared,
+          so this restores them. When scripting is available the rule never
+          applies, because it lives inside <noscript>.
         */}
         <noscript>
           <style>{`
+            .stage,
+            .page-enter,
             [style*="opacity:0"],
             [style*="opacity: 0"] {
               opacity: 1 !important;
               transform: none !important;
+              filter: none !important;
+              animation: none !important;
             }
           `}</style>
         </noscript>
@@ -106,20 +110,23 @@ export default function RootLayout({
         {/* First tab stop on every page. */}
         <a
           href="#main"
-          className="sr-only left-4 top-4 z-[100] rounded-xl bg-ember px-4 py-2 text-[14px] font-bold text-[#150500] focus:not-sr-only focus:fixed"
+          className="sr-only left-4 top-4 z-[100] rounded-pill bg-flare px-5 py-2.5 text-[14px] font-bold text-[#200800] focus:not-sr-only focus:fixed"
         >
           Skip to main content
         </a>
 
         <JsonLd data={organizationSchema} />
-        <Navbar />
 
-        {/* Clears the fixed 68px header. */}
-        <main id="main" className="flex-1 pt-[68px]">
-          {children}
-        </main>
+        <MotionProvider>
+          <Navbar />
 
-        <Footer />
+          {/* Clears the fixed 64px header. */}
+          <main id="main" className="flex-1 pt-[64px]">
+            <PageTransition>{children}</PageTransition>
+          </main>
+
+          <Footer />
+        </MotionProvider>
       </body>
     </html>
   );

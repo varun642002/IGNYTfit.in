@@ -37,20 +37,20 @@ export default function OfflinePage() {
       <Container className="text-center">
         <LogoMark size={48} className="mx-auto size-12" />
 
-        <span className="mt-8 inline-flex items-center gap-2 rounded-full border border-line bg-surface/70 px-3.5 py-1.5 text-[12px] font-semibold text-text-mute">
-          <CloudOff aria-hidden className="size-3.5 text-pulse-strong" />
+        <span className="mt-8 inline-flex items-center gap-2 rounded-full border border-hairline bg-carbon/70 px-3.5 py-1.5 text-[12px] font-semibold text-ash">
+          <CloudOff aria-hidden className="size-3.5 text-arc-bright" />
           No connection
         </span>
 
         <h1 className="mt-6 text-[clamp(1.9rem,4.4vw,2.9rem)] font-black">
           This page needs a connection
         </h1>
-        <p className="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed text-text-mute">
+        <p className="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed text-ash">
           The {site.name} website could not be reached. Pages you have already
           visited may still load from your browser&rsquo;s cache.
         </p>
 
-        <p className="mx-auto mt-6 flex max-w-lg items-start justify-center gap-2.5 rounded-tile border border-good/30 bg-good/8 p-4 text-left text-[14.5px] leading-relaxed text-text-mute">
+        <p className="mx-auto mt-6 flex max-w-lg items-start justify-center gap-2.5 rounded-panel border border-good/30 bg-good/8 p-4 text-left text-[14.5px] leading-relaxed text-ash">
           <Smartphone
             aria-hidden
             className="mt-0.5 size-4 shrink-0 text-good"

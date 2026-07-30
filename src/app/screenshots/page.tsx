@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { DownloadCta } from "@/components/home/DownloadCta";
-import { ScreenshotGallery } from "@/components/screenshots/ScreenshotGallery";
+import { ScreenGallery } from "@/components/screenshots/ScreenGallery";
 import { breadcrumbSchema, JsonLd } from "@/components/seo/JsonLd";
 import { ButtonLink } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
 import { PlayStoreButton } from "@/components/ui/PlayStoreButton";
 import { createMetadata } from "@/lib/seo";
@@ -33,18 +34,65 @@ export default function ScreenshotsPage() {
         title={
           <>
             Sixteen screens.{" "}
-            <span className="text-gradient">One fitness system.</span>
+            <span className="text-arc-gradient">One fitness system.</span>
           </>
         }
         lead={`A guided tour of all ${screens.length} screens — from the first set you log to the analytics that tell you whether the last twelve weeks actually worked.`}
       >
         <PlayStoreButton />
-        <ButtonLink href="/features" variant="secondary" size="lg">
+        <ButtonLink href="/features" variant="outline" size="lg">
           Read the feature list
         </ButtonLink>
       </PageHero>
 
-      <ScreenshotGallery />
+      {/* Two rails of eight rather than one of sixteen. A single rail that long
+          takes a dozen swipes to reach the end and gives no sense of how much is
+          left; splitting it into "during a session" and "the result" makes the
+          set legible at a glance. */}
+      <section
+        aria-labelledby="screens-train-heading"
+        className="cv-auto py-20 sm:py-24"
+      >
+        <Container>
+          <h2
+            id="screens-train-heading"
+            className="text-[clamp(1.6rem,3.4vw,2.2rem)] font-black tracking-[-0.03em]"
+          >
+            Training and nutrition
+          </h2>
+          <p className="mt-4 max-w-2xl text-[16px] leading-[1.7] text-ash">
+            The screens you touch during a session and around a meal.
+          </p>
+        </Container>
+        <div className="mt-12 px-5 sm:px-8">
+          <div className="mx-auto max-w-[1440px]">
+            <ScreenGallery items={screens.slice(0, 8)} />
+          </div>
+        </div>
+      </section>
+
+      <section
+        aria-labelledby="screens-body-heading"
+        className="cv-auto border-t border-hairline-soft py-20 sm:py-24"
+      >
+        <Container>
+          <h2
+            id="screens-body-heading"
+            className="text-[clamp(1.6rem,3.4vw,2.2rem)] font-black tracking-[-0.03em]"
+          >
+            Body, data and settings
+          </h2>
+          <p className="mt-4 max-w-2xl text-[16px] leading-[1.7] text-ash">
+            Everything that tracks the result rather than the session.
+          </p>
+        </Container>
+        <div className="mt-12 px-5 sm:px-8">
+          <div className="mx-auto max-w-[1440px]">
+            <ScreenGallery items={screens.slice(8)} />
+          </div>
+        </div>
+      </section>
+
       <DownloadCta />
     </>
   );

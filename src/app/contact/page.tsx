@@ -52,14 +52,14 @@ const CHANNELS: Channel[] = [
     body: "Something is not working the way the app says it should. Include your device model and Android version.",
     Icon: LifeBuoy,
     subject: "Support request",
-    accent: "text-ember",
+    accent: "text-flare",
   },
   {
     title: "General questions",
     body: "How a feature works, whether something is possible, or what is planned next.",
     Icon: HelpCircle,
     subject: "General question",
-    accent: "text-pulse-strong",
+    accent: "text-arc-bright",
   },
   {
     title: "Technical issues",
@@ -126,7 +126,7 @@ export default function ContactPage() {
         title={
           <>
             Talk to the people who{" "}
-            <span className="text-gradient">build IGNYT</span>
+            <span className="text-flare-gradient">build IGNYT</span>
           </>
         }
         lead="No ticket queue and no chatbot. Messages go to a real inbox, and we answer every one — usually within two working days."
@@ -159,14 +159,14 @@ export default function ContactPage() {
                   strokeWidth={2.1}
                 />
                 <h3 className="mt-5 text-[17px] font-bold">{channel.title}</h3>
-                <p className="mt-2.5 text-[14px] leading-relaxed text-text-mute">
+                <p className="mt-2.5 text-[14px] leading-relaxed text-ash">
                   {channel.body}
                 </p>
                 <a
                   href={`mailto:${site.email.support}?subject=${encodeURIComponent(
                     `[IGNYT] ${channel.subject}`,
                   )}`}
-                  className="mt-4 inline-flex text-[13.5px] font-semibold text-ember hover:underline"
+                  className="mt-4 inline-flex text-[13.5px] font-semibold text-flare hover:underline"
                 >
                   Email about {channel.title.toLowerCase()}
                   <span className="sr-only"> — opens your mail client</span>
@@ -178,7 +178,7 @@ export default function ContactPage() {
       </Section>
 
       {/* Form */}
-      <Section id="form" className="bg-ink-soft/60">
+      <Section id="form" className="bg-void-2/60">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-16">
           <div>
             <SectionHeading
@@ -197,30 +197,30 @@ export default function ContactPage() {
           <Reveal direction="left" className="lg:pt-10">
             <Card className="glass h-full p-7">
               <h3 className="text-[17px] font-bold">Before you write</h3>
-              <ul className="mt-5 flex flex-col gap-4 text-[14px] leading-relaxed text-text-mute">
+              <ul className="mt-5 flex flex-col gap-4 text-[14px] leading-relaxed text-ash">
                 <li>
-                  <span className="font-semibold text-text">
+                  <span className="font-semibold text-chalk">
                     Reporting a bug?
                   </span>{" "}
                   Device model, Android version, and what you were doing when it
                   happened.
                 </li>
                 <li>
-                  <span className="font-semibold text-text">
+                  <span className="font-semibold text-chalk">
                     Data or deletion request?
                   </span>{" "}
                   Write from the Google account address you use with IGNYT so we
                   can verify it is you.
                 </li>
                 <li>
-                  <span className="font-semibold text-text">
+                  <span className="font-semibold text-chalk">
                     Health Connect issue?
                   </span>{" "}
                   Check the FAQ below first — nine times out of ten it is a
                   permission that was never granted.
                 </li>
                 <li>
-                  <span className="font-semibold text-text">
+                  <span className="font-semibold text-chalk">
                     Never send credentials.
                   </span>{" "}
                   We will never ask for your password or a recovery code.
@@ -243,7 +243,7 @@ export default function ContactPage() {
         <div className="mx-auto mt-14 max-w-3xl">
           {faqGroups.map((group) => (
             <div key={group.id} id={group.id} className="scroll-mt-28 pb-10">
-              <h3 className="mb-4 text-[12px] font-bold uppercase tracking-[0.16em] text-ember">
+              <h3 className="mb-4 text-[12px] font-bold uppercase tracking-[0.16em] text-flare">
                 {group.label}
               </h3>
               <Accordion items={group.items} name={`faq-${group.id}`} />
@@ -253,7 +253,7 @@ export default function ContactPage() {
       </Section>
 
       {/* Community */}
-      <Section id="community" className="bg-ink-soft/60">
+      <Section id="community" className="bg-void-2/60">
         <SectionHeading
           id="community"
           eyebrow="Community"
@@ -275,15 +275,15 @@ export default function ContactPage() {
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex h-full flex-col items-center gap-3 rounded-card border border-line bg-surface/60 p-7 text-center transition-[transform,border-color] duration-300 hover:-translate-y-1 hover:border-ember/45"
+                className="group flex h-full flex-col items-center gap-3 rounded-card border border-hairline bg-carbon/60 p-7 text-center transition-[transform,border-color] duration-300 hover:-translate-y-1 hover:border-flare/45"
               >
-                <span className="grid size-12 place-items-center rounded-tile border border-line bg-surface-2 text-text-mute transition-colors group-hover:text-ember">
+                <span className="grid size-12 place-items-center rounded-panel border border-hairline bg-carbon-2 text-ash transition-colors group-hover:text-flare">
                   <item.Icon className="size-5" />
                 </span>
-                <span className="text-[16px] font-bold text-text">
+                <span className="text-[16px] font-bold text-chalk">
                   {item.label}
                 </span>
-                <span className="text-[13px] text-text-dim">{item.handle}</span>
+                <span className="text-[13px] text-ash-dim">{item.handle}</span>
               </a>
             </RevealItem>
           ))}

@@ -69,7 +69,7 @@ Open <http://localhost:3000>.
 | `npm start`         | Serve the production build                       |
 | `npm run lint`      | ESLint                                           |
 | `npm run typecheck` | `tsc --noEmit`                                   |
-| `npm run icons`     | Regenerate PNG icons from `public/logo-mark.svg` |
+| `npm run icons`     | Regenerate every icon from `public/logo-official.png` |
 
 ---
 

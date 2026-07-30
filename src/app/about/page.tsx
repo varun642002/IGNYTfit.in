@@ -218,7 +218,7 @@ export default function AboutPage() {
         title={
           <>
             Built for people who actually{" "}
-            <span className="text-gradient">train</span>
+            <span className="text-flare-gradient">train</span>
           </>
         }
         lead="IGNYT started as one person's training log and grew into a complete fitness system — because the alternative was six apps, three subscriptions and a spreadsheet that nobody kept up to date."
@@ -228,8 +228,8 @@ export default function AboutPage() {
       <Section id="mission">
         <div className="grid gap-6 lg:grid-cols-2">
           <Reveal>
-            <Card className="ring-gradient h-full p-8 sm:p-10">
-              <Badge tone="ember">Our mission</Badge>
+            <Card className="edge-arc h-full p-8 sm:p-10">
+              <Badge tone="flare">Our mission</Badge>
               <h2
                 id="mission-heading"
                 className="mt-5 text-[clamp(1.5rem,3vw,2.1rem)] font-black leading-tight"
@@ -237,7 +237,7 @@ export default function AboutPage() {
                 Make consistent training and honest nutrition tracking easy
                 enough that people keep doing it.
               </h2>
-              <p className="mt-5 text-[15px] leading-relaxed text-text-mute">
+              <p className="mt-5 text-[15px] leading-relaxed text-ash">
                 Most fitness journeys do not fail on knowledge — they fail on
                 friction. IGNYT exists to remove the friction: one app, one set
                 of numbers, no paywall in the middle of a workout, and no
@@ -248,12 +248,12 @@ export default function AboutPage() {
 
           <Reveal>
             <Card className="h-full p-8 sm:p-10">
-              <Badge tone="pulse">Our vision</Badge>
+              <Badge tone="arc">Our vision</Badge>
               <h2 className="mt-5 text-[clamp(1.5rem,3vw,2.1rem)] font-black leading-tight">
                 A complete health picture that belongs to the person it
                 describes.
               </h2>
-              <p className="mt-5 text-[15px] leading-relaxed text-text-mute">
+              <p className="mt-5 text-[15px] leading-relaxed text-ash">
                 Training, nutrition, sleep, hydration, body composition and
                 blood work all describe the same body. They belong in one place
                 — and that place should be the device in your pocket, under your
@@ -265,7 +265,7 @@ export default function AboutPage() {
       </Section>
 
       {/* Why we built it */}
-      <Section id="why" className="bg-ink-soft/60">
+      <Section id="why" className="bg-void-2/60">
         <SectionHeading
           id="why"
           eyebrow="Why we built IGNYT"
@@ -285,14 +285,14 @@ export default function AboutPage() {
               className="h-full"
             >
               <Card className="h-full p-6">
-                <h3 className="flex items-start gap-3 text-[16.5px] font-bold text-text">
+                <h3 className="flex items-start gap-3 text-[16.5px] font-bold text-chalk">
                   <span
                     aria-hidden
                     className="mt-1.5 size-1.5 shrink-0 rounded-full bg-bad"
                   />
                   {item.problem}
                 </h3>
-                <p className="mt-3 pl-[18px] text-[14.5px] leading-relaxed text-text-mute">
+                <p className="mt-3 pl-[18px] text-[14.5px] leading-relaxed text-ash">
                   {item.solution}
                 </p>
               </Card>
@@ -321,7 +321,7 @@ export default function AboutPage() {
               className="h-full"
             >
               <Card interactive className="h-full p-7">
-                <span className="grid size-11 place-items-center rounded-tile border border-ember/30 bg-ember/12 text-ember">
+                <span className="grid size-11 place-items-center rounded-panel border border-flare/30 bg-flare/12 text-flare">
                   <value.Icon
                     aria-hidden
                     className="size-5"
@@ -329,7 +329,7 @@ export default function AboutPage() {
                   />
                 </span>
                 <h3 className="mt-5 text-[17px] font-bold">{value.title}</h3>
-                <p className="mt-2.5 text-[14.5px] leading-relaxed text-text-mute">
+                <p className="mt-2.5 text-[14.5px] leading-relaxed text-ash">
                   {value.body}
                 </p>
               </Card>
@@ -339,7 +339,7 @@ export default function AboutPage() {
       </Section>
 
       {/* Technology */}
-      <Section id="technology" className="bg-ink-soft/60">
+      <Section id="technology" className="bg-void-2/60">
         <SectionHeading
           id="technology"
           eyebrow="Technology stack"
@@ -360,7 +360,7 @@ export default function AboutPage() {
             >
               <Card className="h-full p-6">
                 <div className="flex items-center gap-3">
-                  <span className="grid size-10 place-items-center rounded-tile border border-pulse/30 bg-pulse/12 text-pulse-strong">
+                  <span className="grid size-10 place-items-center rounded-panel border border-arc/30 bg-arc/12 text-arc-bright">
                     <item.Icon
                       aria-hidden
                       className="size-[18px]"
@@ -371,12 +371,12 @@ export default function AboutPage() {
                     <h3 className="text-[16px] font-bold leading-tight">
                       {item.name}
                     </h3>
-                    <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-text-dim">
+                    <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-ash-dim">
                       {item.role}
                     </p>
                   </div>
                 </div>
-                <p className="mt-4 text-[14px] leading-relaxed text-text-mute">
+                <p className="mt-4 text-[14px] leading-relaxed text-ash">
                   {item.body}
                 </p>
               </Card>
@@ -408,10 +408,10 @@ export default function AboutPage() {
                 key={item.title}
                 className="flex gap-5"
               >
-                <span className="relative z-10 grid size-12 shrink-0 place-items-center rounded-2xl border border-pulse/30 bg-ink shadow-[0_0_0_6px_rgba(8,9,13,1)]">
+                <span className="relative z-10 grid size-12 shrink-0 place-items-center rounded-2xl border border-arc/30 bg-void shadow-[0_0_0_6px_rgba(8,9,13,1)]">
                   <item.Icon
                     aria-hidden
-                    className="size-[19px] text-pulse-strong"
+                    className="size-[19px] text-arc-bright"
                     strokeWidth={2.1}
                   />
                 </span>
@@ -420,7 +420,7 @@ export default function AboutPage() {
                     <h3 className="text-[17.5px] font-bold">{item.title}</h3>
                     <Badge tone="neutral">Planned</Badge>
                   </div>
-                  <p className="mt-2 text-[14.5px] leading-relaxed text-text-mute">
+                  <p className="mt-2 text-[14.5px] leading-relaxed text-ash">
                     {item.body}
                   </p>
                 </div>
@@ -431,7 +431,7 @@ export default function AboutPage() {
       </Section>
 
       {/* Commitment */}
-      <Section id="commitment" className="bg-ink-soft/60">
+      <Section id="commitment" className="bg-void-2/60">
         <SectionHeading
           id="commitment"
           eyebrow="Our commitment"
@@ -456,7 +456,7 @@ export default function AboutPage() {
                   strokeWidth={2.1}
                 />
                 <h3 className="mt-5 text-[17px] font-bold">{item.title}</h3>
-                <p className="mt-2.5 text-[14px] leading-relaxed text-text-mute">
+                <p className="mt-2.5 text-[14px] leading-relaxed text-ash">
                   {item.body}
                 </p>
               </Card>
@@ -466,7 +466,7 @@ export default function AboutPage() {
 
         <Container className="mt-14 text-center">
           <Reveal>
-            <p className="mx-auto max-w-2xl text-[16px] leading-relaxed text-text-mute">
+            <p className="mx-auto max-w-2xl text-[16px] leading-relaxed text-ash">
               Join thousands of people building healthier lifestyles with IGNYT
               — one logged set, one honest meal and one consistent week at a
               time.

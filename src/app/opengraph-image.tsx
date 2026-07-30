@@ -39,13 +39,13 @@ export default async function OpengraphImage() {
         justifyContent: "space-between",
         padding: 76,
         background:
-          "linear-gradient(135deg, #08090d 0%, #10131a 55%, #1a1116 100%)",
-        color: "#f7f4ef",
+          "linear-gradient(135deg, #000000 0%, #0b0c0f 52%, #140a04 100%)",
+        color: "#ffffff",
         fontFamily: "sans-serif",
         position: "relative",
       }}
     >
-      {/* Ember bloom behind the mark */}
+      {/* Flare bloom behind the mark */}
       <div
         style={{
           position: "absolute",
@@ -55,11 +55,11 @@ export default async function OpengraphImage() {
           height: 620,
           borderRadius: 999,
           background:
-            "radial-gradient(circle, rgba(255,90,31,0.38) 0%, rgba(255,90,31,0) 68%)",
+            "radial-gradient(circle, rgba(255,106,26,0.40) 0%, rgba(255,106,26,0) 68%)",
           display: "flex",
         }}
       />
-      {/* Pulse bloom, bottom-left */}
+      {/* Arc bloom, bottom-left */}
       <div
         style={{
           position: "absolute",
@@ -69,7 +69,7 @@ export default async function OpengraphImage() {
           height: 640,
           borderRadius: 999,
           background:
-            "radial-gradient(circle, rgba(62,130,247,0.28) 0%, rgba(62,130,247,0) 68%)",
+            "radial-gradient(circle, rgba(61,123,255,0.30) 0%, rgba(61,123,255,0) 68%)",
           display: "flex",
         }}
       />
@@ -118,7 +118,7 @@ export default async function OpengraphImage() {
         <div
           style={{
             fontSize: 31,
-            color: "#aaa9b0",
+            color: "#9d9fa8",
             marginTop: 26,
             maxWidth: 900,
             lineHeight: 1.4,
@@ -136,8 +136,8 @@ export default async function OpengraphImage() {
             display: "flex",
             padding: "14px 26px",
             borderRadius: 999,
-            background: "#ff5a1f",
-            color: "#0b0402",
+            background: "#ff6a1a",
+            color: "#200800",
             fontSize: 27,
             fontWeight: 800,
             marginRight: 22,
@@ -145,7 +145,7 @@ export default async function OpengraphImage() {
         >
           Get it on Google Play
         </div>
-        <div style={{ fontSize: 27, color: "#aaa9b0", display: "flex" }}>
+        <div style={{ fontSize: 27, color: "#9d9fa8", display: "flex" }}>
           {site.domain}
         </div>
       </div>

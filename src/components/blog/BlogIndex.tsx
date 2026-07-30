@@ -41,8 +41,8 @@ export function BlogIndex({ posts }: { posts: Post[] }) {
             className={cn(
               "shrink-0 rounded-full border px-4 py-2 text-[13.5px] font-semibold transition-colors duration-200",
               active === filter
-                ? "border-ember/45 bg-ember/12 text-ember"
-                : "border-line bg-surface/60 text-text-mute hover:border-line/80 hover:text-text",
+                ? "border-flare/45 bg-flare/12 text-flare"
+                : "border-hairline bg-carbon/60 text-ash hover:border-hairline/80 hover:text-chalk",
             )}
           >
             {filter}
@@ -58,37 +58,37 @@ export function BlogIndex({ posts }: { posts: Post[] }) {
         {visible.map((post, index) => (
           <li
             key={post.slug}
-            className="reveal-item h-full"
+            className="rise-item h-full"
             style={{ "--i": Math.min(index, 6) } as React.CSSProperties}
           >
             <Card interactive className="h-full p-7">
               <div className="flex flex-wrap items-center gap-3">
-                <Badge tone="ember">{post.category}</Badge>
-                <span className="flex items-center gap-1.5 text-[12.5px] text-text-dim">
+                <Badge tone="flare">{post.category}</Badge>
+                <span className="flex items-center gap-1.5 text-[12.5px] text-ash-dim">
                   <Clock aria-hidden className="size-3.5" />
                   {post.readingMinutes} min read
                 </span>
               </div>
 
               <h2 className="mt-4 text-[20px] font-bold leading-snug">
-                <Link href={`/blog/${post.slug}`} className="hover:text-ember">
+                <Link href={`/blog/${post.slug}`} className="hover:text-flare">
                   {post.title}
                   <span className="absolute inset-0" aria-hidden />
                 </Link>
               </h2>
 
-              <p className="mt-3 text-[14.5px] leading-relaxed text-text-mute">
+              <p className="mt-3 text-[14.5px] leading-relaxed text-ash">
                 {post.description}
               </p>
 
               <div className="mt-6 flex items-center justify-between">
                 <time
                   dateTime={post.published}
-                  className="text-[13px] text-text-dim"
+                  className="text-[13px] text-ash-dim"
                 >
                   {formatPostDate(post.published)}
                 </time>
-                <span className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-ember">
+                <span className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-flare">
                   Read
                   <ArrowRight aria-hidden className="size-3.5" />
                 </span>
@@ -99,7 +99,7 @@ export function BlogIndex({ posts }: { posts: Post[] }) {
       </ul>
 
       {visible.length === 0 ? (
-        <p className="mt-12 text-center text-[15px] text-text-mute">
+        <p className="mt-12 text-center text-[15px] text-ash">
           Nothing published in that category yet.
         </p>
       ) : null}

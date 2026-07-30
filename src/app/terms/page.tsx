@@ -139,7 +139,7 @@ const sections: LegalSectionSpec[] = [
           exercise, diet or wellness programme. Further detail is in the{" "}
           <Link
             href="/disclaimer"
-            className="font-semibold text-ember hover:underline"
+            className="font-semibold text-flare hover:underline"
           >
             Disclaimer
           </Link>
@@ -164,7 +164,7 @@ const sections: LegalSectionSpec[] = [
           The data types involved are listed in the{" "}
           <Link
             href="/health-data"
-            className="font-semibold text-ember hover:underline"
+            className="font-semibold text-flare hover:underline"
           >
             Health Data Policy
           </Link>
@@ -247,7 +247,7 @@ const sections: LegalSectionSpec[] = [
         Your use of IGNYT is also governed by our{" "}
         <Link
           href="/privacy"
-          className="font-semibold text-ember hover:underline"
+          className="font-semibold text-flare hover:underline"
         >
           Privacy Policy
         </Link>
@@ -341,7 +341,7 @@ const sections: LegalSectionSpec[] = [
           Step-by-step instructions are in the{" "}
           <Link
             href="/data-deletion"
-            className="font-semibold text-ember hover:underline"
+            className="font-semibold text-flare hover:underline"
           >
             Data Deletion Policy
           </Link>
@@ -427,7 +427,7 @@ const sections: LegalSectionSpec[] = [
           Email:{" "}
           <a
             href={`mailto:${site.email.support}`}
-            className="font-semibold text-ember hover:underline"
+            className="font-semibold text-flare hover:underline"
           >
             {site.email.support}
           </a>
@@ -435,7 +435,7 @@ const sections: LegalSectionSpec[] = [
           Website:{" "}
           <a
             href={site.url}
-            className="font-semibold text-ember hover:underline"
+            className="font-semibold text-flare hover:underline"
           >
             {site.url}
           </a>
@@ -447,7 +447,7 @@ const sections: LegalSectionSpec[] = [
     id: "acceptance",
     heading: "Acceptance",
     body: (
-      <Note tone="ember">
+      <Note tone="flare">
         By downloading, installing or using IGNYT, you acknowledge that you have
         read, understood and agree to be bound by these Terms and Conditions.
       </Note>

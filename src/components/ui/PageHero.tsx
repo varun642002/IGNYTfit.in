@@ -1,14 +1,21 @@
 import type { ReactNode } from "react";
+import { Aurora } from "@/components/ui/Aurora";
 import { Container } from "@/components/ui/Container";
+import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
 
 /**
- * The hero used by every page except the home page.
+ * The hero for every page except the home page.
  *
- * One component means the eyebrow, heading scale, lead width and ambient glow
- * are identical across /features, /screenshots, /about, /contact, /download
- * and the legal suite — consistency that is otherwise very easy to lose.
+ * One component means the eyebrow, heading scale, lead width, grid field and
+ * ambient light are identical across /features, /screenshots, /about,
+ * /contact, /download and the whole legal suite — the sort of consistency that
+ * is otherwise extremely easy to lose one page at a time.
+ *
+ * The faint grid behind it is the only texture on the site. It is masked to an
+ * ellipse so it never reaches the edges, which keeps it reading as depth rather
+ * than as a pattern.
  */
 export function PageHero({
   eyebrow,
@@ -16,7 +23,7 @@ export function PageHero({
   lead,
   children,
   className,
-  tone = "ember",
+  tone = "arc",
 }: {
   eyebrow?: string;
   title: ReactNode;
@@ -24,66 +31,61 @@ export function PageHero({
   /** Buttons or badges rendered under the lead. */
   children?: ReactNode;
   className?: string;
-  tone?: "ember" | "pulse";
+  tone?: "arc" | "flare";
 }) {
-  const glow =
-    tone === "ember" ? "rgba(255,90,31,0.20)" : "rgba(62,130,247,0.22)";
-
   return (
     <section
       aria-labelledby="page-hero-heading"
       className={cn(
-        "relative overflow-hidden border-b border-line/60 py-20 sm:py-28",
+        "relative overflow-hidden border-b border-hairline-soft py-24 sm:py-32",
         className,
       )}
     >
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div
-          className="absolute left-1/2 top-[-30%] size-[820px] -translate-x-1/2 rounded-full blur-[110px]"
-          style={{
-            background: `radial-gradient(circle, ${glow} 0%, rgba(0,0,0,0) 68%)`,
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px)",
-            backgroundSize: "68px 68px",
-            maskImage:
-              "radial-gradient(ellipse 80% 70% at 50% 30%, #000 20%, transparent 72%)",
-          }}
-        />
-      </div>
+      <Aurora tone={tone} drift={false} />
+
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-40"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
+          backgroundSize: "72px 72px",
+          maskImage:
+            "radial-gradient(ellipse 78% 68% at 50% 28%, #000 18%, transparent 74%)",
+        }}
+      />
 
       <Container className="text-center">
-        {/* Above-the-fold text is rendered directly, never inside a Reveal.
-            A scroll-reveal ships its children as `opacity: 0` and clears it
-            on hydration, which for a hero means the largest contentful paint
-            waits on JavaScript — worth over a second of LCP on a throttled
-            mobile profile. Only the call-to-action row animates. */}
+        {/*
+          Above-the-fold text renders directly, never inside a Reveal.
+
+          A scroll reveal starts its children hidden and clears that on scroll;
+          for a hero — which is already in view on load — that means the largest
+          contentful paint is gated on something that may never fire. Only the
+          call-to-action row below animates.
+        */}
         <div className="mx-auto max-w-3xl">
           {eyebrow ? (
-            <p className="mb-5 inline-flex items-center rounded-full border border-line bg-surface/70 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-ember">
+            <Eyebrow tone={tone} className="mb-6">
               {eyebrow}
-            </p>
+            </Eyebrow>
           ) : null}
 
           <h1
             id="page-hero-heading"
-            className="text-[clamp(2.3rem,5.6vw,3.85rem)] font-black leading-[1.06]"
+            className="text-fade-down text-[clamp(2.4rem,6vw,4.15rem)] font-black leading-[1.04] tracking-[-0.04em]"
           >
             {title}
           </h1>
 
           {lead ? (
-            <p className="mx-auto mt-6 max-w-2xl text-[16.5px] leading-relaxed text-text-mute sm:text-[18px]">
+            <p className="mx-auto mt-7 max-w-2xl text-[16.5px] leading-[1.72] text-ash sm:text-[18px]">
               {lead}
             </p>
           ) : null}
 
           {children ? (
-            <Reveal className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Reveal className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               {children}
             </Reveal>
           ) : null}
