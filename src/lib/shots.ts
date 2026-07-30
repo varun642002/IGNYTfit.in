@@ -1,0 +1,192 @@
+/**
+ * The screenshot registry.
+ *
+ * Every image of the application anywhere on this site comes from here. The
+ * files in `public/screenshots/` are byte-identical to the captures supplied —
+ * not cropped, not recoloured, not retouched. The screenshot is the source of
+ * truth; the frame, the lighting and the motion around it are the presentation.
+ *
+ * WHAT WAS IN THE SUPPLIED SET
+ *
+ * Sixteen files, of which fourteen are distinct screens:
+ *
+ *   shot-07 and shot-08 are byte-identical (verified by hash) — the same Home
+ *   capture supplied twice. Only shot-07 is registered.
+ *
+ *   shot-05 and shot-10 are the same Habit Tracker screen captured twice, at
+ *   11:40 and 15:29. Not byte-identical, but the same screen, so registering
+ *   both would put the same interface on the page twice. Only shot-05 is
+ *   registered — it is the cleaner capture.
+ *
+ *   shot-12 is the Profile screen. It is deliberately NOT registered: it shows
+ *   a real body weight, a weight goal and a BMI reading classified "Obese".
+ *   That is personal health data about an identifiable person, on a public page
+ *   that Google reviews for OAuth verification. Registering it is a one-line
+ *   change if that is the intent — the entry is written out below, commented.
+ *
+ * THE NO-DUPLICATE RULE IS ENFORCED, NOT DOCUMENTED
+ *
+ * `assertUniqueShots()` runs at module load, which means at build time. If two
+ * entries ever point at the same file the build fails with the offending path,
+ * rather than the duplicate reaching the page and being spotted by a reader.
+ */
+
+export interface Shot {
+  /** Stable key, used to reference a shot from a page. */
+  id: string;
+  /** Public path. Never edit the file it points at. */
+  src: string;
+  /** The screen as it is named inside the app. */
+  screen: string;
+  /** What this screen is used to illustrate on the site. */
+  purpose: string;
+  /** Native pixel dimensions, for correct aspect handling. */
+  width: number;
+  height: number;
+}
+
+export const shots: Shot[] = [
+  {
+    id: "home",
+    src: "/screenshots/shot-07.jpg",
+    screen: "Home",
+    purpose: "Today at a glance — the greeting card and today's summary",
+    width: 540,
+    height: 1170,
+  },
+  {
+    id: "workout",
+    src: "/screenshots/shot-15.jpg",
+    screen: "Workout",
+    purpose: "The training week, quick actions and routines",
+    width: 737,
+    height: 1600,
+  },
+  {
+    id: "hyrox",
+    src: "/screenshots/shot-01.jpg",
+    screen: "Training Plan — HYROX",
+    purpose: "The eight-week schedule and race simulation",
+    width: 737,
+    height: 1600,
+  },
+  {
+    id: "food-log",
+    src: "/screenshots/shot-16.jpg",
+    screen: "Food Log",
+    purpose: "The calorie budget, meals and per-item macros",
+    width: 737,
+    height: 1600,
+  },
+  {
+    id: "progress",
+    src: "/screenshots/shot-13.jpg",
+    screen: "Progress",
+    purpose: "The week's figures and the training-volume chart",
+    width: 737,
+    height: 1600,
+  },
+  {
+    id: "analytics",
+    src: "/screenshots/shot-06.jpg",
+    screen: "Workout Analytics",
+    purpose: "Volume, sets, calories and frequency across any range",
+    width: 737,
+    height: 1600,
+  },
+  {
+    id: "muscle-balance",
+    src: "/screenshots/shot-03.jpg",
+    screen: "Workout Analytics — muscle distribution",
+    purpose: "The radar chart and month-on-month comparison",
+    width: 737,
+    height: 1600,
+  },
+  {
+    id: "records",
+    src: "/screenshots/shot-09.jpg",
+    screen: "Progress — records and quick access",
+    purpose: "The consistency heatmap, weekly goal and personal records",
+    width: 737,
+    height: 1600,
+  },
+  {
+    id: "achievements",
+    src: "/screenshots/shot-14.jpg",
+    screen: "Achievements & Records",
+    purpose: "Twenty badges, fourteen unlocked, each with its date",
+    width: 737,
+    height: 1600,
+  },
+  {
+    id: "habits",
+    src: "/screenshots/shot-05.jpg",
+    screen: "Habit Tracker",
+    purpose: "Streaks and weekly completion for each habit",
+    width: 737,
+    height: 1600,
+  },
+  {
+    id: "weight",
+    src: "/screenshots/shot-04.jpg",
+    screen: "Log Weight",
+    purpose: "The weight trend, goal and nine tracked measurements",
+    width: 737,
+    height: 1600,
+  },
+  {
+    id: "calculators",
+    src: "/screenshots/shot-02.jpg",
+    screen: "Calculators — heart rate zones",
+    purpose: "Maximum heart rate and the five training zones",
+    width: 737,
+    height: 1600,
+  },
+  {
+    id: "tools",
+    src: "/screenshots/shot-11.jpg",
+    screen: "Tools",
+    purpose: "Training, health and nutrition tools in one place",
+    width: 737,
+    height: 1600,
+  },
+
+  /* Personal health data — see the note at the top of this file.
+  {
+    id: "profile",
+    src: "/screenshots/shot-12.jpg",
+    screen: "Profile",
+    purpose: "Lifetime totals and current body composition",
+    width: 737,
+    height: 1600,
+  },
+  */
+];
+
+/**
+ * Fails the build if any file is registered twice.
+ *
+ * Runs at module load, so a duplicate is a build error rather than something a
+ * reader notices on the live site.
+ */
+function assertUniqueShots(): void {
+  const seen = new Map<string, string>();
+  for (const shot of shots) {
+    const previous = seen.get(shot.src);
+    if (previous) {
+      throw new Error(
+        `Screenshot registry: ${shot.src} is used by both "${previous}" and "${shot.id}". Every screenshot must appear exactly once.`,
+      );
+    }
+    seen.set(shot.src, shot.id);
+  }
+}
+
+assertUniqueShots();
+
+/** Look a shot up by id. Throws rather than rendering a broken image. */
+export function shot(id: string): Shot {
+  const found = shots.find((entry) => entry.id === id);
+  if (!found) throw new Error(`Screenshot registry: no shot with id "${id}".`);
+  return found;
+}
