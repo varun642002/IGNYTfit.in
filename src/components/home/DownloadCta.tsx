@@ -49,9 +49,8 @@ export function DownloadCta() {
             </h2>
 
             <p className="relative mx-auto mt-6 max-w-xl text-[16px] leading-relaxed text-text-mute">
-              Download IGNYT and take control of your fitness journey with
-              intelligent workout tracking, nutrition management, and progress
-              analytics.
+              Download IGNYT and start tracking your workouts, nutrition,
+              health, and fitness progress in one powerful application.
             </p>
 
             {/* The listing is not public yet, so the store link is labelled for

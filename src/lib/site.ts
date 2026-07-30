@@ -41,8 +41,20 @@ export const site = {
    */
   seoTitle: "IGNYT – Complete Fitness & Nutrition Tracker",
   seoDescription:
-    "IGNYT is a complete fitness and nutrition tracking app that helps you monitor workouts, calories, macros, fasting, hydration, body weight, progress, and Google Health Connect data.",
-  ogTitle: "IGNYT – Complete Fitness Tracker",
+    "IGNYT is a complete fitness and nutrition tracking application that helps users monitor workouts, calories, macros, hydration, fasting, body weight, progress, and Google Health Connect data.",
+  /* The social card now carries the full title rather than a shortened one.
+     Google's verification compares the application name on the home page with
+     the one on the consent screen, so every surface that states a name states
+     the same one. */
+  ogTitle: "IGNYT – Complete Fitness & Nutrition Tracker",
+  ogDescription:
+    "Track workouts, nutrition, calories, hydration, fasting, progress, and Health Connect data with IGNYT.",
+
+  /** One sentence answering "what is this". Google rejected verification for a
+   *  home page that did not outline the application's purpose, so this is
+   *  stated outright rather than implied by the feature list. */
+  purpose:
+    "IGNYT is an Android fitness and nutrition tracking application. It records your workouts, meals and body measurements, and — with your permission — synchronises supported health data through Google Health Connect, so your training and nutrition live in one place instead of five apps.",
   androidPackage: "com.varun.ignyt",
   locale: "en_US",
   themeColor: "#08090d",

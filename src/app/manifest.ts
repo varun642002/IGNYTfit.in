@@ -9,7 +9,12 @@ import { site } from "@/lib/site";
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: `${site.name} — ${site.tagline}`,
+    /* Exactly the product name, with no tagline appended.
+       Google's OAuth verification compares the application name on the home
+       page against the one on the consent screen, and the web app manifest is
+       where it looks. This read "IGNYT — Your complete fitness companion",
+       which is not "IGNYT", and verification was rejected for the mismatch. */
+    name: site.name,
     short_name: site.name,
     description: site.shortDescription,
     start_url: "/",

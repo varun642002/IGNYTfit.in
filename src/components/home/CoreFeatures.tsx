@@ -45,11 +45,12 @@ const CORE_FEATURES: CoreFeature[] = [
     Icon: Dumbbell,
     accent: "ember",
     points: [
-      "Track exercises",
+      "Log workouts",
       "Sets",
       "Reps",
       "Weight",
       "Workout history",
+      "Personal records",
     ],
   },
   {
@@ -57,21 +58,28 @@ const CORE_FEATURES: CoreFeature[] = [
     title: "Nutrition Tracking",
     Icon: Apple,
     accent: "good",
-    points: ["Calories", "Protein", "Carbs", "Fat", "Water", "Daily goals"],
+    points: [
+      "Calories",
+      "Protein",
+      "Carbohydrates",
+      "Fat",
+      "Water intake",
+      "Daily nutrition goals",
+    ],
   },
   {
     id: "health-connect",
-    title: "Health Connect Integration",
+    title: "Google Health Connect",
     Icon: HeartPulse,
     accent: "pulse",
     blurb:
-      "Securely connect Google Health Connect to synchronise supported health and fitness data with your permission. IGNYT reads only the data types the features you use require, and you can revoke access at any time from your device settings.",
+      "IGNYT securely integrates with Google Health Connect, allowing users to synchronise supported health and fitness data after granting permission.",
     points: [
       "Steps and distance",
       "Calories burned",
       "Exercise sessions",
       "Weight and hydration",
-      "Permission-based, revocable",
+      "Permission-based, revocable at any time",
     ],
   },
   {
@@ -79,14 +87,12 @@ const CORE_FEATURES: CoreFeature[] = [
     title: "Progress Analytics",
     Icon: TrendingUp,
     accent: "cyan",
-    blurb:
-      "See whether the work is actually moving the numbers, over weeks rather than days.",
     points: [
-      "Weight tracking",
-      "Charts",
-      "Weekly progress",
+      "Weight charts",
+      "Progress graphs",
+      "Weekly trends",
       "Body measurements",
-      "Fitness trends",
+      "Fitness insights",
     ],
   },
   {
@@ -94,13 +100,12 @@ const CORE_FEATURES: CoreFeature[] = [
     title: "Premium Features",
     Icon: Crown,
     accent: "warn",
-    blurb:
-      "Optional. Every tracking feature above is available without paying.",
+    blurb: "Optional. Every tracking feature above works without paying.",
     points: [
       "Advanced analytics",
-      "Unlimited tracking",
       "Cloud backup",
-      "Future premium tools",
+      "Unlimited tracking",
+      "Upcoming premium tools",
     ],
   },
 ];

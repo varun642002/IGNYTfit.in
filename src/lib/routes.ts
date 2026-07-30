@@ -109,13 +109,22 @@ export const legalRoutes: RouteMeta[] = [
  * navigation and becomes a list. Download is promoted to the right-hand call
  * to action, and the legal suite lives in the footer where people look for it.
  */
+/**
+ * The primary navigation.
+ *
+ * Blog, Resources and About came out and Privacy and Terms went in. A Google
+ * OAuth reviewer is asked to find the privacy policy and terms from the home
+ * page; burying them in the footer while the nav offers editorial content
+ * inverts that. All three remain reachable — About from the home page section
+ * and the footer, Blog and Resources from the footer.
+ */
 export const navRoutes: RouteMeta[] = [
   productRoutes[0], // Home
   productRoutes[1], // Features
   productRoutes[2], // Screenshots
-  learnRoutes[0], // Blog
-  learnRoutes[1], // Resources
-  companyRoutes[0], // About
+  productRoutes[3], // Download
+  { ...legalRoutes[0], label: "Privacy" },
+  { ...legalRoutes[1], label: "Terms" },
   companyRoutes[1], // Contact
 ];
 

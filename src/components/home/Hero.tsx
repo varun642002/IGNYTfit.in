@@ -14,6 +14,7 @@ import { AppScreen } from "@/components/device/screens";
 import { PhoneFrame } from "@/components/device/PhoneFrame";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -213,7 +214,7 @@ export function Hero() {
               <span className="absolute inline-flex size-full animate-pulse-ring rounded-full bg-ember" />
               <span className="relative inline-flex size-1.5 rounded-full bg-ember" />
             </span>
-            Offline-first · Android · Health Connect
+            Android fitness &amp; nutrition tracker
           </span>
 
           {/* Headline and lead are never animated — they are the largest
@@ -241,6 +242,16 @@ export function Hero() {
             powerful fitness app.
           </p>
 
+          {/* The purpose, stated outright above the fold.
+              Google rejected OAuth verification because the home page did not
+              outline the application's purpose. The line above lists what the
+              app tracks, which is not the same as saying what the app is — so
+              this says it, in one sentence, before anything scrolls. */}
+          <p className="mx-auto mt-5 max-w-xl rounded-tile border border-line bg-surface/60 p-4 text-[14.5px] leading-relaxed text-text-mute lg:mx-0">
+            <strong className="font-semibold text-text">What IGNYT is:</strong>{" "}
+            {site.purpose}
+          </p>
+
           <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
             <ButtonLink href="/download" size="lg" className="w-full sm:w-auto">
               Download App
@@ -263,7 +274,7 @@ export function Hero() {
             {[
               "Workout Tracking",
               "Nutrition Tracking",
-              "Health Connect",
+              "Google Health Connect",
               "Progress Analytics",
               "Premium Features",
             ].map((item) => (

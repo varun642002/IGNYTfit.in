@@ -45,6 +45,8 @@ export interface PageSeo {
    * one in <title>. Defaults to the page title.
    */
   socialTitle?: string;
+  /** Override the Open Graph and Twitter description. Defaults to `description`. */
+  socialDescription?: string;
 }
 
 /**
@@ -63,6 +65,7 @@ export function createMetadata({
   noIndex = false,
   absoluteTitle = false,
   socialTitle: socialTitleOverride,
+  socialDescription,
 }: PageSeo): Metadata {
   const url = absoluteUrl(path);
   const socialTitle =
@@ -79,13 +82,13 @@ export function createMetadata({
       url,
       siteName: site.name,
       title: socialTitle,
-      description,
+      description: socialDescription ?? description,
       locale: site.locale,
     },
     twitter: {
       card: "summary_large_image",
       title: socialTitle,
-      description,
+      description: socialDescription ?? description,
     },
     robots: noIndex
       ? { index: false, follow: false }

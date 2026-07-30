@@ -13,14 +13,14 @@ import { Section, SectionHeading } from "@/components/ui/Section";
  */
 const AUDIENCE = [
   {
-    label: "Fitness enthusiasts",
-    detail: "Already training, and want the numbers in one place.",
-    Icon: Sparkles,
-  },
-  {
     label: "Beginners",
     detail: "Starting out, and want structure without a spreadsheet.",
     Icon: GraduationCap,
+  },
+  {
+    label: "Fitness enthusiasts",
+    detail: "Already training, and want the numbers in one place.",
+    Icon: Sparkles,
   },
   {
     label: "Athletes",
@@ -29,7 +29,7 @@ const AUDIENCE = [
   },
   {
     label: "Anyone building habits",
-    detail: "Here for the daily streak more than the deadlift.",
+    detail: "Building a healthier lifestyle, one day at a time.",
     Icon: Users,
   },
 ];
@@ -45,12 +45,12 @@ export function AboutIgnyt() {
             About <span className="text-gradient">IGNYT</span>
           </>
         }
-        lead="IGNYT is a modern fitness and wellness platform built to help users achieve their health goals through intelligent workout tracking, nutrition management, progress monitoring, and Health Connect integration."
+        lead="IGNYT is a modern fitness and wellness platform that helps users achieve their health goals through intelligent workout tracking, nutrition management, body progress monitoring, hydration tracking, fasting support, and Google Health Connect integration."
       />
 
       <p className="mx-auto mt-6 max-w-2xl text-center text-[16px] leading-relaxed text-text-mute">
-        IGNYT is designed for fitness enthusiasts, beginners, athletes, and
-        anyone who wants to build healthier habits.
+        IGNYT is designed for beginners, fitness enthusiasts, athletes, and
+        anyone building a healthier lifestyle.
       </p>
 
       {/* The full badge — ring, bolt and banded wordmark — at the one size on

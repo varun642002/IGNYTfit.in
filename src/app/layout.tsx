@@ -40,13 +40,13 @@ export const metadata: Metadata = {
     url: site.url,
     siteName: site.name,
     title: site.ogTitle,
-    description: site.seoDescription,
+    description: site.ogDescription,
     locale: site.locale,
   },
   twitter: {
     card: "summary_large_image",
     title: site.ogTitle,
-    description: site.seoDescription,
+    description: site.ogDescription,
   },
   robots: {
     index: true,

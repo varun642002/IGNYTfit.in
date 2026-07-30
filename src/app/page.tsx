@@ -9,6 +9,7 @@ import { Hero } from "@/components/home/Hero";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { LovedFor } from "@/components/home/LovedFor";
 import { Stats } from "@/components/home/Stats";
+import { WhyChoose } from "@/components/home/WhyChoose";
 import { appSchema, JsonLd } from "@/components/seo/JsonLd";
 import { createMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
@@ -17,6 +18,7 @@ export const metadata: Metadata = createMetadata({
   title: site.seoTitle,
   description: site.seoDescription,
   socialTitle: site.ogTitle,
+  socialDescription: site.ogDescription,
   path: "/",
   keywords: ["fitness tracker", "gym log app", "nutrition tracker Android"],
   absoluteTitle: true,
@@ -37,6 +39,7 @@ export default function HomePage() {
       <HowItWorks />
       <AppPreview />
       <FeatureGrid />
+      <WhyChoose />
       <Comparison />
       <LovedFor />
       <AboutIgnyt />
