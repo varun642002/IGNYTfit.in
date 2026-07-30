@@ -1,199 +1,324 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, ShieldCheck, WifiOff, Zap } from "lucide-react";
-import { AppScreen } from "@/components/device/AppScreens";
-import { PhoneShell } from "@/components/device/PhoneShell";
 import { DownloadCta } from "@/components/home/DownloadCta";
-import { appSchema, breadcrumbSchema, JsonLd } from "@/components/seo/JsonLd";
+import {
+  FeatureStory,
+  MacroGraphic,
+  RaceGraphic,
+  RouteGraphic,
+  StreakGraphic,
+  TrendGraphic,
+  VolumeGraphic,
+  type StoryChapter,
+} from "@/components/screenshots/FeatureStory";
+import { breadcrumbSchema, JsonLd } from "@/components/seo/JsonLd";
 import { ButtonLink } from "@/components/ui/Button";
 import { PageHero } from "@/components/ui/PageHero";
 import { PlayStoreButton } from "@/components/ui/PlayStoreButton";
-import { RevealItem } from "@/components/ui/Reveal";
-import { Section, SectionHeading } from "@/components/ui/Section";
-import { Spotlight } from "@/components/ui/Spotlight";
-import { Surface } from "@/components/ui/Surface";
-import { ACCENT_CLASSES, features } from "@/lib/features";
-import { featuredScreens } from "@/lib/screens";
 import { createMetadata } from "@/lib/seo";
-import { cn } from "@/lib/utils";
+import { shot } from "@/lib/shots";
 
 export const metadata: Metadata = createMetadata({
   title: "Features",
   description:
-    "Everything IGNYT does: workout tracking, food logging, calorie and macro tracking, micronutrients, diet plans, fasting, water, supplements, weight, progress charts, goals, achievements, Health Connect, reminders, cloud backup and full offline support.",
+    "See IGNYT in use: workout tracking, HYROX training plans and race simulation, food logging and macros, training analytics, body composition and heart rate zones.",
   path: "/features",
   keywords: [
     "IGNYT features",
-    "workout tracking app features",
-    "macro tracking app",
-    "micronutrient tracker",
-    "fasting tracker Android",
+    "fitness app screenshots",
+    "HYROX training app",
+    "workout tracker screenshots",
+    "food log app screens",
   ],
 });
 
-/** The three commitments that shape how every feature is built. */
-const PRINCIPLES = [
+/**
+ * The product story, told one chapter at a time.
+ *
+ * This page used to be a gallery — sixteen devices in a grid, which reads as
+ * documentation. It is now six full-height chapters, each with a single phone
+ * as its hero and an animated graphic that reinforces what that screen does.
+ *
+ * WHICH IMAGE EACH CHAPTER USES
+ *
+ * Every chapter uses a real screenshot of the shipped build, pulled from the
+ * registry in `lib/shots.ts` by id. No vector mockups appear on this page.
+ *
+ * Each screenshot is used exactly once, across the whole site. The registry
+ * enforces that at build time rather than trusting anyone to remember — see
+ * `assertUniqueShots()`.
+ *
+ * ON THE ANIMATIONS AROUND THE DEVICE
+ *
+ * They are data graphics, not characters: a route drawing itself, macro rings
+ * filling, a consistency grid completing, volume bars growing, the race format
+ * assembling, a weight trend settling. Animated athletes would need licensed
+ * Lottie or Rive assets, which this project does not have and which would cost
+ * 150–250KB of runtime before the first frame — against a target of 60fps and
+ * a Lighthouse score above 95.
+ */
+const CHAPTERS: StoryChapter[] = [
   {
-    Icon: WifiOff,
-    title: "Offline first, not offline capable",
-    body: "The database, the timers, the charts and the search index all live on the device. A connection is a bonus, never a requirement — nothing degrades when you lose signal in a basement gym.",
+    id: "training",
+    eyebrow: "Training",
+    title: "Every set, while the bar is still loaded.",
+    lead: "The week opens on four numbers that matter — sessions, time under the bar, records and total volume — then hands you straight to the routine you are part-way through.",
+    points: [
+      "Weight and reps carry over from your last session, so you confirm a number rather than remember one",
+      "The rest timer starts itself and keeps counting on the lock screen",
+      "A personal record is flagged the moment you beat it",
+    ],
+    tone: "arc",
+    shot: shot("workout").src,
+    graphic: <VolumeGraphic />,
+    chips: [
+      { label: "Session volume", value: "32,304 kg", position: "-right-16 top-[14%]" },
+      { label: "This week", value: "7 workouts", position: "-right-20 bottom-[26%]" },
+    ],
   },
   {
-    Icon: ShieldCheck,
-    title: "Private by default",
-    body: "No advertising SDKs and no behavioural tracking. Health data is never used for advertising or profiling, Cloud Sync and Health Connect are both opt-in and independently revocable, and your data exports in full whenever you ask.",
+    id: "hyrox",
+    eyebrow: "HYROX",
+    title: "Eight weeks of structure. Then the race itself.",
+    lead: "A full HYROX programme at beginner, intermediate or advanced level, tracked week by week — and a live stopwatch that runs the real eight-run, eight-station format when you are ready to test it.",
+    points: [
+      "An eight-week structured schedule with five sessions a week",
+      "Race Simulation times the full format with a 90-minute estimate to pace against",
+      "Progress tracked against the plan rather than guessed at",
+    ],
+    tone: "flare",
+    shot: shot("hyrox").src,
+    graphic: <RaceGraphic />,
+    chips: [
+      { label: "Programme", value: "Week 1 of 8", position: "-left-20 top-[18%]" },
+      { label: "Est. time", value: "90 min", position: "-left-16 bottom-[22%]" },
+    ],
   },
   {
-    Icon: Zap,
-    title: "Fast enough to use mid-set",
-    body: "Logging a set is one tap. Search returns instantly because it never leaves the phone. If a feature would slow the log-a-set path down, it goes somewhere else.",
+    id: "nutrition",
+    eyebrow: "Nutrition",
+    title: "A calorie budget that answers back.",
+    lead: "Log a meal and the remaining figure moves immediately. 3,160 foods live on the device, so search returns instantly in a basement gym with no signal at all.",
+    points: [
+      "Calories eaten, budget and remaining — on one card, always current",
+      "Protein, carbohydrate and fat per item, not just per day",
+      "Diet plans, insights and recipes one tap from the log",
+    ],
+    tone: "arc",
+    shot: shot("food-log").src,
+    graphic: <MacroGraphic />,
+    chips: [
+      { label: "Remaining", value: "711 kcal", position: "-right-16 top-[20%]" },
+      { label: "Offline foods", value: "3,160", position: "-right-20 bottom-[24%]" },
+    ],
+  },
+  {
+    id: "analytics",
+    eyebrow: "Analytics",
+    title: "Twelve weeks, not twelve hours.",
+    lead: "Training volume, completed sets, estimated calories and average frequency across any window from seven days to a year — because a training block is the unit fitness actually happens in.",
+    points: [
+      "Ranges from 7 days to 1 year, on every chart",
+      "Volume, sets, duration and frequency tracked together",
+      "Personal records listed with the increment and the date",
+    ],
+    tone: "arc",
+    shot: shot("analytics").src,
+    graphic: <RouteGraphic />,
+    chips: [
+      { label: "8-week volume", value: "142,047 kg", position: "-left-20 top-[16%]" },
+      { label: "Completed sets", value: "368", position: "-left-16 bottom-[26%]" },
+    ],
+  },
+  {
+    id: "body",
+    eyebrow: "Body",
+    title: "The trend, not the noise.",
+    lead: "Scale weight moves three ways in a week. A smoothed trend line separates the signal from the salty dinner, with body fat, lean mass and every tape measurement charted beside it.",
+    points: [
+      "Weight, BMI, body fat, lean mass, muscle mass, waist, chest, arms and legs",
+      "Ranges from 7 days to a full year, with a goal and an estimated completion date",
+      "Progress photos stored on the device, dated and private",
+    ],
+    tone: "flare",
+    shot: shot("weight").src,
+    graphic: <TrendGraphic />,
+    chips: [
+      { label: "Trend", value: "Down", position: "-right-16 top-[22%]" },
+      { label: "Tracked metrics", value: "9", position: "-right-20 bottom-[20%]" },
+    ],
+  },
+  {
+    id: "zones",
+    eyebrow: "Health",
+    title: "Know which effort you are actually in.",
+    lead: "Your maximum heart rate worked out from your age, split into five training zones — each with its percentage band and the exact beats per minute it corresponds to.",
+    points: [
+      "Five zones, from active recovery through to maximum effort",
+      "Optional resting heart rate for a more accurate range",
+      "Alongside BMI, BMR, TDEE and macro calculators in the same place",
+    ],
+    tone: "arc",
+    shot: shot("calculators").src,
+    graphic: <StreakGraphic />,
+    chips: [
+      { label: "Max heart rate", value: "195 bpm", position: "-left-20 top-[20%]" },
+      { label: "Zones", value: "5", position: "-left-16 bottom-[24%]" },
+    ],
+  },
+  {
+    id: "today",
+    eyebrow: "Every day",
+    title: "The whole day, before you have scrolled.",
+    lead: "Calories, workout, steps, active minutes, water and sleep — six figures against six goals, with the weekly target as a single ring beside them.",
+    points: [
+      "Six of today's numbers against their goals, on one screen",
+      "A weekly goal ring that fills as the week goes on",
+      "Sleep and steps arrive from Health Connect without a second account",
+    ],
+    tone: "arc",
+    shot: shot("home").src,
+    graphic: <StreakGraphic />,
+    chips: [
+      { label: "Weekly goal", value: "Tracked", position: "-right-16 top-[18%]" },
+      { label: "Metrics today", value: "6", position: "-right-20 bottom-[24%]" },
+    ],
+  },
+  {
+    id: "balance",
+    eyebrow: "Balance",
+    title: "Find the muscle group you keep avoiding.",
+    lead: "Thirty days of work plotted across six muscle groups against the thirty before it, so a programme drifting towards what you enjoy shows up as a shape rather than as a feeling.",
+    points: [
+      "Six muscle groups, this month against last",
+      "Sessions, volume and training time compared month on month",
+      "All-time totals: current streak, longest streak, workouts logged",
+    ],
+    tone: "flare",
+    shot: shot("muscle-balance").src,
+    graphic: <VolumeGraphic />,
+    chips: [
+      { label: "Groups tracked", value: "6", position: "-left-20 top-[16%]" },
+      { label: "Comparison", value: "30 days", position: "-left-16 bottom-[24%]" },
+    ],
+  },
+  {
+    id: "week",
+    eyebrow: "The week",
+    title: "Seven days, four numbers, one chart.",
+    lead: "Workouts against goal, time under the bar, total volume and records — then the week's training volume broken down by day, so a heavy Monday and an empty Thursday are both obvious.",
+    points: [
+      "Goal bars on the figures, not just the figures",
+      "Volume by day across the week",
+      "Body weight charted underneath, over any range",
+    ],
+    tone: "arc",
+    shot: shot("progress").src,
+    graphic: <TrendGraphic />,
+    chips: [
+      { label: "This week", value: "+56%", position: "-right-16 top-[20%]" },
+      { label: "Volume", value: "32,304 kg", position: "-right-20 bottom-[22%]" },
+    ],
+  },
+  {
+    id: "records",
+    eyebrow: "Records",
+    title: "Proof the programme is working.",
+    lead: "A consistency heatmap, the weekly goal, and every personal record with the increment and the date it was set — then eleven ways into the detail underneath.",
+    points: [
+      "A heatmap of the week, and a weekly goal that completes",
+      "Personal records with how much you added and when",
+      "Exercise, nutrition, body and plan progress, reports and photos",
+    ],
+    tone: "flare",
+    shot: shot("records").src,
+    graphic: <RouteGraphic />,
+    chips: [
+      { label: "Records held", value: "836", position: "-left-20 top-[18%]" },
+      { label: "Weekly goal", value: "100%", position: "-left-16 bottom-[26%]" },
+    ],
+  },
+  {
+    id: "achievements",
+    eyebrow: "Achievements",
+    title: "Earned for turning up repeatedly.",
+    lead: "Twenty badges covering streaks and workout milestones, each stamped with the date you unlocked it — rewarding the thing that actually produces results rather than one good week.",
+    points: [
+      "Twenty achievements, with progress towards the ones still locked",
+      "Every badge dated, so the timeline is real",
+      "Streaks at 7 and 14 days, milestones from first workout to fiftieth",
+    ],
+    tone: "flare",
+    shot: shot("achievements").src,
+    graphic: <StreakGraphic />,
+    chips: [
+      { label: "Unlocked", value: "14 of 20", position: "-right-16 top-[20%]" },
+      { label: "Longest streak", value: "17 days", position: "-right-20 bottom-[24%]" },
+    ],
+  },
+  {
+    id: "habits",
+    eyebrow: "Habits",
+    title: "Build consistency. Build you.",
+    lead: "The behaviours underneath the training — turn up, eat properly, sleep. Each keeps its own streak, its personal best, and how many days you have hit it this week and this month.",
+    points: [
+      "Add any habit you like, not a fixed list",
+      "Current streak and personal best held per habit",
+      "Weekly and monthly completion counts side by side",
+    ],
+    tone: "arc",
+    shot: shot("habits").src,
+    graphic: <MacroGraphic />,
+    chips: [
+      { label: "Habits active", value: "3", position: "-left-20 top-[20%]" },
+      { label: "Best streak", value: "8 days", position: "-left-16 bottom-[24%]" },
+    ],
+  },
+  {
+    id: "tools",
+    eyebrow: "Tools",
+    title: "Everything you need to train smarter.",
+    lead: "Training plans, the exercise library, the goal engine, weight logging, Health Connect, the food log and the calculators — gathered in one place rather than buried in settings.",
+    points: [
+      "Training: plans, library, goals and weight logging",
+      "Health: Health Connect, connected and syncing on-device",
+      "Nutrition: the food log and the BMI, BMR, TDEE and macro calculators",
+    ],
+    tone: "arc",
+    shot: shot("tools").src,
+    graphic: <RaceGraphic />,
+    chips: [
+      { label: "Workouts logged", value: "327", position: "-right-16 top-[18%]" },
+      { label: "Health Connect", value: "Connected", position: "-right-20 bottom-[24%]" },
+    ],
   },
 ];
 
-export default function FeaturesPage() {
+export default function ScreenshotsPage() {
   return (
     <>
-      <JsonLd data={appSchema} />
-      <JsonLd data={breadcrumbSchema([{ name: "Features", path: "/features" }])} />
+      <JsonLd
+        data={breadcrumbSchema([{ name: "Features", path: "/features" }])}
+      />
 
       <PageHero
         eyebrow="Features"
-        tone="flare"
         title={
           <>
-            Everything IGNYT does,{" "}
-            <span className="text-flare-gradient">properly</span>
+            One app where{" "}
+            <span className="text-arc-gradient">five used to be</span>
           </>
         }
-        lead="No feature here is a checkbox. Each one is built to survive a real training week — including the days with no signal, no time and no motivation."
+        lead="Training, HYROX, nutrition, analytics, records, habits and the tools underneath them — every screen below is the real application, shown exactly as captured."
       >
         <PlayStoreButton />
-        <ButtonLink href="/screenshots" variant="outline" size="lg">
-          See the screens
-          <ArrowRight aria-hidden className="size-4" />
+        <ButtonLink href="/download" variant="outline" size="lg">
+          Release details
         </ButtonLink>
       </PageHero>
 
-      <Section id="all-features">
-        <SectionHeading
-          id="all-features"
-          eyebrow="The full list"
-          title="Everything in one app"
-          lead="Training, nutrition, hydration, supplementation and body composition, sharing one set of numbers instead of five apps that disagree with each other."
-          className="mb-16"
-        />
-
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature, index) => {
-            const accent = ACCENT_CLASSES[feature.accent];
-            const Icon = feature.icon;
-
-            return (
-              <RevealItem as="li" key={feature.id} index={index % 3}>
-                <Spotlight
-                  tone={feature.accent === "flare" ? "flare" : "arc"}
-                  className="h-full rounded-card"
-                >
-                  {/* `scroll-mt` clears the fixed header when the home page's
-                      feature cards deep-link to these anchors. */}
-                  <Surface
-                    id={feature.id}
-                    className="flex h-full scroll-mt-28 flex-col p-7"
-                  >
-                    <span
-                      className={cn(
-                        "grid size-11 place-items-center rounded-panel border",
-                        accent.bg,
-                        accent.border,
-                        accent.text,
-                      )}
-                    >
-                      <Icon aria-hidden className="size-5" strokeWidth={2} />
-                    </span>
-                    <h2 className="mt-6 text-[18px] font-bold tracking-[-0.02em] text-chalk">
-                      {feature.title}
-                    </h2>
-                    <p className="mt-3 text-[14.5px] leading-[1.68] text-ash">
-                      {feature.description}
-                    </p>
-                  </Surface>
-                </Spotlight>
-              </RevealItem>
-            );
-          })}
-        </ul>
-      </Section>
-
-      <Section id="principles" className="border-y border-hairline-soft bg-void-2">
-        <SectionHeading
-          id="principles"
-          eyebrow="How it is built"
-          title="Three rules the whole app follows"
-          className="mb-16"
-        />
-
-        <ul className="grid gap-4 lg:grid-cols-3">
-          {PRINCIPLES.map((principle, index) => (
-            <RevealItem as="li" key={principle.title} index={index}>
-              <Surface
-                className="h-full p-8"
-                lit={index === 1 ? "arc" : undefined}
-              >
-                <principle.Icon
-                  aria-hidden
-                  className="size-6 text-flare"
-                  strokeWidth={2.1}
-                />
-                <h3 className="mt-6 text-[19px] font-bold tracking-[-0.025em]">
-                  {principle.title}
-                </h3>
-                <p className="mt-3.5 text-[14.5px] leading-[1.7] text-ash">
-                  {principle.body}
-                </p>
-              </Surface>
-            </RevealItem>
-          ))}
-        </ul>
-      </Section>
-
-      <Section id="features-preview">
-        <SectionHeading
-          id="features-preview"
-          eyebrow="In context"
-          title="What that looks like on screen"
-          lead="The same features, in the app itself."
-          className="mb-16"
-        />
-
-        {/* Static devices rather than the interactive rail: this page is already
-            long, and three still phones make the point without adding a second
-            scroll surface to a page that is mostly a list. */}
-        <div className="flex flex-wrap items-end justify-center gap-8">
-          {featuredScreens.slice(0, 3).map((screen, index) => (
-            <Link
-              key={screen.id}
-              href={`/screenshots#${screen.id}`}
-              className="group flex flex-col items-center gap-5"
-            >
-              <PhoneShell
-                glow={index === 1}
-                label={`The IGNYT ${screen.title} screen`}
-                className={cn(
-                  "transition-transform duration-500 ease-glide group-hover:-translate-y-1.5",
-                  index === 1
-                    ? "w-[224px] xl:w-[252px]"
-                    : "hidden w-[196px] opacity-80 transition-opacity group-hover:opacity-100 sm:block xl:w-[222px]",
-                )}
-              >
-                <AppScreen id={screen.id} />
-              </PhoneShell>
-              <span className="text-[14px] font-semibold text-ash transition-colors group-hover:text-chalk">
-                {screen.title}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </Section>
+      {CHAPTERS.map((chapter, index) => (
+        <FeatureStory key={chapter.id} chapter={chapter} index={index} />
+      ))}
 
       <DownloadCta />
     </>

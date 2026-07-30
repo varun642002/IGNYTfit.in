@@ -513,7 +513,9 @@
    */
   .word-mask {
     display: inline-block;
-    overflow: hidden;
+    /* isible, not hidden: with the animation removed there is nothing to
+       clip, and leaving it hidden would silently crop a descender. */
+    overflow: visible;
     padding-top: 0.2em;
     margin-top: -0.2em;
     padding-bottom: 0.16em;
@@ -526,17 +528,31 @@
     will-change: transform;
   }
 
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .word-mask > span {
-        animation: word-rise linear both;
-        animation-timeline: view();
-        /* Each word finishes slightly after the one before it. Capped at ten
-           in the component, past which the stagger stops reading as rhythm. */
-        animation-range: entry 4% cover calc(16% + (var(--i, 0) * 1.5%));
-      }
-    }
-  }
+  /*
+   * THE WORD-RISE ANIMATION IS GONE. DO NOT REINSTATE IT.
+   *
+   * It clipped headings — sometimes hiding them completely — and it did so
+   * twice, in two different ways, after two different fixes:
+   *
+   *   1. The clipping box was only as tall as the line box, so it sliced the
+   *      ascenders and descenders off headings set at a 1.04 line-height.
+   *      Padding on both axes fixed that.
+   *   2. The scroll range was tied to `cover`, which advances across the
+   *      element's whole journey through the viewport. Inside a `min-h-screen`
+   *      section a heading could sit part-risen — and therefore part-clipped —
+   *      for most of a scroll. Moving to `entry` fixed most cases and still
+   *      left headings blank inside the full-height storytelling chapters.
+   *
+   * The failure mode is the problem, not the frequency: when this effect goes
+   * wrong the text is INVISIBLE, and a heading nobody can read is worse than no
+   * animation at all. A reveal must degrade to "visible", which is the rule the
+   * rest of the motion system already follows.
+   *
+   * The mask box is kept as an inert wrapper so <WordReveal> call sites do not
+   * have to change. Headings still animate — they inherit the `.rise` treatment
+   * from the Reveal wrapper around them, which only ever moves and fades and
+   * therefore cannot hide anything permanently.
+   */
 
   /* ------------------------------------------- self-drawing data graphics
    *
@@ -573,7 +589,7 @@
         stroke-dasharray: var(--len);
         animation: draw-in linear both;
         animation-timeline: view();
-        animation-range: entry 16% cover 42%;
+        animation-range: entry 10% entry 85%;
       }
 
       /* A ring's dash pattern is "arc, remainder", so the visible sweep is
@@ -582,34 +598,38 @@
         stroke-dasharray: var(--len) var(--gap);
         animation: draw-in linear both;
         animation-timeline: view();
-        animation-range: entry 16% cover 46%;
+        animation-range: entry 10% entry 90%;
       }
 
       .grow-bar {
         transform-origin: bottom;
         animation: grow-up linear both;
         animation-timeline: view();
-        animation-range: entry 18% cover calc(38% + (var(--i, 0) * 2%));
+        animation-range: entry 10% entry calc(70% + (var(--i, 0) * 2%));
       }
 
       .fill-level {
         animation: fill-up linear both;
         animation-timeline: view();
-        animation-range: entry 16% cover 44%;
+        animation-range: entry 10% entry 88%;
       }
     }
   }
 
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
+      /* Entry-relative for the same reason as `.word-mask`: a `cover`-based
+         range leaves content mid-transition for as long as the section is tall,
+         which on this site is most of a viewport. Everything settles by the
+         time it has fully entered. */
       .rise {
         animation:
           rise-up linear both,
           fade-in linear both;
         animation-timeline: view(), view();
         animation-range:
-          entry 0% cover 22%,
-          entry 0% entry 55%;
+          entry 0% entry 85%,
+          entry 0% entry 50%;
       }
 
       /* Children of a `.rise-group` stagger by pushing each one's range
@@ -619,9 +639,10 @@
           rise-up linear both,
           fade-in linear both;
         animation-timeline: view(), view();
+        /* Capped so the tenth item still lands by `entry 100%`. */
         animation-range:
-          entry 0% cover calc(16% + (var(--i, 0) * 3%)),
-          entry 0% entry 55%;
+          entry 0% entry calc(55% + (var(--i, 0) * 4%)),
+          entry 0% entry 50%;
       }
 
       .rise-l {
@@ -682,17 +703,6 @@
   }
 }
 
-/* Transform only — see the note on `.word-mask` for why there is no opacity
-   here. `110%` rather than `100%` so the word clears the padding added to
-   protect descenders. */
-@keyframes word-rise {
-  from {
-    transform: translate3d(0, 110%, 0);
-  }
-  to {
-    transform: none;
-  }
-}
 
 @keyframes page-in {
   from {

@@ -72,7 +72,7 @@ export function Features() {
                       <Surface
                         as={Link}
                         interactive
-                        href={`/features#${feature.id}`}
+                        href="/features"
                         className="flex h-full flex-col p-6"
                       >
                         <div className="flex items-start justify-between gap-4">

@@ -257,7 +257,7 @@ export default function DownloadPage() {
         lead="Transform your workouts, nutrition, fasting, hydration, supplements and progress tracking with one powerful app."
       >
         <PlayStoreButton />
-        <ButtonLink href="/screenshots" variant="outline" size="lg">
+        <ButtonLink href="/features" variant="outline" size="lg">
           See it first
         </ButtonLink>
       </PageHero>
