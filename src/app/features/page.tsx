@@ -129,24 +129,20 @@ const CHAPTERS: StoryChapter[] = [
       { label: "Completed sets", value: "368", position: "-left-16 bottom-[26%]" },
     ],
   },
-  {
-    id: "body",
-    eyebrow: "Body",
-    title: "The trend, not the noise.",
-    lead: "Scale weight moves three ways in a week. A smoothed trend line separates the signal from the salty dinner, with body fat, lean mass and every tape measurement charted beside it.",
-    points: [
-      "Weight, BMI, body fat, lean mass, muscle mass, waist, chest, arms and legs",
-      "Ranges from 7 days to a full year, with a goal and an estimated completion date",
-      "Progress photos stored on the device, dated and private",
-    ],
-    tone: "flare",
-    shot: shot("weight").src,
-    graphic: <TrendGraphic />,
-    chips: [
-      { label: "Trend", value: "Down", position: "-right-16 top-[22%]" },
-      { label: "Tracked metrics", value: "9", position: "-right-20 bottom-[20%]" },
-    ],
-  },
+  /*
+    The "Body" chapter has been removed.
+
+    It was built entirely around the Log Weight screen, and that capture has
+    been deleted — it showed a real current weight, a target weight and the
+    remaining difference. There is no other screenshot of body tracking to put
+    in its place, and illustrating a chapter about weight with a screen that is
+    not the weight screen would be misleading.
+
+    Weight, BMI, body fat, lean mass and tape measurements are still listed as
+    features on the home page's capability rail. To bring the chapter back,
+    capture the Log Weight screen with placeholder figures, register it in
+    lib/shots.ts, and restore this block from git history.
+  */
   {
     id: "zones",
     eyebrow: "Health",

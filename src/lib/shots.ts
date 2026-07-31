@@ -18,10 +18,10 @@
  *   both would put the same interface on the page twice. Only shot-05 is
  *   registered — it is the cleaner capture.
  *
- *   shot-12 was the Profile screen. It has been DELETED from the repository,
- *   not merely left unregistered — it showed a real body weight, a weight goal
- *   and a BMI reading classified "Obese", which is personal health data about
- *   an identifiable person.
+ *   shot-12 (Profile) and shot-04 (Log Weight) have been DELETED from the
+ *   repository, not merely left unregistered. Between them they showed a real
+ *   body weight, a target weight, the remaining difference and a BMI reading
+ *   classified "Obese" — personal health data about an identifiable person.
  *
  *   Unregistering it was not enough. Anything under `public/` is served
  *   verbatim at its path whether or not a page links to it, so the file was
@@ -131,14 +131,11 @@ export const shots: Shot[] = [
     width: 737,
     height: 1600,
   },
-  {
-    id: "weight",
-    src: "/screenshots/shot-04.jpg",
-    screen: "Log Weight",
-    purpose: "The weight trend, goal and nine tracked measurements",
-    width: 737,
-    height: 1600,
-  },
+  /* No Log Weight entry — shot-04 has been deleted, for the same reason as the
+     Profile capture. It showed a real current weight, a target weight and the
+     remaining difference. Anything under public/ is served at its path whether
+     or not a page links to it, so the file itself had to go, not just the
+     registry row. */
   {
     id: "calculators",
     src: "/screenshots/shot-02.jpg",

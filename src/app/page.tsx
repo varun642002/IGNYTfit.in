@@ -70,7 +70,10 @@ export default function HomePage() {
         visuals={claim("home-story", [
           "workout",
           "food-log",
-          "weight",
+          /* The "measure" beat used the Log Weight screen. That capture has
+             been removed; the Progress screen carries the body-weight chart
+             too, so it takes the slot. */
+          "progress",
           "tools",
         ]).map((id) => (
           <PhoneShell key={id} glow={false} notch={false}>

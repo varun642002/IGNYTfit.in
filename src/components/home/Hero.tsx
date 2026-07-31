@@ -49,7 +49,9 @@ const HERO_SHOTS = claim("home-hero", [
   "food-log",
   "progress",
   "records",
-  "weight",
+  /* Was the Log Weight screen. That capture is gone — it carried a real body
+     weight and target — so the calculators screen takes the slot. */
+  "calculators",
 ]);
 
 const HERO_FACTS = [
