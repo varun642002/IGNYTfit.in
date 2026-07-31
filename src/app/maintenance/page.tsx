@@ -36,27 +36,27 @@ export default function MaintenancePage() {
       <Container className="text-center">
         <LogoMark size={48} className="mx-auto size-12" />
 
-        <span className="mt-8 inline-flex items-center gap-2 rounded-full border border-line bg-surface/70 px-3.5 py-1.5 text-[12px] font-semibold text-text-mute">
-          <Wrench aria-hidden className="size-3.5 text-pulse-strong" />
+        <span className="mt-8 inline-flex items-center gap-2 rounded-full border border-hairline bg-carbon/70 px-3.5 py-1.5 text-[12px] font-semibold text-ash">
+          <Wrench aria-hidden className="size-3.5 text-arc-bright" />
           Scheduled maintenance
         </span>
 
         <h1 className="mt-6 text-[clamp(1.9rem,4.4vw,2.9rem)] font-black">
           We are making {site.name} better
         </h1>
-        <p className="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed text-text-mute">
+        <p className="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed text-ash">
           This website is briefly offline while we deploy an update. The IGNYT
           app on your phone is unaffected — it works offline and does not depend
           on this site.
         </p>
 
-        <p className="mt-7 inline-flex items-center gap-2 text-[14px] text-text-dim">
+        <p className="mt-7 inline-flex items-center gap-2 text-[14px] text-ash-dim">
           <Clock aria-hidden className="size-4" />
           Normally back within a few minutes
         </p>
 
         <div className="mt-9 flex justify-center">
-          <ButtonLink href={`mailto:${site.email.support}`} variant="secondary">
+          <ButtonLink href={`mailto:${site.email.support}`} variant="outline">
             Contact support
           </ButtonLink>
         </div>

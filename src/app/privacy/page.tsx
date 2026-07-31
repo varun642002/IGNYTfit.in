@@ -41,7 +41,7 @@ function Ref({ href }: { href: string }) {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-[13px] font-semibold text-pulse-strong hover:underline"
+        className="text-[13px] font-semibold text-arc-bright hover:underline"
       >
         (Google Help)
       </a>
@@ -182,7 +182,7 @@ const sections: LegalSectionSpec[] = [
           <LI>Provide customer support</LI>
           <LI>Process subscriptions</LI>
         </List>
-        <Note tone="ember">
+        <Note tone="flare">
           <Strong>We do not sell your personal information.</Strong>
         </Note>
       </>
@@ -389,7 +389,7 @@ const sections: LegalSectionSpec[] = [
           Step-by-step instructions are in the{" "}
           <Link
             href="/data-deletion"
-            className="font-semibold text-ember hover:underline"
+            className="font-semibold text-flare hover:underline"
           >
             Data Deletion Policy
           </Link>
@@ -427,7 +427,7 @@ const sections: LegalSectionSpec[] = [
             href="https://policies.google.com/privacy"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-semibold text-ember hover:underline"
+            className="font-semibold text-flare hover:underline"
           >
             Google&rsquo;s Privacy Policy
           </a>
@@ -472,7 +472,7 @@ const sections: LegalSectionSpec[] = [
           Email:{" "}
           <a
             href={`mailto:${site.email.support}`}
-            className="font-semibold text-ember hover:underline"
+            className="font-semibold text-flare hover:underline"
           >
             {site.email.support}
           </a>
@@ -480,7 +480,7 @@ const sections: LegalSectionSpec[] = [
           Website:{" "}
           <a
             href={site.url}
-            className="font-semibold text-ember hover:underline"
+            className="font-semibold text-flare hover:underline"
           >
             {site.url}
           </a>

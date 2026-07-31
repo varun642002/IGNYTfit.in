@@ -23,12 +23,13 @@ import {
   WifiOff,
   type LucideIcon,
 } from "lucide-react";
-import { AppScreen } from "@/components/device/screens";
-import { PhoneFrame } from "@/components/device/PhoneFrame";
+import { ShotScreen } from "@/components/device/ShotScreen";
+import { PhoneShell } from "@/components/device/PhoneShell";
 import { appSchema, breadcrumbSchema, JsonLd } from "@/components/seo/JsonLd";
 import { Accordion } from "@/components/ui/Accordion";
 import { ButtonLink } from "@/components/ui/Button";
 import { Badge, Card } from "@/components/ui/Card";
+import { Surface } from "@/components/ui/Surface";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
 import { PlayStoreButton } from "@/components/ui/PlayStoreButton";
@@ -39,7 +40,10 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = createMetadata({
   title: "Download",
-  description: `Download IGNYT free on Google Play. Workouts, nutrition, fasting, hydration, supplements and progress in one app. Core tracking is free; premium features are an optional subscription. Requires Android ${site.app.minAndroid} or later.`,
+  /* Deliberately does not say "download it now on Google Play": the listing is
+     pending release, and the badge on this page, the home page's Application
+     details block and this description all have to agree. */
+  description: `IGNYT for Android — workouts, nutrition, fasting, hydration, supplements and progress in one app. Core tracking is free; premium features are an optional subscription. Requires Android ${site.app.minAndroid} or later.`,
   path: "/download",
   keywords: [
     "download IGNYT",
@@ -64,7 +68,7 @@ const HIGHLIGHTS: Highlight[] = [
     title: "Workout tracking",
     body: "Log sets as you lift, with an automatic rest timer and records detected for you.",
     Icon: Dumbbell,
-    accent: "text-ember",
+    accent: "text-flare",
   },
   {
     title: "Nutrition",
@@ -76,7 +80,7 @@ const HIGHLIGHTS: Highlight[] = [
     title: "Health Connect",
     body: "17 Android Health Connect data types, read on-device with your permission.",
     Icon: HeartPulse,
-    accent: "text-pulse-strong",
+    accent: "text-arc-bright",
   },
   {
     title: "Water tracker",
@@ -94,13 +98,13 @@ const HIGHLIGHTS: Highlight[] = [
     title: "Diet plans",
     body: "Build a repeatable weekly plan, then score how closely you followed it.",
     Icon: NotebookPen,
-    accent: "text-ember",
+    accent: "text-flare",
   },
   {
     title: "Progress",
     body: "Weekly volume, smoothed weight trend, streaks and every personal record.",
     Icon: TrendingUp,
-    accent: "text-ember",
+    accent: "text-flare",
   },
   {
     title: "Notifications",
@@ -117,13 +121,13 @@ const REASONS: Highlight[] = [
     title: "Easy to use",
     body: "One tap to log a set, three to log a meal. Nothing important is more than two screens from the dashboard.",
     Icon: Sparkles,
-    accent: "text-ember",
+    accent: "text-flare",
   },
   {
     title: "Fast",
     body: "Search hits an on-device database, so results are instant and never wait on a network round trip.",
     Icon: Gauge,
-    accent: "text-pulse-strong",
+    accent: "text-arc-bright",
   },
   {
     title: "Offline ready",
@@ -141,7 +145,7 @@ const REASONS: Highlight[] = [
     title: "Private",
     body: "No advertising SDKs and no data brokers. Health data is never used for advertising, and analytics are limited to anonymous crash and performance metrics.",
     Icon: Lock,
-    accent: "text-pulse-strong",
+    accent: "text-arc-bright",
   },
   {
     title: "Built dark",
@@ -244,15 +248,16 @@ export default function DownloadPage() {
 
       <PageHero
         eyebrow="Download"
+        tone="flare"
         title={
           <>
-            Download <span className="text-gradient">IGNYT</span> today
+            Download <span className="text-flare-gradient">IGNYT</span>
           </>
         }
         lead="Transform your workouts, nutrition, fasting, hydration, supplements and progress tracking with one powerful app."
       >
         <PlayStoreButton />
-        <ButtonLink href="/screenshots" variant="secondary" size="lg">
+        <ButtonLink href="/features" variant="outline" size="lg">
           See it first
         </ButtonLink>
       </PageHero>
@@ -262,7 +267,7 @@ export default function DownloadPage() {
         <SectionHeading
           id="platforms"
           eyebrow="Platforms"
-          title="Available now on Android"
+          title="Android first"
           lead="iOS and a web dashboard are on the roadmap. They are not built yet, and we would rather say so than take an email address for a launch we cannot date."
         />
 
@@ -271,40 +276,45 @@ export default function DownloadPage() {
           className="mx-auto mt-12 grid max-w-4xl list-none gap-4 md:grid-cols-3"
         >
           <RevealItem index={0} as="li" className="h-full">
-            <Card className="ring-gradient flex h-full flex-col items-center p-7 text-center">
+            {/* The status here must match the Application details block on the
+                home page and the badge in the download call to action. A
+                reviewer compares them, and "Available" next to "Pending Google
+                Play release" reads as one of the two being untrue. */}
+            <Surface lit="flare" className="flex h-full flex-col items-center p-7 text-center">
               <Smartphone
                 aria-hidden
-                className="size-7 text-ember"
+                className="size-7 text-flare"
                 strokeWidth={2}
               />
               <h3 className="mt-4 text-[17px] font-bold">Android</h3>
-              <Badge tone="good" className="mt-3">
-                Available
+              <Badge tone="warn" className="mt-3">
+                Pending Play release
               </Badge>
-              <p className="mt-3 text-[14px] leading-relaxed text-text-mute">
-                Free on Google Play. Android {site.app.minAndroid} and later.
+              <p className="mt-3 text-[14px] leading-relaxed text-ash">
+                Free when it lands. Android {site.app.minAndroid} and later,
+                version {site.app.version}.
               </p>
               <PlayStoreButton size="md" className="mt-5" />
-            </Card>
+            </Surface>
           </RevealItem>
 
           <RevealItem index={1} as="li" className="h-full">
             <Card className="flex h-full flex-col items-center p-7 text-center">
               <Apple
                 aria-hidden
-                className="size-7 text-text-mute"
+                className="size-7 text-ash"
                 strokeWidth={2}
               />
               <h3 className="mt-4 text-[17px] font-bold">iOS</h3>
               <Badge tone="neutral" className="mt-3">
                 Coming soon
               </Badge>
-              <p className="mt-3 text-[14px] leading-relaxed text-text-mute">
+              <p className="mt-3 text-[14px] leading-relaxed text-ash">
                 An iPhone client with the same local-first guarantees, reading
                 from Apple Health the way the Android build reads Health
                 Connect.
               </p>
-              <span className="mt-5 inline-flex h-12 items-center rounded-btn border border-line bg-surface px-4 text-[13.5px] font-semibold text-text-mute">
+              <span className="mt-5 inline-flex h-12 items-center rounded-pill border border-hairline bg-carbon px-4 text-[13.5px] font-semibold text-ash">
                 Not yet available
               </span>
             </Card>
@@ -314,18 +324,18 @@ export default function DownloadPage() {
             <Card className="flex h-full flex-col items-center p-7 text-center">
               <Monitor
                 aria-hidden
-                className="size-7 text-text-mute"
+                className="size-7 text-ash"
                 strokeWidth={2}
               />
               <h3 className="mt-4 text-[17px] font-bold">Desktop dashboard</h3>
               <Badge tone="neutral" className="mt-3">
                 Coming soon
               </Badge>
-              <p className="mt-3 text-[14px] leading-relaxed text-text-mute">
+              <p className="mt-3 text-[14px] leading-relaxed text-ash">
                 A read-and-plan surface on a bigger screen, for programme design
                 and long-range analysis.
               </p>
-              <span className="mt-5 inline-flex h-12 items-center rounded-btn border border-line bg-surface px-4 text-[13.5px] font-semibold text-text-mute">
+              <span className="mt-5 inline-flex h-12 items-center rounded-pill border border-hairline bg-carbon px-4 text-[13.5px] font-semibold text-ash">
                 Not yet available
               </span>
             </Card>
@@ -334,7 +344,7 @@ export default function DownloadPage() {
       </Section>
 
       {/* Highlights */}
-      <Section id="highlights" className="bg-ink-soft/60">
+      <Section id="highlights" className="bg-void-2/60">
         <SectionHeading
           id="highlights"
           eyebrow="App highlights"
@@ -359,7 +369,7 @@ export default function DownloadPage() {
                   strokeWidth={2.1}
                 />
                 <h3 className="mt-4 text-[16.5px] font-bold">{item.title}</h3>
-                <p className="mt-2 text-[14px] leading-relaxed text-text-mute">
+                <p className="mt-2 text-[14px] leading-relaxed text-ash">
                   {item.body}
                 </p>
               </Card>
@@ -388,7 +398,7 @@ export default function DownloadPage() {
               className="h-full"
             >
               <Card interactive className="h-full p-7">
-                <span className="grid size-11 place-items-center rounded-tile border border-line bg-surface-2">
+                <span className="grid size-11 place-items-center rounded-panel border border-hairline bg-carbon-2">
                   <item.Icon
                     aria-hidden
                     className={`size-5 ${item.accent}`}
@@ -396,7 +406,7 @@ export default function DownloadPage() {
                   />
                 </span>
                 <h3 className="mt-5 text-[17px] font-bold">{item.title}</h3>
-                <p className="mt-2.5 text-[14.5px] leading-relaxed text-text-mute">
+                <p className="mt-2.5 text-[14.5px] leading-relaxed text-ash">
                   {item.body}
                 </p>
               </Card>
@@ -406,7 +416,7 @@ export default function DownloadPage() {
       </Section>
 
       {/* Setup */}
-      <Section id="get-started" className="bg-ink-soft/60">
+      <Section id="get-started" className="bg-void-2/60">
         <div className="grid items-center gap-14 lg:grid-cols-[1fr_auto]">
           <div>
             <SectionHeading
@@ -430,13 +440,13 @@ export default function DownloadPage() {
                 >
                   <span
                     aria-hidden
-                    className="grid size-10 shrink-0 place-items-center rounded-xl border border-ember/30 bg-ember/10 text-[15px] font-black text-ember"
+                    className="grid size-10 shrink-0 place-items-center rounded-xl border border-flare/30 bg-flare/10 text-[15px] font-black text-flare"
                   >
                     {index + 1}
                   </span>
                   <div>
                     <h3 className="text-[17px] font-bold">{step.title}</h3>
-                    <p className="mt-1.5 max-w-lg text-[14.5px] leading-relaxed text-text-mute">
+                    <p className="mt-1.5 max-w-lg text-[14.5px] leading-relaxed text-ash">
                       {step.body}
                     </p>
                   </div>
@@ -450,12 +460,13 @@ export default function DownloadPage() {
           </div>
 
           <Reveal direction="left" className="mx-auto">
-            <PhoneFrame
-              className="[--pw:250px] xl:[--pw:290px]"
+            <PhoneShell
+              className="w-[250px] xl:w-[286px]"
+              notch={false}
               label="The IGNYT dashboard as it appears after setup"
             >
-              <AppScreen id="dashboard" />
-            </PhoneFrame>
+              <ShotScreen id="home" sizes="286px" />
+            </PhoneShell>
           </Reveal>
         </div>
       </Section>
@@ -470,7 +481,7 @@ export default function DownloadPage() {
 
         <Reveal className="mt-12">
           <Card className="overflow-hidden p-0">
-            <dl className="divide-y divide-line">
+            <dl className="divide-y divide-hairline-soft">
               {[
                 {
                   Icon: Smartphone,
@@ -518,19 +529,19 @@ export default function DownloadPage() {
                   key={row.term}
                   className="grid gap-2 p-6 sm:grid-cols-[220px_1fr] sm:gap-6"
                 >
-                  <dt className="flex items-center gap-2.5 text-[14px] font-bold text-text">
+                  <dt className="flex items-center gap-2.5 text-[14px] font-bold text-chalk">
                     <row.Icon
                       aria-hidden
-                      className="size-4 shrink-0 text-ember"
+                      className="size-4 shrink-0 text-flare"
                       strokeWidth={2.2}
                     />
                     {row.term}
                   </dt>
                   <dd>
-                    <p className="font-mono text-[14px] font-semibold text-text">
+                    <p className="font-mono text-[14px] font-semibold text-chalk">
                       {row.value}
                     </p>
-                    <p className="mt-1.5 text-[14px] leading-relaxed text-text-mute">
+                    <p className="mt-1.5 text-[14px] leading-relaxed text-ash">
                       {row.detail}
                     </p>
                   </dd>
@@ -541,18 +552,18 @@ export default function DownloadPage() {
         </Reveal>
 
         <Reveal className="mt-6">
-          <p className="text-center text-[13.5px] text-text-dim">
+          <p className="text-center text-[13.5px] text-ash-dim">
             Data safety and permission details are set out in the{" "}
             <Link
               href="/privacy"
-              className="text-text-mute underline underline-offset-4 hover:text-ember"
+              className="text-ash underline underline-offset-4 hover:text-flare"
             >
               Privacy Policy
             </Link>{" "}
             and{" "}
             <Link
               href="/health-data"
-              className="text-text-mute underline underline-offset-4 hover:text-ember"
+              className="text-ash underline underline-offset-4 hover:text-flare"
             >
               Health Data Policy
             </Link>
@@ -562,7 +573,7 @@ export default function DownloadPage() {
       </Section>
 
       {/* FAQ */}
-      <Section id="download-faq" className="bg-ink-soft/60">
+      <Section id="download-faq" className="bg-void-2/60">
         <SectionHeading
           id="download-faq"
           eyebrow="FAQ"
@@ -576,7 +587,7 @@ export default function DownloadPage() {
             { heading: "Troubleshooting", items: TROUBLESHOOT_FAQ },
           ].map((group) => (
             <div key={group.heading} className="pb-10">
-              <h3 className="mb-4 text-[12px] font-bold uppercase tracking-[0.16em] text-ember">
+              <h3 className="mb-4 text-[12px] font-bold uppercase tracking-[0.16em] text-flare">
                 {group.heading}
               </h3>
               <Accordion
@@ -588,7 +599,7 @@ export default function DownloadPage() {
         </div>
 
         <Container className="text-center">
-          <ButtonLink href="/contact" variant="secondary">
+          <ButtonLink href="/contact" variant="outline">
             Still stuck? Contact support
           </ButtonLink>
         </Container>
@@ -597,19 +608,20 @@ export default function DownloadPage() {
       {/* Final CTA */}
       <Section id="download-now">
         <Reveal>
-          <div className="ring-gradient relative overflow-hidden rounded-[32px] border border-line bg-[linear-gradient(150deg,#12151d_0%,#0b0d13_45%,#170e0a_100%)] px-6 py-16 text-center sm:px-14 sm:py-20">
+          <div className="edge-flare relative overflow-hidden rounded-hero border border-hairline bg-[linear-gradient(150deg,#12151d_0%,#0b0d13_45%,#170e0a_100%)] px-6 py-16 text-center sm:px-14 sm:py-20">
             <span
               aria-hidden
-              className="pointer-events-none absolute -left-24 -top-24 size-[420px] rounded-full blur-[90px]"
+              data-decor="ambient"
+              className="pointer-events-none absolute -left-24 -top-24 size-[420px] animate-breathe rounded-pill blur-[90px]"
               style={{
                 background:
-                  "radial-gradient(circle, rgba(255,90,31,0.28), transparent 68%)",
+                  "radial-gradient(circle, rgba(255,106,26,0.28), transparent 68%)",
               }}
             />
             <h2 className="relative text-[clamp(1.9rem,4.6vw,3rem)] font-black leading-[1.08]">
               Download now
             </h2>
-            <p className="relative mx-auto mt-5 max-w-xl text-[16px] leading-relaxed text-text-mute">
+            <p className="relative mx-auto mt-5 max-w-xl text-[16px] leading-relaxed text-ash">
               Free, offline-first, and yours to walk away from at any time.
             </p>
             <div className="relative mt-9 flex justify-center">

@@ -113,50 +113,85 @@ screenshots.
   app (`www/css/tokens.css` in the app repo), so a brand change propagates
   instead of requiring sixteen re-exports.
 
-Sizing works through one custom property. `PhoneFrame` lays the device out at a
-fixed 296×622 design grid and scales the whole thing with a `transform`, driven
-by `--pw`:
+Sizing works through **container queries**, not a transform.
+
+`PhoneShell` declares `container-type: inline-size` on the glass, and every
+component inside a screen sizes in `cqw` — percentages of the phone's own
+width. So the device is sized by ordinary CSS width, and its contents follow:
 
 ```tsx
-<PhoneFrame className="[--pw:250px] xl:[--pw:300px]">
+<PhoneShell className="w-[250px] xl:w-[286px]">
+  <AppScreen id="dashboard" />
+</PhoneShell>
 ```
 
-That means responsive device sizing with no JavaScript measurement, and
-identical proportions at every breakpoint.
+One set of screen components therefore renders the 320px hero device, the
+250px device on `/download` and a 236px gallery card identically, with no
+breakpoints, no JavaScript measurement and no variants.
 
-**The clipper is load-bearing.** The scaled element is laid out at full size
-and only *painted* smaller, so below `--pw: 296px` its layout box spills past
-the container and drags the document's scroll width with it. The
-`overflow-hidden` wrapper removes nothing visible and prevents horizontal
-scroll on mobile.
+This replaced a `transform: scale()` approach, which had a real defect: a
+scaled element is laid out at full size and only *painted* smaller, so below
+its design width the layout box spilled past the container and dragged the
+document's scroll width with it — requiring an `overflow-hidden` clipper on
+every instance to avoid horizontal scroll on mobile. Container queries have no
+such gap between layout and paint, so the clipper is gone.
+
+### The screens animate themselves
+
+Rings, bars and line charts inside the mockups draw as they scroll into view,
+driven by `animation-timeline: view()` in `globals.css` and parameterised
+through custom properties (`--len`, `--gap`, `--to`). No screen is a client
+component: sixteen animated app screens ship **zero JavaScript**.
 
 ---
 
 ## Animation
 
-Framer Motion, with two rules.
+Four mechanisms, each used only where it is the cheapest thing that works.
 
-**Everything is gated on `prefers-reduced-motion`,** in CSS (a global
-`@media` block) and in JavaScript (`useReducedMotion()` in each animated
-component). Reduced motion is not a degraded experience here — components
-render their final state directly.
+| Mechanism | Used for | Cost |
+| --- | --- | --- |
+| Scroll-driven CSS (`animation-timeline: view()`) | All reveals, every chart in the mockups | Zero JS, compositor-run |
+| CSS transitions | Hovers, the navbar capsule, the mobile sheet, beat switching | Zero JS |
+| Framer Motion | Pointer-driven work: magnetic buttons, 3D tilt, screen transitions | Loaded on the routes that use it |
+| GSAP ScrollTrigger | One scrubbed progress value for the storytelling scene | Dynamically imported, `full` tier only |
 
-**Reveals must survive having no JavaScript.** Framer server-renders each
-reveal wrapper's `initial` state as an inline `opacity: 0` and clears it from
-the client. Without JS that never happens, so a `<noscript>` rule in the root
-layout forces those elements visible. This was a real defect, found by
-screenshotting the site rather than by reading it.
+**Reveals are CSS, not Framer.** `components/ui/Reveal.tsx` is a *server*
+component that emits a class name and nothing else. A `whileInView`
+implementation pulls the animation runtime into the initial bundle of every
+route that reveals anything, and server-renders everything below the fold at
+`opacity: 0` — so content waits on hydration to become visible, and never
+appears at all without scripting.
 
-### Two Framer behaviours worth knowing before editing
+**Transform and opacity animate on separate ranges.** The opacity ramp
+finishes at `entry 55%`, while the element is still near the viewport edge, so
+nothing is ever parked at partial opacity where someone might try to read it.
+Automated contrast audits flag mid-fade text, correctly.
 
-- **An exiting `AnimatePresence` child renders from a snapshot of its last
-  props.** Neither a `style` prop nor a parent re-render reaches it. The
-  lightbox keeps `pointerEvents` on a *plain, always-mounted parent* for this
-  reason: if an exit animation ever stalls, a transparent full-screen overlay
-  must not silently swallow every click on the page.
-- **Reveals use `once: true`.** Fast programmatic scrolling can outrun the
-  IntersectionObserver and leave a section hidden. Real scrolling is fine; if
-  you are automating screenshots, scroll in small steps.
+### Motion tiers
+
+`MotionProvider` publishes `full` / `lite` / `none` on `<html data-motion>`,
+derived from `prefers-reduced-motion`, `deviceMemory`, `hardwareConcurrency`
+and a two-second frame-rate sample taken after mount. It only ever demotes.
+
+- `full` — Lenis smooth scroll, the particle field, parallax, the pinned scene.
+- `lite` — reveals, hovers and counters. No continuous rAF work at all.
+- `none` — nothing moves on its own.
+
+Lenis and GSAP are both `import()`ed at runtime and are never fetched below
+`full`, so a low-power phone downloads neither.
+
+### Two behaviours worth knowing before editing
+
+- **`AnimatePresence mode="wait"` doubles a transition's duration.** The
+  incoming child does not mount until the outgoing one has finished leaving.
+  In `PhoneScene`'s split layout that made the copy lag a third of a second
+  behind the device, so the words described one screen while another was
+  shown. It uses `popLayout`.
+- **The pinned scene uses `position: sticky`, not ScrollTrigger pinning.**
+  GSAP pinning injects a spacer and rewrites the pinned node's position, which
+  is the usual source of layout jumps at a section boundary — especially under
+  a smooth-scroll library. GSAP here only computes the scrub value.
 
 ---
 
@@ -171,14 +206,24 @@ build targets need — and with the prefixed declaration written last it will
 discard the standard one. That shipped a navbar with no `backdrop-filter` in
 Firefox. Declare the standard property; the build adds prefixes.
 
+The palette is two accents and nothing else. `arc` (electric blue) carries
+structure and interaction; `flare` (neon orange) is reserved for energy — the
+bolt, records, streaks and the single primary action on a page. `good`, `warn`
+and `bad` exist but only ever carry meaning, never decoration.
+
+Every text colour clears WCAG AA against pure black as normal-size text. There
+is no headroom on `#000000`, so re-measure before darkening any of them.
+
 Two utilities carry non-obvious cost:
 
 - `.cv-auto` (`content-visibility: auto`) lets the browser skip layout and
-  paint for off-screen gallery sections. It is why `/screenshots` renders
-  sixteen device mockups without stalling.
+  paint for off-screen sections. Its `contain-intrinsic-size` should stay near
+  a real section height — under-declaring it makes the page grow as you scroll
+  and shortens the scroll thumb under the reader's cursor.
 - `overflow-x: clip` on `html` is a safety net for the decorative bloom
   layers, which are deliberately wider than the viewport. `clip` rather than
-  `hidden` so it does not become a scroll container and break `sticky`.
+  `hidden` so it does not become a scroll container and break `sticky` — which
+  the storytelling scene depends on.
 
 ---
 
@@ -189,18 +234,27 @@ genuinely need state or events:
 
 | Component | Why it is a client component |
 | --- | --- |
+| `MotionProvider` | Owns the motion tier and the Lenis instance |
 | `Navbar` | Scroll state, mobile sheet, focus and scroll-lock management |
-| `Reveal*` | IntersectionObserver |
+| `PageTransition` | Reads `usePathname` to key the route animation |
+| `PhoneScene` | Slide index, autoplay timer, screen transitions |
+| `Story` | GSAP scrub value and the active beat |
+| `ScreenRail` | Arrow buttons and their disabled states |
 | `Counter` | Animation frame loop |
-| `Accordion` | Open/closed state |
-| `PhoneCarousel` | Index state, keyboard, drag, autoplay |
-| `Lightbox` | Dialog state, focus trap, keyboard |
+| `Magnetic` / `Tilt` / `Spotlight` | Pointer position |
+| `FloatingMetrics` | Live metric values |
 | `ContactForm` | Form state and validation |
 | `BlogIndex` | Category filtering |
 
-The device screens are deliberately **hook-free**, so they can be rendered
-from a server component *and* imported into the client carousels without
-dragging extra runtime into the bundle.
+`Reveal`, `Accordion` and every device screen are **server** components.
+Reveals are pure CSS, the accordion is native `<details>`, and the screens are
+static markup whose charts animate on a scroll timeline.
+
+Where a client component needs rendered content — the showcase copy, the
+storytelling devices, the gallery phones — it receives it as a `ReactNode`
+**prop** rather than building it. That keeps the interactive shell on the
+client and the content on the server. A render *function* cannot be used for
+this: functions do not cross the server/client boundary.
 
 ---
 

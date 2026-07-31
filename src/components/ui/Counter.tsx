@@ -6,18 +6,19 @@ import { useEffect, useRef, useState } from "react";
  * Counts up to `value` the first time it scrolls into view.
  *
  * Hand-rolled on IntersectionObserver and one `requestAnimationFrame` loop
- * rather than an animation library. The library version pulled framer-motion
- * into the initial bundle of the home page purely to tween five integers,
- * which cost far more main-thread time during hydration than the effect is
- * worth.
+ * rather than an animation library. The library version pulled a full runtime
+ * into the initial bundle of the home page purely to tween four integers, which
+ * costs far more main-thread time during hydration than the effect is worth.
  *
  * The final value is server-rendered inside the visually-hidden span, so the
- * number is in the HTML for search engines and for anyone who never runs the
- * script — the animated span is decorative.
+ * real number is in the HTML for search engines, for screen readers and for
+ * anyone who never runs the script. The animated span is decorative and marked
+ * `aria-hidden` — a counter that reads "3,000… 3,140… 3,160" to a screen reader
+ * is noise, not information.
  */
 export function Counter({
   value,
-  duration = 1600,
+  duration = 1800,
   prefix = "",
   suffix = "",
   className,
@@ -30,18 +31,18 @@ export function Counter({
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  // `null` means "not counting" — the final value is shown. The tween only
-  // ever writes a number here, so no state is set synchronously in the effect
-  // body and there is no cascading render on mount.
+  /* `null` means "not counting" — the final value is what renders. The tween
+     only ever writes a number here, so nothing is set synchronously during the
+     first render and there is no cascading update on mount. */
   const [display, setDisplay] = useState<number | null>(null);
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
 
-    // Respect reduced motion, and skip the mechanism entirely where
-    // IntersectionObserver is unavailable — the final value is already
-    // rendered in both cases.
+    /* Respect reduced motion, and skip the mechanism entirely where
+       IntersectionObserver is unavailable. The final value is already on screen
+       in both cases, so there is nothing to fall back to. */
     const reduce = window.matchMedia?.(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -56,15 +57,17 @@ export function Counter({
         const start = performance.now();
         const tick = (now: number) => {
           const t = Math.min((now - start) / duration, 1);
-          // Same ease-out curve as the CSS reveals, so the counter and the
-          // card it sits in feel like one motion.
-          const eased = 1 - Math.pow(1 - t, 3);
+          /* Quintic ease-out. Steeper than the CSS reveals use on purpose: a
+             counter wants to arrive near its final value early and then settle
+             the last few digits, which reads as a mechanism coming to rest
+             rather than as a number sliding to a stop. */
+          const eased = 1 - Math.pow(1 - t, 5);
           setDisplay(t < 1 ? Math.round(eased * value) : null);
           if (t < 1) raf = requestAnimationFrame(tick);
         };
         raf = requestAnimationFrame(tick);
       },
-      { threshold: 0.5 },
+      { threshold: 0.4 },
     );
 
     observer.observe(node);
@@ -82,7 +85,7 @@ export function Counter({
       : `${prefix}${display.toLocaleString("en-US")}${suffix}`;
 
   return (
-    <span ref={ref} className={className}>
+    <span ref={ref} className={className} data-numeric>
       <span aria-hidden>{shown}</span>
       <span className="sr-only">{final}</span>
     </span>

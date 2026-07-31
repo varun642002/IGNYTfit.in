@@ -38,7 +38,7 @@ const sections: LegalSectionSpec[] = [
           is on your device or in optional cloud storage. It is the account and
           data deletion page required by Google Play.
         </P>
-        <Note tone="ember">
+        <Note tone="flare">
           <Strong>Most IGNYT data never leaves your phone.</Strong> Unless you
           signed in and enabled Cloud Sync or Drive backup, deleting the app
           data on your device deletes everything there is.
@@ -91,7 +91,7 @@ const sections: LegalSectionSpec[] = [
             <Strong>By email.</Strong> Send a request to{" "}
             <a
               href={`mailto:${site.email.privacy}?subject=Account%20and%20data%20deletion%20request`}
-              className="font-semibold text-ember hover:underline"
+              className="font-semibold text-flare hover:underline"
             >
               {site.email.privacy}
             </a>{" "}
@@ -140,7 +140,7 @@ const sections: LegalSectionSpec[] = [
               href="https://myaccount.google.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-semibold text-ember hover:underline"
+              className="font-semibold text-flare hover:underline"
             >
               myaccount.google.com
             </a>
@@ -196,7 +196,7 @@ const sections: LegalSectionSpec[] = [
           in the{" "}
           <Link
             href="/health-data"
-            className="font-semibold text-ember hover:underline"
+            className="font-semibold text-flare hover:underline"
           >
             Health Data Policy
           </Link>
@@ -225,7 +225,7 @@ const sections: LegalSectionSpec[] = [
         Deletion requests and questions:{" "}
         <a
           href={`mailto:${site.email.privacy}?subject=Account%20and%20data%20deletion%20request`}
-          className="font-semibold text-ember hover:underline"
+          className="font-semibold text-flare hover:underline"
         >
           {site.email.privacy}
         </a>

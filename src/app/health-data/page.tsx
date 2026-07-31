@@ -94,13 +94,13 @@ const sections: LegalSectionSpec[] = [
           health-related data generally. It supplements the{" "}
           <Link
             href="/privacy"
-            className="font-semibold text-ember hover:underline"
+            className="font-semibold text-flare hover:underline"
           >
             Privacy Policy
           </Link>
           , which governs everything else.
         </P>
-        <Note tone="ember">
+        <Note tone="flare">
           <Strong>Health Connect is entirely optional.</Strong> IGNYT is fully
           functional without it. If you never connect it, no health data is
           exchanged at all.
@@ -150,22 +150,22 @@ const sections: LegalSectionSpec[] = [
           individually. IGNYT never requests write access to data it only needs
           to read.
         </P>
-        <div className="mt-5 overflow-x-auto rounded-tile border border-line">
+        <div className="mt-5 overflow-x-auto rounded-panel border border-hairline">
           <table className="w-full min-w-[520px] border-collapse text-left text-[14px]">
             <caption className="sr-only">
               Health Connect data types IGNYT reads and what each is used for
             </caption>
             <thead>
-              <tr className="bg-surface-2">
+              <tr className="bg-carbon-2">
                 <th
                   scope="col"
-                  className="border-b border-line px-4 py-3 text-[12px] font-bold uppercase tracking-[0.12em] text-text-dim"
+                  className="border-b border-hairline px-4 py-3 text-[12px] font-bold uppercase tracking-[0.12em] text-ash-dim"
                 >
                   Data type
                 </th>
                 <th
                   scope="col"
-                  className="border-b border-line px-4 py-3 text-[12px] font-bold uppercase tracking-[0.12em] text-text-dim"
+                  className="border-b border-hairline px-4 py-3 text-[12px] font-bold uppercase tracking-[0.12em] text-ash-dim"
                 >
                   What it is used for
                 </th>
@@ -176,11 +176,11 @@ const sections: LegalSectionSpec[] = [
                 <tr key={type} className="align-top">
                   <th
                     scope="row"
-                    className="border-b border-line-soft px-4 py-3 font-semibold text-text"
+                    className="border-b border-hairline-soft px-4 py-3 font-semibold text-chalk"
                   >
                     {type}
                   </th>
-                  <td className="border-b border-line-soft px-4 py-3 text-text-mute">
+                  <td className="border-b border-hairline-soft px-4 py-3 text-ash">
                     {use}
                   </td>
                 </tr>
@@ -269,7 +269,7 @@ const sections: LegalSectionSpec[] = [
             guidance — see the{" "}
             <Link
               href="/disclaimer"
-              className="font-semibold text-ember hover:underline"
+              className="font-semibold text-flare hover:underline"
             >
               Disclaimer
             </Link>
@@ -289,7 +289,7 @@ const sections: LegalSectionSpec[] = [
         data — see the{" "}
         <Link
           href="/data-deletion"
-          className="font-semibold text-ember hover:underline"
+          className="font-semibold text-flare hover:underline"
         >
           Data Deletion Policy
         </Link>
@@ -318,7 +318,7 @@ const sections: LegalSectionSpec[] = [
         Questions about how IGNYT handles health data:{" "}
         <a
           href={`mailto:${site.email.privacy}`}
-          className="font-semibold text-ember hover:underline"
+          className="font-semibold text-flare hover:underline"
         >
           {site.email.privacy}
         </a>

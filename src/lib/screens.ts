@@ -23,7 +23,10 @@ export type ScreenId =
   | "progress"
   | "notifications"
   | "profile"
-  | "settings";
+  | "settings"
+  | "achievements"
+  | "habits"
+  | "tools";
 
 export interface ScreenMeta {
   id: ScreenId;
@@ -33,7 +36,7 @@ export interface ScreenMeta {
   description: string;
   /** Three concrete outcomes, shown as a checklist beside the mockup. */
   benefits: [string, string, string];
-  accent: "ember" | "pulse" | "cyan" | "good";
+  accent: "flare" | "arc" | "cyan" | "good";
 }
 
 export const screens: ScreenMeta[] = [
@@ -47,7 +50,7 @@ export const screens: ScreenMeta[] = [
       "Resume an in-progress workout straight from the home screen",
       "Weekly training volume charted the moment you finish a session",
     ],
-    accent: "ember",
+    accent: "flare",
   },
   {
     id: "workout",
@@ -59,7 +62,7 @@ export const screens: ScreenMeta[] = [
       "Rest timer starts itself and counts down on the lock screen",
       "Personal records flagged the instant you beat them",
     ],
-    accent: "ember",
+    accent: "flare",
   },
   {
     id: "exercise",
@@ -71,7 +74,7 @@ export const screens: ScreenMeta[] = [
       "Estimated 1RM charted across every session you have logged",
       "Primary and secondary muscles labelled at a glance",
     ],
-    accent: "pulse",
+    accent: "arc",
   },
   {
     id: "food-log",
@@ -107,7 +110,7 @@ export const screens: ScreenMeta[] = [
       "Fibre, iron, calcium, vitamin C and sodium against your targets",
       "Seven-day averages that smooth out one unusual day",
     ],
-    accent: "pulse",
+    accent: "arc",
   },
   {
     id: "diet-plan",
@@ -119,7 +122,7 @@ export const screens: ScreenMeta[] = [
       "Adherence scored against the plan, not guessed",
       "Swap a meal without rebuilding the entire day",
     ],
-    accent: "ember",
+    accent: "flare",
   },
   {
     id: "fasting",
@@ -131,7 +134,7 @@ export const screens: ScreenMeta[] = [
       "Current stage explained as the fast progresses",
       "Streaks and duration history for the last weeks",
     ],
-    accent: "pulse",
+    accent: "arc",
   },
   {
     id: "water",
@@ -167,7 +170,7 @@ export const screens: ScreenMeta[] = [
       "Works with partial permissions: deny one, the rest still sync",
       "Exchange happens on-device through Android; no IGNYT server sees it",
     ],
-    accent: "pulse",
+    accent: "arc",
   },
   {
     id: "weight",
@@ -191,7 +194,7 @@ export const screens: ScreenMeta[] = [
       "Streaks and session counts that reward consistency",
       "Personal records listed with how much you added",
     ],
-    accent: "ember",
+    accent: "flare",
   },
   {
     id: "notifications",
@@ -203,7 +206,7 @@ export const screens: ScreenMeta[] = [
       "Quiet hours respected so nothing fires overnight",
       "Scheduled on-device; no notification content leaves the phone",
     ],
-    accent: "ember",
+    accent: "flare",
   },
   {
     id: "profile",
@@ -215,7 +218,7 @@ export const screens: ScreenMeta[] = [
       "Height, weight and age used to keep targets honest",
       "Achievements that track long-run consistency",
     ],
-    accent: "pulse",
+    accent: "arc",
   },
   {
     id: "settings",
@@ -230,6 +233,49 @@ export const screens: ScreenMeta[] = [
     accent: "good",
   },
 ];
+
+/* ---------------------------------------------------------------------------
+   Screens added after the app was reviewed against real screenshots. These are
+   shipped surfaces the site had never mentioned.
+   ------------------------------------------------------------------------- */
+screens.push(
+  {
+    id: "tools",
+    title: "Tools",
+    description:
+      "Everything that is not a daily log, gathered in one place: training plans, the exercise library, the goal engine, weight logging, Health Connect and the body-composition calculator.",
+    benefits: [
+      "HYROX training plans and routines alongside your own",
+      "Smart goal engine that sets targets from your body stats",
+      "BMI, BMR, TDEE and macro calculator built in",
+    ],
+    accent: "arc",
+  },
+  {
+    id: "achievements",
+    title: "Achievements",
+    description:
+      "Twenty badges covering streaks, workout milestones and personal records, each with the date you earned it — progress you can see accumulating rather than a number that resets.",
+    benefits: [
+      "Twenty achievements tracking streaks and milestones",
+      "Every badge stamped with the date it was unlocked",
+      "Personal records listed separately, with the increment",
+    ],
+    accent: "flare",
+  },
+  {
+    id: "habits",
+    title: "Habit tracker",
+    description:
+      "The behaviours underneath the training: turn up, eat properly, sleep. Each habit keeps its own streak, its best run, and how many days you have hit it this week and this month.",
+    benefits: [
+      "Add any habit — training, diet, sleep, anything you choose",
+      "Current streak and personal best tracked per habit",
+      "Weekly and monthly completion counts at a glance",
+    ],
+    accent: "good",
+  },
+);
 
 /** Screens shown in the home page preview carousel, in order. */
 const featuredScreenIds: ScreenId[] = [

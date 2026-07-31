@@ -18,14 +18,13 @@ export interface RouteMeta {
 export const productRoutes: RouteMeta[] = [
   { path: "/", label: "Home", priority: 1, changeFrequency: "weekly" },
   {
+    /* /screenshots is gone. The storytelling page it held — one real
+       screenshot per feature, one chapter at a time — IS the features page
+       now, so a separate list of the same capabilities was two routes saying
+       the same thing. Anything still pointing at /screenshots should point
+       here. */
     path: "/features",
     label: "Features",
-    priority: 0.9,
-    changeFrequency: "monthly",
-  },
-  {
-    path: "/screenshots",
-    label: "Screenshots",
     priority: 0.9,
     changeFrequency: "monthly",
   },
@@ -121,8 +120,7 @@ export const legalRoutes: RouteMeta[] = [
 export const navRoutes: RouteMeta[] = [
   productRoutes[0], // Home
   productRoutes[1], // Features
-  productRoutes[2], // Screenshots
-  productRoutes[3], // Download
+  productRoutes[2], // Download
   { ...legalRoutes[0], label: "Privacy" },
   { ...legalRoutes[1], label: "Terms" },
   companyRoutes[1], // Contact

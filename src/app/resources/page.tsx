@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
+  ArrowUpRight,
   BookOpen,
   Calculator,
+  Clock,
   Download,
   FileJson,
   HeartPulse,
@@ -14,12 +16,14 @@ import {
 } from "lucide-react";
 import { DownloadCta } from "@/components/home/DownloadCta";
 import { breadcrumbSchema, JsonLd } from "@/components/seo/JsonLd";
+import { Aurora } from "@/components/ui/Aurora";
 import { ButtonLink } from "@/components/ui/Button";
-import { Badge, Card } from "@/components/ui/Card";
 import { PageHero } from "@/components/ui/PageHero";
-import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
+import { RevealItem } from "@/components/ui/Reveal";
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { sortedPosts } from "@/lib/blog";
+import { Spotlight } from "@/components/ui/Spotlight";
+import { Surface } from "@/components/ui/Surface";
+import { formatPostDate, sortedPosts } from "@/lib/blog";
 import { createMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
@@ -107,36 +111,72 @@ const REFERENCE: Resource[] = [
   },
 ];
 
-function ResourceGrid({ items }: { items: Resource[] }) {
+/**
+ * One directory entry.
+ *
+ * Numbered, because this page is an index and an index that does not number
+ * itself gives the reader no sense of how much there is. The arrow is the only
+ * thing that moves on hover — these are navigation, and navigation should feel
+ * immediate rather than staged.
+ */
+function ResourceRow({
+  item,
+  index,
+  tone,
+}: {
+  item: Resource;
+  index: number;
+  tone: "arc" | "flare";
+}) {
   return (
-    <RevealGroup as="ul" className="mt-12 grid list-none gap-4 sm:grid-cols-2">
-      {items.map((item, revealIndex) => (
-        <RevealItem
-          index={revealIndex}
-          as="li"
-          key={item.title}
-          className="h-full"
-        >
-          <Card interactive className="h-full p-7">
-            <span className="grid size-11 place-items-center rounded-tile border border-ember/30 bg-ember/12 text-ember">
-              <item.Icon aria-hidden className="size-5" strokeWidth={2.1} />
+    <RevealItem as="li" index={index % 2}>
+      <Spotlight tone={tone} className="h-full rounded-card">
+        <Surface interactive className="relative flex h-full flex-col p-7 sm:p-8">
+          <div className="flex items-start justify-between gap-4">
+            <span
+              className={
+                tone === "flare"
+                  ? "grid size-11 place-items-center rounded-panel border border-flare/30 bg-flare/12 text-flare"
+                  : "grid size-11 place-items-center rounded-panel border border-arc/30 bg-arc/12 text-arc-bright"
+              }
+            >
+              <item.Icon aria-hidden className="size-5" strokeWidth={2} />
             </span>
-            <h3 className="mt-5 text-[17.5px] font-bold">{item.title}</h3>
-            <p className="mt-2.5 text-[14.5px] leading-relaxed text-text-mute">
-              {item.body}
-            </p>
+            <span className="text-[12px] font-black tabular-nums text-ash-dim">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+          </div>
+
+          <h3 className="mt-6 text-[18px] font-bold tracking-[-0.025em] text-chalk">
             <Link
               href={item.href}
-              className="mt-5 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-ember hover:underline"
+              className="transition-colors duration-300 hover:text-chalk"
             >
-              {item.cta}
-              <ArrowRight aria-hidden className="size-3.5" />
+              {item.title}
               <span className="absolute inset-0" aria-hidden />
             </Link>
-          </Card>
-        </RevealItem>
-      ))}
-    </RevealGroup>
+          </h3>
+
+          <p className="mt-3 text-[14.5px] leading-[1.7] text-ash">
+            {item.body}
+          </p>
+
+          <span
+            className={
+              tone === "flare"
+                ? "mt-6 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-flare"
+                : "mt-6 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-arc"
+            }
+          >
+            {item.cta}
+            <ArrowUpRight
+              aria-hidden
+              className="size-3.5 transition-transform duration-300 ease-glide group-hover/spot:-translate-y-0.5 group-hover/spot:translate-x-0.5"
+            />
+          </span>
+        </Surface>
+      </Spotlight>
+    </RevealItem>
   );
 }
 
@@ -154,7 +194,9 @@ export default function ResourcesPage() {
         title={
           <>
             Everything you need to{" "}
-            <span className="text-gradient">get set up and stay set up</span>
+            <span className="text-arc-gradient">
+              get set up and stay set up
+            </span>
           </>
         }
         lead="Setup guides, how the numbers are calculated, how to get your data out, and the policies that govern all of it — in one place."
@@ -162,83 +204,125 @@ export default function ResourcesPage() {
         <ButtonLink href="/download" size="lg">
           Install IGNYT
         </ButtonLink>
-        <ButtonLink href="/blog" variant="secondary" size="lg">
+        <ButtonLink href="/blog" variant="outline" size="lg">
           Read the blog
         </ButtonLink>
       </PageHero>
 
-      <Section id="guides">
+      <Section id="guides" className="relative">
+        <Aurora tone="flare" className="opacity-50" />
         <SectionHeading
           id="guides"
           eyebrow="Guides"
+          tone="flare"
           title="Getting started and getting unstuck"
+          lead="Four walkthroughs covering install, permissions, export and the problems people actually run into."
+          className="mb-14"
         />
-        <ResourceGrid items={GUIDES} />
+        <ul className="grid gap-4 sm:grid-cols-2">
+          {GUIDES.map((item, index) => (
+            <ResourceRow
+              key={item.title}
+              item={item}
+              index={index}
+              tone="flare"
+            />
+          ))}
+        </ul>
       </Section>
 
-      <Section id="reference" className="bg-ink-soft/60">
+      <Section
+        id="reference"
+        className="border-y border-hairline-soft bg-void-2"
+      >
         <SectionHeading
           id="reference"
           eyebrow="Reference"
           title="How IGNYT works under the hood"
+          lead="Where the numbers come from, what is in the database, and what happens to your data."
+          className="mb-14"
         />
-        <ResourceGrid items={REFERENCE} />
+        <ul className="grid gap-4 sm:grid-cols-2">
+          {REFERENCE.map((item, index) => (
+            <ResourceRow key={item.title} item={item} index={index} tone="arc" />
+          ))}
+        </ul>
       </Section>
 
-      <Section id="reading">
+      <Section id="reading" className="relative">
+        <Aurora tone="arc" className="opacity-45" />
         <SectionHeading
           id="reading"
           eyebrow="Reading"
           title="Latest from the blog"
           lead="Practical writing on training and nutrition — no supplements to sell."
+          className="mb-14"
         />
 
-        <RevealGroup
-          as="ul"
-          className="mt-12 grid list-none gap-4 md:grid-cols-3"
-        >
-          {latest.map((post, revealIndex) => (
-            <RevealItem
-              index={revealIndex}
-              as="li"
-              key={post.slug}
-              className="h-full"
-            >
-              <Card interactive className="h-full p-6">
-                <Badge tone="pulse">{post.category}</Badge>
-                <h3 className="mt-4 text-[17px] font-bold leading-snug">
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="hover:text-ember"
+        <ul className="grid gap-4 md:grid-cols-3">
+          {latest.map((post, index) => (
+            <RevealItem as="li" key={post.slug} index={index}>
+              <Spotlight tone="arc" className="h-full rounded-card">
+                <Surface
+                  interactive
+                  className="relative flex h-full flex-col p-7"
+                >
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="rounded-pill border border-hairline bg-carbon-2 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-ash">
+                      {post.category}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-[12.5px] text-ash-dim">
+                      <Clock aria-hidden className="size-3.5" />
+                      {post.readingMinutes} min
+                    </span>
+                  </div>
+
+                  <h3 className="mt-4 text-[18px] font-bold leading-snug tracking-[-0.025em]">
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="transition-colors duration-300 hover:text-arc-bright"
+                    >
+                      {post.title}
+                      <span className="absolute inset-0" aria-hidden />
+                    </Link>
+                  </h3>
+
+                  <p className="mt-3 text-[14px] leading-[1.68] text-ash">
+                    {post.description}
+                  </p>
+
+                  <time
+                    dateTime={post.published}
+                    className="mt-auto pt-6 text-[13px] text-ash-dim"
                   >
-                    {post.title}
-                    <span className="absolute inset-0" aria-hidden />
-                  </Link>
-                </h3>
-                <p className="mt-2.5 text-[14px] leading-relaxed text-text-mute">
-                  {post.description}
-                </p>
-              </Card>
+                    {formatPostDate(post.published)}
+                  </time>
+                </Surface>
+              </Spotlight>
             </RevealItem>
           ))}
-        </RevealGroup>
+        </ul>
 
         <div className="mt-12 flex justify-center">
-          <ButtonLink href="/blog" variant="secondary">
+          <ButtonLink href="/blog" variant="outline">
             All articles
             <ArrowRight aria-hidden className="size-4" />
           </ButtonLink>
         </div>
       </Section>
 
-      <Section id="support" className="bg-ink-soft/60">
+      <Section
+        id="support"
+        className="border-t border-hairline-soft bg-void-2"
+      >
         <SectionHeading
           id="support"
           eyebrow="Still stuck"
           title="Talk to a person"
-          lead={`Messages reach a real inbox at ${site.email.support}, and we answer every one.`}
+          lead={`Messages reach a real inbox at ${site.email.support}, and we answer every one — usually within two working days.`}
+          className="mb-12"
         />
-        <div className="mt-10 flex justify-center">
+        <div className="flex justify-center">
           <ButtonLink href="/contact" size="lg">
             Contact support
             <ArrowRight aria-hidden className="size-4" />

@@ -233,7 +233,7 @@ const sections: LegalSectionSpec[] = [
           or for fraud. Full terms are in the{" "}
           <Link
             href="/terms"
-            className="font-semibold text-ember hover:underline"
+            className="font-semibold text-flare hover:underline"
           >
             Terms &amp; Conditions
           </Link>
@@ -250,7 +250,7 @@ const sections: LegalSectionSpec[] = [
         Questions about this disclaimer:{" "}
         <a
           href={`mailto:${site.email.support}`}
-          className="font-semibold text-ember hover:underline"
+          className="font-semibold text-flare hover:underline"
         >
           {site.email.support}
         </a>

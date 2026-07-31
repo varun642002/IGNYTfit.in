@@ -21,6 +21,27 @@ export const siteUrl = (
     : "https://ignytfit.in")
 ).replace(/\/$/, "");
 
+/**
+ * The one switch that controls the home page's `<title>`.
+ *
+ * Google's OAuth verification compares the application name shown on the home
+ * page against the name on the consent screen. Verification was rejected twice,
+ * and `<title>` was the last surface that was not a literal match — every other
+ * signal (application-name, og:site_name, the h1, JSON-LD `name`, the manifest)
+ * already read exactly "IGNYT".
+ *
+ * So the title is the bare product name while verification is outstanding. That
+ * costs search-result keywords; the meta description, the h1's subheading and
+ * the JSON-LD description all still carry the full "complete fitness and
+ * nutrition tracker" explanation, so the loss is smaller than it looks and is
+ * not worth a third rejection.
+ *
+ * FLIP THIS TO `true` ONCE GOOGLE HAS APPROVED VERIFICATION. Nothing else needs
+ * to change: `seoTitle` below reads from it, and it is the only place in the
+ * codebase where the home page title is decided.
+ */
+export const oauthVerificationApproved = false;
+
 export const site = {
   /** Always rendered exactly as "IGNYT". */
   name: "IGNYT",
@@ -39,16 +60,11 @@ export const site = {
    * these two are written for a search result and for a Google OAuth reviewer
    * skimming the tab title, so they lead with the product category.
    */
-  /* Bare product name, not "IGNYT – Complete Fitness & Nutrition Tracker".
-     Google's OAuth verification compares the application name on the home page
-     against the consent screen, and <title> was the last signal that was not a
-     literal match — application-name, og:site_name, the h1, the JSON-LD name
-     and the manifest name were all already exactly "IGNYT".
-
-     This costs search-result keywords. The meta description still carries the
-     full explanation, and the descriptive title is not worth a third failed
-     verification. */
-  seoTitle: "IGNYT",
+  /* Driven entirely by `oauthVerificationApproved` above — see the note there
+     for why this is the bare product name until Google approves. */
+  seoTitle: oauthVerificationApproved
+    ? "IGNYT – Complete Fitness & Nutrition Tracker"
+    : "IGNYT",
   seoDescription:
     "IGNYT is a complete fitness and nutrition tracking application that helps users monitor workouts, calories, macros, hydration, fasting, body weight, progress, and Google Health Connect data.",
   /* Same reasoning as seoTitle: every surface that states a name now states
@@ -64,7 +80,7 @@ export const site = {
     "IGNYT is an Android fitness and nutrition tracking application. It records your workouts, meals and body measurements, and — with your permission — synchronises supported health data through Google Health Connect, so your training and nutrition live in one place instead of five apps.",
   androidPackage: "com.varun.ignyt",
   locale: "en_US",
-  themeColor: "#08090d",
+  themeColor: "#000000",
 
   /**
    * Release facts, mirrored from `android/app/build.gradle`. Update here when

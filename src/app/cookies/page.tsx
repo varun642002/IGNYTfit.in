@@ -28,7 +28,7 @@ const sections: LegalSectionSpec[] = [
     heading: "Summary",
     body: (
       <>
-        <Note tone="ember">
+        <Note tone="flare">
           <Strong>This website sets no cookies.</Strong> There is no analytics
           cookie, no advertising cookie, no consent banner, and no third-party
           script that could set one. Nothing about your visit is stored in your
@@ -113,7 +113,7 @@ const sections: LegalSectionSpec[] = [
           tracking. It is covered in full by the{" "}
           <Link
             href="/privacy"
-            className="font-semibold text-ember hover:underline"
+            className="font-semibold text-flare hover:underline"
           >
             Privacy Policy
           </Link>
@@ -151,7 +151,7 @@ const sections: LegalSectionSpec[] = [
             <Strong>Cloud data:</Strong> see the{" "}
             <Link
               href="/data-deletion"
-              className="font-semibold text-ember hover:underline"
+              className="font-semibold text-flare hover:underline"
             >
               Data Deletion Policy
             </Link>
@@ -181,7 +181,7 @@ const sections: LegalSectionSpec[] = [
         Questions about this policy:{" "}
         <a
           href={`mailto:${site.email.privacy}`}
-          className="font-semibold text-ember hover:underline"
+          className="font-semibold text-flare hover:underline"
         >
           {site.email.privacy}
         </a>
