@@ -238,10 +238,16 @@ export function shot(id: string): Shot {
  *   `/screenshots` is the catalogue. Every distinct screen appears there,
  *   exactly once.
  *
- *   Every other surface — the hero, the product tour, the features page, the
- *   download page — draws from the same pool, and no screen may appear twice
- *   WITHIN one surface. Two sections of the home page can never show the same
- *   screen, which is the duplication a reader would actually notice.
+ *   Every other surface — the hero, the product tour, the storytelling scene,
+ *   the download page — draws from the same pool, and no screen may appear
+ *   twice WITHIN one surface.
+ *
+ *   Reuse ACROSS surfaces is permitted, on the owner's explicit instruction.
+ *   There are fourteen distinct captures and more places than that which want a
+ *   device, so the alternatives were leaving sections empty or inventing
+ *   mockups. Reuse is the better of the three: the same screen appearing in the
+ *   hero and again beside a different argument reads as the product, not as a
+ *   mistake, because the surrounding copy differs.
  *
  * `claim()` fails the build if a surface lists a screen twice.
  */

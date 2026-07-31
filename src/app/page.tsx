@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { PhoneShell } from "@/components/device/PhoneShell";
+import { ShotScreen } from "@/components/device/ShotScreen";
 import { AppIdentity } from "@/components/home/AppIdentity";
 import { BuiltFor } from "@/components/home/BuiltFor";
 import { DownloadCta } from "@/components/home/DownloadCta";
@@ -10,6 +12,7 @@ import { Story } from "@/components/home/Story";
 import { WhyIgnyt } from "@/components/home/WhyIgnyt";
 import { appSchema, JsonLd } from "@/components/seo/JsonLd";
 import { createMetadata } from "@/lib/seo";
+import { claim } from "@/lib/shots";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = createMetadata({
@@ -50,11 +53,31 @@ export default function HomePage() {
       <Hero />
       <Showcase />
 
-      {/* No devices: every screenshot this page can show is already spent on
-          the hero carousel and the product tour, and a screen may not appear
-          twice on one surface. The scene runs on typography, which is how it
-          was first built. See the note on <Story>'s `visuals` prop. */}
-      <Story />
+      {/*
+        One device per beat, in the same order as the beats inside <Story>:
+        train, eat, measure, keep.
+
+        These four screens also appear in the hero carousel. Reuse across
+        surfaces is deliberate and sanctioned — there are fourteen distinct
+        captures and more places than that which want a device. The alternative
+        was an empty column or a drawn mockup, and both are worse. `claim`
+        still guarantees no screen repeats WITHIN this scene.
+
+        Rendered here, on the server, and handed to the scene as markup — so
+        <Story> stays the section's only client component.
+      */}
+      <Story
+        visuals={claim("home-story", [
+          "workout",
+          "food-log",
+          "weight",
+          "tools",
+        ]).map((id) => (
+          <PhoneShell key={id} glow={false} notch={false}>
+            <ShotScreen id={id} sizes="320px" />
+          </PhoneShell>
+        ))}
+      />
       <Features />
 
       {/* The screenshot rail that used to sit here is gone. It rendered drawn
