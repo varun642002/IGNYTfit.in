@@ -112,7 +112,11 @@ export const site = {
   },
 
   /** Shared "last updated" stamp for the legal suite. */
-  legalUpdated: "2026-07-30",
+  /* One stamp for the whole legal suite, so bumping it moves the date on every legal page,
+     not only the one that changed. That is the trade this shares: the privacy policy's own
+     text promises a new "last updated" whenever it changes, and a policy that changed
+     silently is worse than a terms page whose date moved without its wording moving. */
+  legalUpdated: "2026-08-01",
 } as const;
 
 /** Absolute URL helper — every canonical/OG/JSON-LD URL goes through this. */

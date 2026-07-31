@@ -102,8 +102,17 @@ const sections: LegalSectionSpec[] = [
         <List>
           <LI>Name</LI>
           <LI>Email address</LI>
-          <LI>Phone number (if using phone authentication)</LI>
-          <LI>Profile photo (Google Sign-In only)</LI>
+          <LI>
+            Phone number &mdash; optional. You may add one to your profile during
+            setup or later in Personal Information. It is stored on your device
+            with the rest of your profile and is not used to sign you in, verify
+            you, or contact you.
+          </LI>
+          <LI>
+            Profile photo &mdash; optional. If you add one it is resized and
+            stored on your device with your profile. It is not uploaded anywhere
+            unless you turn on cloud sync.
+          </LI>
           <LI>Firebase User ID</LI>
         </List>
 
@@ -240,11 +249,13 @@ const sections: LegalSectionSpec[] = [
           include:
         </P>
         <List>
-          <LI>Google Sign-In</LI>
           <LI>Email &amp; password</LI>
-          <LI>Phone number authentication</LI>
         </List>
         <P>Firebase securely manages authentication credentials.</P>
+        <P>
+          Phone number authentication is not used. A phone number you add to
+          your profile plays no part in signing in.
+        </P>
       </>
     ),
   },
