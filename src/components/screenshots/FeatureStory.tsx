@@ -5,7 +5,6 @@ import { Aurora } from "@/components/ui/Aurora";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Tilt } from "@/components/ui/Tilt";
-import { WordReveal } from "@/components/ui/WordReveal";
 import { cn } from "@/lib/utils";
 
 /**
@@ -82,12 +81,14 @@ export function FeatureStory({
               {chapter.eyebrow}
             </Eyebrow>
 
-            <WordReveal
-              as="h2"
+            {/* Plain text. The per-word mask reveal that used to be here was
+                removed for clipping headings — see the note in globals.css. */}
+            <h2
               id={`${chapter.id}-heading`}
-              text={chapter.title}
               className="text-fade-down text-[clamp(2.4rem,6.2vw,4.5rem)] font-black leading-[0.98] tracking-[-0.045em]"
-            />
+            >
+              {chapter.title}
+            </h2>
 
             <p className="mt-8 max-w-xl text-[17px] leading-[1.75] text-ash sm:text-[18.5px]">
               {chapter.lead}

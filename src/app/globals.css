@@ -379,6 +379,33 @@
     color: transparent;
   }
 
+  /*
+   * GRADIENT TEXT — READ THIS BEFORE EDITING ANY OF THE THREE BELOW.
+   *
+   * All three set `color: transparent` and paint the glyphs with a background
+   * clipped to the text. That means the glyphs are only visible where the
+   * background actually paints — and the background paints the element's
+   * padding box, nothing more.
+   *
+   * These headings are set at `leading-[1.04]`, tighter than the font's own
+   * ascent. So the tops of the capitals sat OUTSIDE the padding box, received
+   * no paint, and rendered as nothing. A 53.6px heading in a 56px box lost its
+   * upper half — "Facts you can check" showed only the bottoms of its letters,
+   * on every page that uses a section heading.
+   *
+   * The padding/negative-margin pair fixes it at the root: it grows the
+   * background paint area past the glyphs on both axes while taking the space
+   * straight back out of the layout, so nothing shifts.
+   *
+   * If you add a fourth gradient-text utility, add it to this rule too.
+   */
+  .text-fade-down,
+  .text-arc-gradient,
+  .text-flare-gradient {
+    padding-block: 0.22em;
+    margin-block: -0.22em;
+  }
+
   /* Chalk-to-ash vertical fade for very large display headings. The gradient
      runs top-to-bottom so the first line stays pure white and the last settles
      — it reads as depth rather than as a colour effect. */
@@ -419,9 +446,32 @@
    *
    * The `auto` keyword means the browser remembers each element's real size
    * after its first render, so this estimate only matters once. */
+  /*
+   * DISABLED. Do not re-enable without reading this.
+   *
+   * `content-visibility: auto` implies `contain: layout paint`, and both halves
+   * caused visible bugs on this site:
+   *
+   *   PAINT containment clips anything that extends past the element's padding
+   *   box. Large headings whose glyphs overshoot their line box were being cut
+   *   in half at the section boundary — the "Facts you can check" heading was
+   *   showing only its lower halves.
+   *
+   *   A skipped subtree does not run scroll-driven animations, so any
+   *   `animation-timeline: view()` inside it can sit unresolved at its start
+   *   state indefinitely. That is what left body copy at opacity 0.
+   *
+   * The transform-only reveals fixed the second symptom; this fixes the cause
+   * of both. The saving was never large here — every route is statically
+   * generated, the pages are text and a handful of images, and there is no
+   * expensive layout to skip. It is not worth a class of bugs where content
+   * silently disappears.
+   *
+   * Kept as a no-op class so the call sites do not all have to change, and so
+   * this note survives next to them.
+   */
   .cv-auto {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 1000px;
+    /* intentionally empty */
   }
 
   .no-scrollbar {
@@ -490,68 +540,36 @@
     opacity: 1;
   }
 
-  /* --------------------------------------------------- word mask reveal
-   *
-   * Headings that rise word by word from behind a clipping edge. Used on
-   * marketing section headings ONLY — never on legal documents, form labels,
-   * navigation or anything somebody is trying to act on rather than read.
-   *
-   * It is a MASK, not a fade: each word sits in an `overflow: hidden` box and
-   * slides up from below it. Nothing is ever rendered at partial opacity, so
-   * this cannot produce the low-contrast text that a staggered fade does, and
-   * a reader who lands mid-animation still sees full-strength type.
-   *
-   * The padding/negative-margin pairs are load-bearing, on BOTH axes. The
-   * clipping box is only as tall as the line box, and these headings are set at
-   * a 1.04 line-height — so without extra room the box cuts the ascenders off
-   * "S" and "l" at the top and the descenders off "g", "y" and "p" at the
-   * bottom. The negative margins take the space back out of the layout, so the
-   * heading's leading is unaffected.
-   *
-   * The word still rises from fully below the box: the keyframe travels 110%,
-   * which clears the added padding.
-   */
-  .word-mask {
-    display: inline-block;
-    /* isible, not hidden: with the animation removed there is nothing to
-       clip, and leaving it hidden would silently crop a descender. */
-    overflow: visible;
-    padding-top: 0.2em;
-    margin-top: -0.2em;
-    padding-bottom: 0.16em;
-    margin-bottom: -0.16em;
-    vertical-align: bottom;
-  }
-
-  .word-mask > span {
-    display: inline-block;
-    will-change: transform;
-  }
 
   /*
-   * THE WORD-RISE ANIMATION IS GONE. DO NOT REINSTATE IT.
+   * THE WORD-MASK HEADING REVEAL IS GONE, ENTIRELY. DO NOT REINSTATE IT.
    *
-   * It clipped headings — sometimes hiding them completely — and it did so
-   * twice, in two different ways, after two different fixes:
+   * It put every word of a heading in an `overflow: hidden` box and slid it up
+   * on the scroll timeline. It clipped headings — sometimes hiding them
+   * completely — and it did so three times, in three different ways, surviving
+   * two attempted fixes:
    *
    *   1. The clipping box was only as tall as the line box, so it sliced the
    *      ascenders and descenders off headings set at a 1.04 line-height.
    *      Padding on both axes fixed that.
    *   2. The scroll range was tied to `cover`, which advances across the
    *      element's whole journey through the viewport. Inside a `min-h-screen`
-   *      section a heading could sit part-risen — and therefore part-clipped —
-   *      for most of a scroll. Moving to `entry` fixed most cases and still
-   *      left headings blank inside the full-height storytelling chapters.
+   *      section a heading could sit part-risen, and therefore part-clipped,
+   *      for most of a scroll.
+   *   3. Even after both fixes, headings rendered as a row of half-letters on
+   *      the live page whenever the timeline had not resolved.
    *
    * The failure mode is the problem, not the frequency: when this effect goes
-   * wrong the text is INVISIBLE, and a heading nobody can read is worse than no
-   * animation at all. A reveal must degrade to "visible", which is the rule the
-   * rest of the motion system already follows.
+   * wrong the text is INVISIBLE, and a heading nobody can read is worse than
+   * any animation is good.
    *
-   * The mask box is kept as an inert wrapper so <WordReveal> call sites do not
-   * have to change. Headings still animate — they inherit the `.rise` treatment
-   * from the Reveal wrapper around them, which only ever moves and fades and
-   * therefore cannot hide anything permanently.
+   * THE RULE, for anything added here in future: a reveal may MOVE content. It
+   * may not HIDE it, CLIP it, or make it TRANSPARENT. `.rise` moves a whole
+   * block and is safe. Anything built on `overflow: hidden`, `clip-path`, or
+   * `opacity` over live text is not, however well it tests.
+   *
+   * Headings still animate — they inherit `.rise` from the Reveal wrapper
+   * around them, which only ever translates.
    */
 
   /* ------------------------------------------- self-drawing data graphics

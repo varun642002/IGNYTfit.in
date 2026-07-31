@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
-import { WordReveal } from "@/components/ui/WordReveal";
 import { cn } from "@/lib/utils";
 
 /**
@@ -94,40 +93,33 @@ export function SectionHeading({
       ) : null}
 
       {/*
-        A plain-string heading is upgraded to the word-mask reveal
-        automatically; anything containing JSX (a gradient span, a line break)
-        is rendered as given, because it cannot be split on whitespace without
-        destroying the markup.
+        Headings are plain text. No per-word reveal.
 
-        This is why the reveal is confined to marketing sections without anyone
-        having to remember: the legal suite and the forms use their own heading
-        markup and never go through SectionHeading at all.
+        A word-mask reveal lived here: each word in an `overflow: hidden` box,
+        rising on the scroll timeline. It was removed because it clips, and
+        clipping is not a safe thing to do to real content. Whenever its
+        timeline did not resolve — inside a skipped subtree, or simply partway
+        through its range — the words sat below their masks and the heading
+        rendered as a row of half-letters. It did that on every page that has a
+        section heading, and it survived two earlier attempts to fix the
+        symptoms rather than remove the mechanism.
+
+        The rule, stated once more because it has now been broken three times:
+        a reveal may MOVE content. It may not HIDE it, CLIP it, or make it
+        transparent. `.rise` moves the whole block and is safe; anything built
+        on `overflow: hidden`, `clip-path` or `opacity` over live text is not.
       */}
-      {typeof title === "string" ? (
-        <WordReveal
-          as={Tag}
-          id={id ? `${id}-heading` : undefined}
-          text={title}
-          className={cn(
-            "text-fade-down font-black leading-[1.04]",
-            Tag === "h1"
-              ? "text-[clamp(2.6rem,7vw,4.75rem)]"
-              : "text-[clamp(2rem,4.8vw,3.35rem)]",
-          )}
-        />
-      ) : (
-        <Tag
-          id={id ? `${id}-heading` : undefined}
-          className={cn(
-            "text-fade-down font-black leading-[1.04]",
-            Tag === "h1"
-              ? "text-[clamp(2.6rem,7vw,4.75rem)]"
-              : "text-[clamp(2rem,4.8vw,3.35rem)]",
-          )}
-        >
-          {title}
-        </Tag>
-      )}
+      <Tag
+        id={id ? `${id}-heading` : undefined}
+        className={cn(
+          "text-fade-down font-black leading-[1.04]",
+          Tag === "h1"
+            ? "text-[clamp(2.6rem,7vw,4.75rem)]"
+            : "text-[clamp(2rem,4.8vw,3.35rem)]",
+        )}
+      >
+        {title}
+      </Tag>
 
       {lead ? (
         <p
