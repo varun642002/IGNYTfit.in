@@ -18,11 +18,16 @@
  *   both would put the same interface on the page twice. Only shot-05 is
  *   registered — it is the cleaner capture.
  *
- *   shot-12 is the Profile screen. It is deliberately NOT registered: it shows
- *   a real body weight, a weight goal and a BMI reading classified "Obese".
- *   That is personal health data about an identifiable person, on a public page
- *   that Google reviews for OAuth verification. Registering it is a one-line
- *   change if that is the intent — the entry is written out below, commented.
+ *   shot-12 was the Profile screen. It has been DELETED from the repository,
+ *   not merely left unregistered — it showed a real body weight, a weight goal
+ *   and a BMI reading classified "Obese", which is personal health data about
+ *   an identifiable person.
+ *
+ *   Unregistering it was not enough. Anything under `public/` is served
+ *   verbatim at its path whether or not a page links to it, so the file was
+ *   still reachable at /screenshots/shot-12.jpg on the live domain. The file
+ *   itself had to go. If a Profile screen is wanted here later, capture a fresh
+ *   one with placeholder body figures.
  *
  * THE NO-DUPLICATE RULE IS ENFORCED, NOT DOCUMENTED
  *
@@ -151,16 +156,11 @@ export const shots: Shot[] = [
     height: 1600,
   },
 
-  /* Personal health data — see the note at the top of this file.
-  {
-    id: "profile",
-    src: "/screenshots/shot-12.jpg",
-    screen: "Profile",
-    purpose: "Lifetime totals and current body composition",
-    width: 737,
-    height: 1600,
-  },
-  */
+  /* No Profile entry. The capture that would have filled it has been deleted
+     from the repository — see the note at the top of this file. Do not
+     reinstate it by pointing a new entry at shot-12.jpg; that file no longer
+     exists and `assertShotFilesExist()` below will fail the build if it is
+     referenced. */
 ];
 
 /**
@@ -183,6 +183,39 @@ function assertUniqueShots(): void {
 }
 
 assertUniqueShots();
+
+/**
+ * Fails the build if a registered screenshot is not actually on disk.
+ *
+ * This exists because of shot-12. A capture was removed from the project for
+ * containing personal health data, and the failure mode of getting that wrong
+ * is silent: the entry stays in the registry, the page renders an <Image> at a
+ * path with nothing behind it, and the first person to notice is a visitor
+ * looking at a blank frame.
+ *
+ * Runs at module load — so at build time — and only on the server, where the
+ * filesystem exists. Every consumer of this module is a server component; if
+ * that ever stops being true, this import is the thing that will say so.
+ */
+function assertShotFilesExist(): void {
+  if (typeof window !== "undefined") return;
+
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const fs = require("node:fs") as typeof import("node:fs");
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const path = require("node:path") as typeof import("node:path");
+
+  for (const entry of shots) {
+    const file = path.join(process.cwd(), "public", entry.src);
+    if (!fs.existsSync(file)) {
+      throw new Error(
+        `Screenshot registry: "${entry.id}" points at ${entry.src}, which does not exist in public/. Either restore the file or remove the entry.`,
+      );
+    }
+  }
+}
+
+assertShotFilesExist();
 
 /** Look a shot up by id. Throws rather than rendering a broken image. */
 export function shot(id: string): Shot {
