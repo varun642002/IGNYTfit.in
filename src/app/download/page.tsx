@@ -30,7 +30,6 @@ import { Accordion } from "@/components/ui/Accordion";
 import { ButtonLink } from "@/components/ui/Button";
 import { Badge, Card } from "@/components/ui/Card";
 import { Surface } from "@/components/ui/Surface";
-import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
 import { PlayStoreButton } from "@/components/ui/PlayStoreButton";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
@@ -600,11 +599,12 @@ export default function DownloadPage() {
           ))}
         </div>
 
-        <Container className="text-center">
+        {/* Plain div — Section supplies the Container, and nesting them double-pads. */}
+        <div className="text-center">
           <ButtonLink href="/contact" variant="outline">
             Still stuck? Contact support
           </ButtonLink>
-        </Container>
+        </div>
       </Section>
 
       {/* Final CTA */}

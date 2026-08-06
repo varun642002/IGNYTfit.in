@@ -22,7 +22,6 @@ import {
 import { DownloadCta } from "@/components/home/DownloadCta";
 import { breadcrumbSchema, JsonLd } from "@/components/seo/JsonLd";
 import { Aurora } from "@/components/ui/Aurora";
-import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { PageHero } from "@/components/ui/PageHero";
 import { Reveal, RevealItem } from "@/components/ui/Reveal";
@@ -545,7 +544,10 @@ export default function AboutPage() {
           has been replaced with something checkable. See lib/metrics.ts for the
           same reasoning applied to the home page.
         */}
-        <Container className="mt-16 text-center">
+        {/* A plain div, not a Container. Section already renders one, and a Container inside
+            a Container applies the horizontal padding twice — this block sat 32px inside the
+            rail every other section on the page keeps. */}
+        <div className="mt-16 text-center">
           <Reveal>
             <p className="mx-auto max-w-2xl text-[16px] leading-[1.75] text-ash">
               IGNYT is free, runs on Android {site.app.minAndroid} and later, and
@@ -553,7 +555,7 @@ export default function AboutPage() {
               and one consistent week at a time.
             </p>
           </Reveal>
-        </Container>
+        </div>
       </Section>
 
       <DownloadCta />
