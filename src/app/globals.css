@@ -797,6 +797,52 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Reading progress, for the long legal pages.
+
+   The navbar already draws a progress line, but the navbar tucks itself away
+   on the way down — so on a 9,400px privacy policy the indicator is hidden for
+   the entire time you are reading and only reappears when you scroll up, which
+   is precisely when it is no longer wanted. Measured: header offscreen and the
+   bar not visible at 3,000px and 6,000px.
+
+   This one is fixed to the viewport and independent of the header, so it stays
+   put. Pure CSS on a scroll timeline: no JavaScript, no rAF loop, no scroll
+   listener, and no hydration to wait for. `scroll(root block)` is the document
+   scroller, so the fill maps directly onto how far through the page you are.
+
+   Unlike the reveals, the `@supports` gate here carries no risk of hiding
+   content — the element is decorative and empty, so a browser without scroll
+   timelines simply never draws it.
+--------------------------------------------------------------------------- */
+@supports (animation-timeline: scroll()) {
+  .read-progress > i {
+    transform-origin: left center;
+    transform: scaleX(0);
+    animation: read-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes read-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The bar tracks scroll position rather than playing on its own, so it is
+     arguably not "motion" at all — but it is decorative, the same information
+     is in the scrollbar, and someone who asked for less movement should not get
+     a line sweeping across the top of every legal page. */
+  .read-progress {
+    display: none;
+  }
+}
+
 /* --------------------------------------------------------------- Lenis
    Required by the smooth-scroll runtime. Lenis adds these classes to <html>
    itself once it starts; when it never starts (reduced motion, low-power

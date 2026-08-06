@@ -5,6 +5,7 @@ import { Aurora } from "@/components/ui/Aurora";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Particles } from "@/components/ui/Particles";
+import { ReadingProgress } from "@/components/ui/ReadingProgress";
 import { Surface } from "@/components/ui/Surface";
 import { legalRoutes } from "@/lib/routes";
 import { legalUpdatedLabel, site } from "@/lib/site";
@@ -158,6 +159,10 @@ export function LegalPage({
 }) {
   return (
     <>
+      {/* Fixed to the viewport, so it survives the navbar tucking itself away on the
+          way down — which is what left these pages with no progress indicator for the
+          entire time anyone was reading them. */}
+      <ReadingProgress />
       <section
         aria-labelledby="legal-title"
         className="relative overflow-hidden border-b border-hairline-soft py-20 sm:py-24"
