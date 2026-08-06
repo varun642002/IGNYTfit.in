@@ -64,7 +64,7 @@ const FACTS: Array<{ label: string; value: ReactNode }> = [
   {
     label: "Website",
     value: (
-      <a href={site.url} className="text-arc transition-colors hover:text-arc-bright">
+      <a href={site.url} className="text-arc-bright transition-colors hover:text-chalk">
         {site.domain}
       </a>
     ),
@@ -74,7 +74,7 @@ const FACTS: Array<{ label: string; value: ReactNode }> = [
     value: (
       <a
         href={`mailto:${site.email.support}`}
-        className="text-arc transition-colors hover:text-arc-bright"
+        className="text-arc-bright transition-colors hover:text-chalk"
       >
         {site.email.support}
       </a>
@@ -84,13 +84,13 @@ const FACTS: Array<{ label: string; value: ReactNode }> = [
     label: "Policies",
     value: (
       <span className="inline-flex flex-wrap gap-x-3 gap-y-1">
-        <Link href="/privacy" className="text-arc transition-colors hover:text-arc-bright">
+        <Link href="/privacy" className="text-arc-bright transition-colors hover:text-chalk">
           Privacy Policy
         </Link>
         <span aria-hidden className="text-ash-dim">
           ·
         </span>
-        <Link href="/terms" className="text-arc transition-colors hover:text-arc-bright">
+        <Link href="/terms" className="text-arc-bright transition-colors hover:text-chalk">
           Terms &amp; Conditions
         </Link>
         <span aria-hidden className="text-ash-dim">
@@ -98,7 +98,7 @@ const FACTS: Array<{ label: string; value: ReactNode }> = [
         </span>
         <Link
           href="/data-deletion"
-          className="text-arc transition-colors hover:text-arc-bright"
+          className="text-arc-bright transition-colors hover:text-chalk"
         >
           Delete Account
         </Link>

@@ -210,7 +210,7 @@ export default function ContactPage() {
                 </p>
                 <a
                   href={`mailto:${site.email.support}`}
-                  className="mt-3 inline-flex items-center gap-2 text-[15px] font-semibold text-arc transition-colors hover:text-arc-bright"
+                  className="mt-3 inline-flex items-center gap-2 text-[15px] font-semibold text-arc-bright transition-colors hover:text-chalk"
                 >
                   <Mail aria-hidden className="size-4" />
                   {site.email.support}
