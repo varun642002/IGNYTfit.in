@@ -222,7 +222,11 @@ export function PhoneScene({
       <div
         ref={containerRef}
         className={cn(
-          "grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] lg:gap-16",
+          // grid-cols-1 is NOT redundant. Without an explicit base column the implicit one is
+          // sized to content, so on a phone this resolved to a 560px column inside a 335px
+          // container and the whole page scrolled sideways. Tailwind's grid-cols-1 is
+          // minmax(0,1fr), which is what lets the column shrink below its content.
+          "grid grid-cols-1 items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] lg:gap-16",
           className,
         )}
       >

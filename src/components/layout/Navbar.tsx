@@ -137,12 +137,20 @@ export function Navbar() {
         className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-[linear-gradient(90deg,var(--color-arc),var(--color-flare))]"
       />
 
+      {/* The drop away from the top edge is a transform, not a margin: same 12px, but it
+          runs on the compositor instead of relaying out the header on every frame.
+
+          max-width and padding stay as they are on purpose. Doing those on the compositor
+          means scaling a layer and counter-scaling its contents, which distorts the pill's
+          radius and the type — and the cost being avoided is 0.065ms per change across a
+          53-node subtree, measured. That is not a trade worth making the markup fragile for. */}
       <div
         className={cn(
-          "mx-auto transition-[max-width,padding,margin] duration-500 ease-glide",
+          "mx-auto transition-[max-width,padding,transform] duration-500 ease-glide",
+          "motion-reduce:transition-none",
           scrolled
-            ? "mt-3 max-w-[1120px] px-4 sm:px-6"
-            : "mt-0 max-w-[1440px] px-5 sm:px-8",
+            ? "max-w-[1120px] translate-y-3 px-4 sm:px-6"
+            : "max-w-[1440px] translate-y-0 px-5 sm:px-8",
         )}
       >
         <div

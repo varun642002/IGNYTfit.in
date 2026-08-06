@@ -190,6 +190,13 @@
   }
 
   body {
+    /* The same clip as `html`, and it has to be on BOTH. With it only on `html` the page
+       still scrolled 59px sideways on a 375px viewport — measured, on the home, download,
+       about and contact pages — because the ambient bloom layers sit at inset-x-[-28%] and
+       are then scaled by animate-breathe. `clip` rather than `hidden` for the reason given
+       above: `hidden` would make this a scroll container and break `position: sticky` in
+       the storytelling section. */
+    overflow-x: clip;
     background-color: var(--color-void);
     color: var(--color-chalk);
     font-family: var(--font-sans);

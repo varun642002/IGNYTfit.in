@@ -417,7 +417,9 @@ export default function DownloadPage() {
 
       {/* Setup */}
       <Section id="get-started" className="bg-void-2/60">
-        <div className="grid items-center gap-14 lg:grid-cols-[1fr_auto]">
+        {/* grid-cols-1: see the note in PhoneScene — without it the implicit column sizes to
+            content and the page scrolls sideways on a phone. */}
+        <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-[1fr_auto]">
           <div>
             <SectionHeading
               id="get-started"
