@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
-import { Reveal } from "@/components/ui/Reveal";
+import { Reveal, RevealItem } from "@/components/ui/Reveal";
 import { site } from "@/lib/site";
 
 /**
@@ -123,10 +123,18 @@ export function AppIdentity() {
             Application details
           </h2>
 
+          {/* Staggered, like every other grid of comparable items on this site — Stats,
+              BuiltFor and WhyIgnyt all cascade their children. This one arrived as a single
+              block, which read as a slab landing rather than a list being written out, and
+              was the only grid of its kind not doing it.
+
+              The stagger is a scroll offset rather than a delay (see RevealItem), so it
+              follows the reader's own pace instead of playing catch-up after a flick. */}
           <dl className="mt-8 grid gap-x-12 gap-y-6 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)]">
-            {FACTS.map((fact) => (
-              <div
+            {FACTS.map((fact, index) => (
+              <RevealItem
                 key={fact.label}
+                index={index}
                 className="flex flex-col gap-1.5 border-l-2 border-hairline pl-4"
               >
                 <dt className="text-[11.5px] font-semibold uppercase tracking-[0.12em] text-ash-dim">
@@ -141,7 +149,7 @@ export function AppIdentity() {
                     fact.value
                   )}
                 </dd>
-              </div>
+              </RevealItem>
             ))}
           </dl>
         </Reveal>
