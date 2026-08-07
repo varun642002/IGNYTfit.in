@@ -84,7 +84,9 @@ export const appSchema = {
     // copy instead and priced on the Play listing. Do not read this 0 as
     // "every feature is free" — the site must never say that.
     price: "0",
-    priceCurrency: "USD",
+    // INR, matching the Play listing. A currency here that disagrees with
+    // the store is exactly what rich-result validation flags.
+    priceCurrency: "INR",
     availability: "https://schema.org/InStock",
     url: site.links.play,
   },
