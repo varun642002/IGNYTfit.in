@@ -66,7 +66,7 @@ export const headlineMetrics: Metric[] = [
  * ones that answer "what does it cost and what does it take from me".
  */
 export const supportingFacts: Array<{ label: string; value: string }> = [
-  { label: "Price", value: "Free" },
+  { label: "Price", value: "See Google Play" },
   { label: "Your data is sold to", value: "Nobody" },
   { label: "Screens", value: `${screens.length}` },
   { label: "Requires", value: `Android ${site.app.minAndroid}+` },

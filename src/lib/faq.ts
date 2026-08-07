@@ -104,9 +104,9 @@ export const faqGroups: FaqGroup[] = [
     label: "Subscriptions and pricing",
     items: [
       {
-        question: "Is IGNYT free?",
+        question: "How much does IGNYT cost?",
         answer:
-          "IGNYT is free to download on Google Play and the core tracking features are free to use. Premium features are available as an optional subscription billed through Google Play. Data you have already logged is never locked behind a payment.",
+          "Current pricing, including any subscription options, is shown on the Google Play listing before you install — that is always the authoritative source. Whatever you pay, data you have already logged is never locked behind a payment: you can export all of it to JSON or CSV at any time.",
       },
       {
         question: "Are there ads?",

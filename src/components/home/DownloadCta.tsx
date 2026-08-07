@@ -55,7 +55,7 @@ export function DownloadCta() {
           </h2>
 
           <p className="mx-auto mt-6 max-w-xl text-[17px] leading-[1.72] text-ash">
-            One free Android application for workouts, nutrition, calories,
+            One Android application for workouts, nutrition, calories,
             macros, hydration, fasting, body weight, progress and Google Health
             Connect. No account required to start, and nothing to pay.
           </p>

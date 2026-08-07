@@ -78,9 +78,12 @@ export const appSchema = {
   publisher: { "@id": absoluteUrl("/#organization") },
   offers: {
     "@type": "Offer",
-    price: "0",
-    priceCurrency: "USD",
+    // Price is deliberately absent rather than 0. The app is not free, and the
+    // exact figure is not settled here — Google Play is the source of truth.
+    // Publishing a wrong price in the data Google reads is worse than omitting
+    // it. Add `price` and `priceCurrency` once the amount is confirmed.
     availability: "https://schema.org/InStock",
+    url: site.links.play,
   },
   featureList: [
     "Workout tracking",

@@ -55,7 +55,7 @@ const HERO_SHOTS = claim("home-hero", [
 ]);
 
 const HERO_FACTS = [
-  "Free on Android",
+  "No ads",
   `Android ${site.app.minAndroid}+`,
   "Works fully offline",
   "Google Health Connect",
