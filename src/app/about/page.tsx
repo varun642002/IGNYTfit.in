@@ -62,7 +62,7 @@ const PROBLEMS = [
   {
     problem: "Everything useful is behind a subscription",
     solution:
-      "Macro targets, charts and exports are routinely paywalled elsewhere. In IGNYT your own logged data is never held behind a payment — you can export all of it, to JSON or CSV, at any time.",
+      "Macro targets, charts and exports are routinely paywalled elsewhere. IGNYT has a free tier that covers the daily tracking, premium for the rest — and either way your own logged data is never held behind a payment. You can export all of it, to JSON or CSV, at any time.",
   },
   {
     problem: "Fitness apps assume you are always online",
@@ -550,7 +550,7 @@ export default function AboutPage() {
         <div className="mt-16 text-center">
           <Reveal>
             <p className="mx-auto max-w-2xl text-[16px] leading-[1.75] text-ash">
-              IGNYT runs on Android {site.app.minAndroid} and later, and
+              IGNYT is free to download, runs on Android {site.app.minAndroid} and later, and
               works with no connection at all. One logged set, one honest meal
               and one consistent week at a time.
             </p>

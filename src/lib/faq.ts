@@ -106,7 +106,7 @@ export const faqGroups: FaqGroup[] = [
       {
         question: "How much does IGNYT cost?",
         answer:
-          "Current pricing, including any subscription options, is shown on the Google Play listing before you install — that is always the authoritative source. Whatever you pay, data you have already logged is never locked behind a payment: you can export all of it to JSON or CSV at any time.",
+          "IGNYT is free to download and the free tier covers day-to-day tracking. Premium unlocks the rest as an optional subscription, and its current price is shown on the Google Play listing before you subscribe — that listing is always the authoritative source. Data you have already logged is never held behind a payment either way: you can export all of it to JSON or CSV at any time.",
       },
       {
         question: "Are there ads?",

@@ -78,10 +78,13 @@ export const appSchema = {
   publisher: { "@id": absoluteUrl("/#organization") },
   offers: {
     "@type": "Offer",
-    // Price is deliberately absent rather than 0. The app is not free, and the
-    // exact figure is not settled here — Google Play is the source of truth.
-    // Publishing a wrong price in the data Google reads is worse than omitting
-    // it. Add `price` and `priceCurrency` once the amount is confirmed.
+    // This is the cost of acquiring the app, which is genuinely zero: free to
+    // download, with a usable free tier. The premium subscription is an
+    // in-app purchase that Offer has no field for, so it is described in the
+    // copy instead and priced on the Play listing. Do not read this 0 as
+    // "every feature is free" — the site must never say that.
+    price: "0",
+    priceCurrency: "USD",
     availability: "https://schema.org/InStock",
     url: site.links.play,
   },

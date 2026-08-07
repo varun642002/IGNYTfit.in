@@ -42,12 +42,12 @@ export const metadata: Metadata = createMetadata({
   /* Deliberately does not say "download it now on Google Play": the listing is
      pending release, and the badge on this page, the home page's Application
      details block and this description all have to agree. */
-  description: `IGNYT for Android — workouts, nutrition, fasting, hydration, supplements and progress in one app. Pricing and subscription options are shown on Google Play. Requires Android ${site.app.minAndroid} or later.`,
+  description: `IGNYT for Android — workouts, nutrition, fasting, hydration, supplements and progress in one app. Free to download with a free tier; premium is an optional subscription priced on Google Play. Requires Android ${site.app.minAndroid} or later.`,
   path: "/download",
   keywords: [
     "download IGNYT",
     "IGNYT Android app",
-    "fitness app download",
+    "free fitness app download",
     "Google Play fitness app",
     "offline fitness app download",
   ],
@@ -159,7 +159,7 @@ const REASONS: Highlight[] = [
 const STEPS = [
   {
     title: "Install from Google Play",
-    body: "Open the Play listing and install. Pricing, and any subscription options, are shown on the Play listing before you install.",
+    body: "Open the Play listing and install. It is free to download and the free tier covers daily tracking — no payment prompt on first launch. Premium pricing is shown on the listing.",
   },
   {
     title: "Set your profile and targets",
@@ -290,8 +290,8 @@ export default function DownloadPage() {
                 Pending Play release
               </Badge>
               <p className="mt-3 text-[14px] leading-relaxed text-ash">
-                Android {site.app.minAndroid} and later, version{" "}
-                {site.app.version}. Pricing is shown on Google Play.
+                Free to download. Android {site.app.minAndroid} and later,
+                version {site.app.version}. Premium priced on Google Play.
               </p>
               <PlayStoreButton size="md" className="mt-5" />
             </Surface>
@@ -624,8 +624,9 @@ export default function DownloadPage() {
               Download now
             </h2>
             <p className="relative mx-auto mt-5 max-w-xl text-[16px] leading-relaxed text-ash">
-              Offline-first, and yours to walk away from at any time — every
-              byte you log exports to JSON or CSV whenever you ask.
+              Free to download, offline-first, and yours to walk away from at
+              any time — every byte you log exports to JSON or CSV whenever you
+              ask.
             </p>
             <div className="relative mt-9 flex justify-center">
               <PlayStoreButton />
