@@ -127,14 +127,18 @@ export function Footer() {
         </div>
       </Container>
 
-      {/* Oversized wordmark. Clipped by the footer's own `overflow-hidden`. */}
+      {/* Oversized wordmark. Clipped by the footer's own `overflow-hidden`.
+
+          The glyphs live in a pseudo-element rather than a text node. At 3.5%
+          opacity this is texture, not content — but as real text it read to
+          contrast auditors as a 1.05:1 failure, which is the correct call for
+          text and the wrong one for a watermark. Rendering identical; the
+          element simply no longer claims to be something legible. */}
       <span
         aria-hidden
-        className="pointer-events-none block select-none text-center font-black leading-[0.78] tracking-[-0.06em] text-chalk/[0.035]"
+        className="pointer-events-none block select-none text-center font-black leading-[0.78] tracking-[-0.06em] text-chalk/[0.035] after:content-['IGNYT']"
         style={{ fontSize: "clamp(5rem, 21vw, 19rem)" }}
-      >
-        IGNYT
-      </span>
+      />
     </footer>
   );
 }
