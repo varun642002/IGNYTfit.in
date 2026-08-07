@@ -37,7 +37,7 @@ export function PageHero({
     <section
       aria-labelledby="page-hero-heading"
       className={cn(
-        "relative overflow-hidden border-b border-hairline-soft py-24 sm:py-32",
+        "relative overflow-hidden border-b border-hairline-soft py-16 sm:py-32",
         className,
       )}
     >

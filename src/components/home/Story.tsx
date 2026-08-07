@@ -169,7 +169,7 @@ export function Story({
       <section
         id="story"
         aria-labelledby="story-heading"
-        className="cv-auto relative py-24 sm:py-32"
+        className="cv-auto relative py-16 sm:py-32"
       >
         <Container>
           <Eyebrow className="mb-5">How it works</Eyebrow>

@@ -70,7 +70,7 @@ export function Footer() {
                     <li key={route.path}>
                       <Link
                         href={route.path}
-                        className="text-[14.5px] text-ash transition-colors duration-300 hover:text-chalk"
+                        className="inline-flex min-h-6 items-center text-[14.5px] text-ash transition-colors duration-300 hover:text-chalk"
                       >
                         {route.label}
                       </Link>
@@ -87,7 +87,7 @@ export function Footer() {
             </h2>
             <a
               href={`mailto:${site.email.support}`}
-              className="mt-5 inline-flex items-center gap-2 text-[14.5px] text-ash transition-colors duration-300 hover:text-chalk"
+              className="mt-5 inline-flex min-h-6 items-center gap-2 text-[14.5px] text-ash transition-colors duration-300 hover:text-chalk"
             >
               <Mail aria-hidden className="size-4" />
               {site.email.support}

@@ -34,7 +34,7 @@ export function Features() {
     <section
       id="features"
       aria-labelledby="features-heading"
-      className="cv-auto relative scroll-mt-24 py-24 sm:py-32 lg:py-40"
+      className="cv-auto relative scroll-mt-24 py-16 sm:py-32 lg:py-40"
     >
       <Aurora tone="flare" className="opacity-60" />
 
@@ -116,7 +116,7 @@ export function Features() {
         <Reveal className="mt-2 text-center">
           <Link
             href="/features"
-            className="inline-flex items-center gap-2 text-[15px] font-semibold text-flare transition-colors hover:text-flare-bright"
+            className="inline-flex min-h-11 items-center gap-2 text-[15px] font-semibold text-flare transition-colors hover:text-flare-bright"
           >
             See all {features.length} features
             <ArrowUpRight aria-hidden className="size-4" />

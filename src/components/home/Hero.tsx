@@ -77,7 +77,7 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative overflow-hidden pb-24 pt-12 sm:pb-32 sm:pt-16 lg:pb-40 lg:pt-20"
+      className="relative overflow-hidden pb-16 pt-6 sm:pb-32 sm:pt-16 lg:pb-40 lg:pt-20"
     >
       <Aurora tone="mixed" />
 
@@ -97,7 +97,7 @@ export function Hero() {
           {/* --------------------------------------------------------- copy */}
           <div className="text-center lg:text-left">
             <div
-              className="stage flex justify-center lg:justify-start"
+              className="stage hidden justify-center sm:flex lg:justify-start"
               style={{ "--d": 0 } as CSSProperties}
             >
               <LogoMark
@@ -110,7 +110,7 @@ export function Hero() {
 
             <h1
               id="hero-heading"
-              className="stage mt-7 text-[clamp(3.4rem,11vw,6.25rem)] font-black leading-[0.92] tracking-[-0.055em]"
+              className="stage mt-0 text-[clamp(3.4rem,11vw,6.25rem)] font-black leading-[0.92] tracking-[-0.055em] sm:mt-7"
               style={{ "--d": 1 } as CSSProperties}
             >
               <span className="text-arc-gradient">IGNYT</span>
@@ -156,13 +156,13 @@ export function Hero() {
             {/* The facts a reviewer scans for, as chips rather than buried in
                 the paragraph above. */}
             <ul
-              className="stage mt-9 flex flex-wrap justify-center gap-2 lg:justify-start"
+              className="stage mt-9 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center lg:justify-start"
               style={{ "--d": 5 } as CSSProperties}
             >
               {HERO_FACTS.map((fact) => (
                 <li
                   key={fact}
-                  className="inline-flex items-center gap-2 rounded-pill border border-hairline bg-carbon/60 px-3.5 py-2 text-[13px] font-semibold text-ash"
+                  className="inline-flex items-center justify-center gap-2 rounded-pill border border-hairline bg-carbon/60 px-3 py-2 text-[12.5px] font-semibold text-ash sm:justify-start sm:px-3.5 sm:text-[13px]"
                 >
                   <Sparkles aria-hidden className="size-3.5 text-arc" />
                   {fact}

@@ -146,7 +146,10 @@ export function ContactForm() {
 
   const fieldClasses = (invalid: boolean) =>
     cn(
-      "w-full rounded-panel border bg-carbon/70 px-4 py-3 text-[15px] text-chalk",
+      // 16px on mobile is not a style choice: iOS Safari zooms the page in
+      // whenever a focused field is smaller than that, which throws the
+      // layout sideways mid-form. Back to 15px from sm up.
+      "w-full rounded-panel border bg-carbon/70 px-4 py-3 text-[16px] text-chalk sm:text-[15px]",
       "placeholder:text-ash-dim transition-colors duration-200",
       invalid
         ? "border-bad/60 focus:border-bad"

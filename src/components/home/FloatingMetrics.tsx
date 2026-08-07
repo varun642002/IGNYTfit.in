@@ -232,13 +232,13 @@ export function FloatingMetrics() {
                 <Icon className="size-3.5" strokeWidth={2.4} />
               </span>
               <span className="flex flex-col leading-none">
-                <span className="text-[9.5px] font-bold uppercase tracking-[0.14em] text-ash-dim">
+                <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-ash-dim sm:text-[9.5px]">
                   {metric.label}
                 </span>
                 <span className="mt-1 text-[14px] font-black text-chalk" data-numeric>
                   {format(metric, values[metric.id])}
                   {metric.unit ? (
-                    <span className="ml-1 text-[10px] font-bold text-ash">
+                    <span className="ml-1 text-[11px] font-bold text-ash sm:text-[10px]">
                       {metric.unit}
                     </span>
                   ) : null}

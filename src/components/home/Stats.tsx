@@ -21,7 +21,7 @@ export function Stats() {
     <section
       id="stats"
       aria-labelledby="stats-heading"
-      className="cv-auto relative border-y border-hairline-soft bg-void-2 py-24 sm:py-32"
+      className="cv-auto relative border-y border-hairline-soft bg-void-2 py-16 sm:py-32"
     >
       <Seam tone="flare" />
       <Aurora tone="flare" className="opacity-45" drift={false} />

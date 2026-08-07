@@ -64,7 +64,10 @@ const FACTS: Array<{ label: string; value: ReactNode }> = [
   {
     label: "Website",
     value: (
-      <a href={site.url} className="text-arc-bright transition-colors hover:text-chalk">
+      <a
+        href={site.url}
+        className="inline-flex min-h-6 items-center text-arc-bright transition-colors hover:text-chalk"
+      >
         {site.domain}
       </a>
     ),
@@ -74,7 +77,7 @@ const FACTS: Array<{ label: string; value: ReactNode }> = [
     value: (
       <a
         href={`mailto:${site.email.support}`}
-        className="text-arc-bright transition-colors hover:text-chalk"
+        className="inline-flex min-h-6 items-center text-arc-bright transition-colors hover:text-chalk"
       >
         {site.email.support}
       </a>

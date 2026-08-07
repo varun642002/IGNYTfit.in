@@ -57,7 +57,7 @@ export function FeatureStory({
     <section
       id={chapter.id}
       aria-labelledby={`${chapter.id}-heading`}
-      className="relative flex min-h-screen scroll-mt-20 items-center overflow-hidden py-24 sm:py-28"
+      className="relative flex min-h-screen scroll-mt-20 items-center overflow-hidden py-16 sm:py-28"
     >
       <Aurora tone={chapter.tone} />
 

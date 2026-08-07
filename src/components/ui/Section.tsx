@@ -39,7 +39,7 @@ export function Section({
       id={id}
       aria-labelledby={id ? `${id}-heading` : undefined}
       className={cn(
-        "relative py-24 sm:py-32 lg:py-40",
+        "relative py-16 sm:py-32 lg:py-40",
         !eager && "cv-auto",
         className,
       )}
