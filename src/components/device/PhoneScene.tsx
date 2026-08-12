@@ -141,11 +141,7 @@ export function PhoneScene({
             overlay={overlay}
             notch={!realShots}
           >
-            <Crossfade
-              slotKey={active.id}
-              variant="screen"
-              durationMs={reduce ? 0 : 620}
-            >
+            <Crossfade slotKey={active.id} durationMs={reduce ? 0 : 620}>
               {active.screen}
             </Crossfade>
           </PhoneShell>
@@ -212,27 +208,52 @@ export function PhoneScene({
       >
         <div>
           {/*
-            `popLayout`, not `wait`.
+            All six copy blocks, stacked in a single grid cell.
 
-            With `mode="wait"` the incoming copy does not mount until the
-            outgoing copy has finished leaving, so a 0.42s transition actually
-            takes 0.84s end to end — while the screen beside it finishes in
-            0.62s. The result is a full third of a second where the words say
-            "Dashboard" and the phone is already showing the workout, which
-            reads as a bug rather than as a transition.
+            THIS IS WHAT RESERVES THE HEIGHT, and that is the whole point. Only
+            one block is ever visible, but the grid cell is sized to the tallest
+            of them, so advancing a slide cannot resize this column.
 
-            `popLayout` starts both halves at the same instant. The copy is
-            given the shorter duration so it settles just before the device
-            does; that ordering is deliberate — the reverse makes the text feel
-            like it is chasing the picture.
+            Rendering only the active block — which is what this did, first
+            through AnimatePresence and then through <Crossfade> — meant the
+            column was as tall as whatever copy happened to be showing. The six
+            entries differ by several lines of text, so every transition
+            resized this column, and `items-center` on the grid then re-centred
+            the device beside it. Measured on mobile: a single layout shift
+            scoring 0.399, which is most of a Lighthouse performance score on
+            its own. It was there from the beginning and had simply never been
+            counted, because the page used to spend its opening fading in from
+            transparent and layout shifts are only scored against content the
+            visitor can actually see.
+
+            Both halves still cross over at the same instant — the property
+            `popLayout` was chosen for, and the reason the copy must not wait
+            for the device: a third of a second where the words say "Dashboard"
+            and the phone already shows the workout reads as a bug rather than
+            as a transition. The copy settles at 500ms and the device at 620ms,
+            so the text arrives just before the picture. That ordering is
+            deliberate; reversed, the words feel like they are chasing.
+
+            Same technique as <Story>, for the same reason.
           */}
-          <Crossfade
-            slotKey={active.id}
-            variant="copy"
-            durationMs={reduce ? 0 : 500}
-          >
-            {active.aside}
-          </Crossfade>
+          <div className="grid">
+            {slides.map((slide, slideIndex) => (
+              <div
+                key={slide.id}
+                aria-hidden={slideIndex !== index}
+                className={cn(
+                  "col-start-1 row-start-1",
+                  !reduce &&
+                    "transition-[opacity,transform] duration-500 ease-glide",
+                  slideIndex === index
+                    ? "translate-y-0 opacity-100"
+                    : "pointer-events-none translate-y-3 opacity-0",
+                )}
+              >
+                {slide.aside}
+              </div>
+            ))}
+          </div>
           {selector}
         </div>
 

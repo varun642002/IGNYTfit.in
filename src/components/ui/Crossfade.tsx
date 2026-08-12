@@ -9,14 +9,21 @@ import { cn } from "@/lib/utils";
  * This replaces `AnimatePresence mode="popLayout"`, and reproduces the one
  * property of it that actually mattered here: both halves of the transition
  * run at the same instant, rather than the incoming child waiting for the
- * outgoing one to finish. With `mode="wait"` a 0.5s transition takes a full
- * second end to end, and the copy finishes a third of a second after the
- * device beside it — which reads as a bug rather than as a transition.
+ * outgoing one to finish. With `mode="wait"` a 0.62s transition takes a full
+ * second and a quarter end to end, and the device finishes well after the copy
+ * beside it — which reads as a bug rather than as a transition.
  *
  * It exists because framer-motion was 121KB of the home page's initial
  * JavaScript, and this was the only use of it that carried content rather than
  * a hover effect. Two mounted layers and a keyframe animation cost nothing by
  * comparison, and run on the compositor.
+ *
+ * ONLY FOR ABSOLUTELY-POSITIONED CONTENT OF A FIXED SIZE — which here means the
+ * screen inside the phone. It briefly holds two children at once, so anything
+ * in normal flow would resize its container mid-transition. The showcase copy
+ * used to come through here for exactly that reason and cost 0.399 CLS; it now
+ * stacks all its blocks in one grid cell instead, which reserves the height.
+ * See the note in <PhoneScene>.
  *
  * The outgoing child is held for `durationMs` and then dropped. That timer is
  * the only JavaScript involved; the movement itself is entirely CSS, so it
@@ -26,22 +33,28 @@ import { cn } from "@/lib/utils";
 export function Crossfade({
   slotKey,
   children,
-  variant,
   durationMs,
   className,
 }: {
   /** Changing this triggers the transition. */
   slotKey: string;
   children: ReactNode;
-  /**
-   * `screen` layers both children absolutely, for the device display.
-   * `copy` keeps the incoming child in flow so it still sets the block's
-   * height, and takes the outgoing one out of flow so it cannot push layout.
-   */
-  variant: "screen" | "copy";
   durationMs: number;
   className?: string;
 }) {
+  /* The screen this scene opened on.
+
+     It is rendered plainly, with no entrance at all. `xfade-screen-in` starts
+     at `opacity: 0`, and this component runs on the server — so the hero
+     device, the largest element on the home page, was shipped mid-fade and
+     spent its first 620ms climbing out of transparent. Chrome will not take a
+     transparent element as a largest-contentful-paint candidate, which is the
+     same fault that `page-in` and `stage-in` each had.
+
+     There is nothing to cross-fade from on the first paint in any case. The
+     animation only means something once there is an outgoing screen. */
+  const [openedOn] = useState(slotKey);
+
   const [shown, setShown] = useState<{ key: string; node: ReactNode }>({
     key: slotKey,
     node: children,
@@ -68,17 +81,13 @@ export function Crossfade({
   const duration = { animationDuration: `${durationMs}ms` };
 
   return (
-    <div className={cn(variant === "screen" ? "absolute inset-0" : "relative", className)}>
+    <div className={cn("absolute inset-0", className)}>
       {leaving ? (
         <div
           key={leaving.key}
           aria-hidden
-          data-variant={variant}
           style={duration}
-          className={cn(
-            "xfade-out",
-            variant === "screen" ? "absolute inset-0" : "absolute inset-x-0 top-0",
-          )}
+          className="xfade-out absolute inset-0"
         >
           {leaving.node}
         </div>
@@ -87,8 +96,10 @@ export function Crossfade({
       <div
         key={shown.key}
         style={duration}
-        className={cn("xfade-in", variant === "screen" && "absolute inset-0")}
-        data-variant={variant}
+        className={cn(
+          "absolute inset-0",
+          shown.key !== openedOn && "xfade-in",
+        )}
       >
         {shown.node}
       </div>

@@ -516,6 +516,27 @@
    * page is about to show anyway. Staging the hero's own arrival gives the
    * same sense of a considered opening while the content paints immediately,
    * which is both the better experience and the better Lighthouse score.
+   *
+   * IT MOVES. IT DOES NOT FADE. That is the same rule the scroll reveals below
+   * are held to, and this entrance spent a long time breaking it.
+   *
+   * `stage-in` used to open at `opacity: 0` with an 8px blur. The largest
+   * element on the home page is the hero device at ~177,000px², step 6 of 7 —
+   * so the biggest thing on the page was transparent for its 540ms delay and
+   * only fully opaque 1,440ms in. Chrome will not accept a transparent element
+   * as a largest-contentful-paint candidate, so it fell through the whole hero
+   * and landed on the 76×19px wordmark in the header, which is outside this
+   * wrapper and therefore the only thing painted early. Measured on mobile:
+   * FCP 1.2s, LCP 3.7s, and 1,250ms of that gap was element render delay.
+   *
+   * Those durations are wall-clock, which is what made it so much worse on a
+   * phone than it looked on a desktop: under a 4x CPU throttle the animation
+   * still insists on its 1,440ms, and the blur repaints a 177,000px² element
+   * for every frame of it.
+   *
+   * Keep the stagger — it is the considered opening the comment above is about
+   * — but express it as movement alone. Every element is legible from the
+   * first paint and slides up into place.
    */
   .stage {
     animation: stage-in 900ms var(--ease-glide) both;
@@ -755,16 +776,14 @@
   }
 }
 
+/* Movement only — no opacity, no blur. See the note on `.stage`: this used to
+   fade in from transparent, which cost the home page its LCP element. */
 @keyframes stage-in {
   from {
-    opacity: 0;
     transform: translate3d(0, 22px, 0);
-    filter: blur(8px);
   }
   to {
-    opacity: 1;
     transform: none;
-    filter: blur(0);
   }
 }
 
@@ -907,13 +926,6 @@ html.lenis body {
   animation-name: xfade-screen-out;
 }
 
-.xfade-in[data-variant="copy"] {
-  animation-name: xfade-copy-in;
-}
-.xfade-out[data-variant="copy"] {
-  animation-name: xfade-copy-out;
-}
-
 @keyframes xfade-screen-in {
   from {
     opacity: 0;
@@ -940,27 +952,10 @@ html.lenis body {
   }
 }
 
-@keyframes xfade-copy-in {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes xfade-copy-out {
-  from {
-    opacity: 1;
-    transform: none;
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-}
+/* The copy variant that used to live here is gone. Swapping the showcase copy
+   by mounting one block at a time resized the column on every slide and cost
+   0.399 CLS; all six blocks are now stacked in one grid cell inside
+   <PhoneScene>, which reserves the height. Only the device still crossfades. */
 
 /* --------------------------------------------------------- reduced motion
    Framer Motion components are additionally gated with useReducedMotion(), and

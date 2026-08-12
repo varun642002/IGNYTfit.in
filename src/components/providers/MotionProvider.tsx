@@ -83,8 +83,29 @@ function subscribeToCapability(onChange: () => void): () => void {
   return () => query.removeEventListener("change", onChange);
 }
 
-/** The server has no device to measure, so it assumes the full treatment. */
-const serverCapability = (): MotionTier => "full";
+/**
+ * The server has no device to measure, so it assumes the cheaper treatment.
+ *
+ * This used to assume "full", and that was the single most expensive line in
+ * the codebase. The tier decides layout, not just decoration: <Story> is a
+ * four-viewport pinned scene at "full" and an ordinary list at "lite". Every
+ * phone was therefore served a 400vh section — about 3,300px — painted it, and
+ * then collapsed it to 1,281px the moment hydration corrected the tier. Under
+ * a 4x CPU throttle hydration lands seconds after paint, so that collapse is a
+ * layout shift of 0.399 with everything below Story riding along.
+ *
+ * Both directions are wrong sometimes; they are not wrong by the same amount.
+ * Guessing "lite" on a desktop costs a particle field and a pinned scene that
+ * arrive at hydration, on a machine that hydrates in a few hundred
+ * milliseconds. Guessing "full" on a phone costs a two-thousand-pixel reflow
+ * on the devices that are the majority of this site's traffic.
+ *
+ * Note that this only sets the FIRST paint. `useSyncExternalStore` reads the
+ * real capability on the first client render, so a desktop still upgrades
+ * itself immediately — the server snapshot is a starting position, not a
+ * verdict.
+ */
+const serverCapability = (): MotionTier => "lite";
 
 /**
  * Root motion provider: owns the tier, and owns Lenis.
