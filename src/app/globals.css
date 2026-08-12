@@ -882,6 +882,86 @@ html.lenis body {
   animation: none !important;
 }
 
+/* ------------------------------------------------------------- crossfade
+   Powers <Crossfade>, which replaced AnimatePresence for the device screen
+   and its caption. The values are lifted verbatim from the framer variants
+   they replace, so the motion is unchanged:
+
+     screen   0.62s, opacity + 8%/-6% drift + slight scale + blur
+     copy     0.50s, opacity + 14px/-10px drift, finishing just before the
+              device so the words settle first
+
+   Both layers animate at the same instant, which is what `popLayout` gave us.
+   The reduced-motion block below collapses these to nothing, matching the
+   `duration: 0` branch the framer version had. */
+.xfade-in,
+.xfade-out {
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: both;
+}
+
+.xfade-in {
+  animation-name: xfade-screen-in;
+}
+.xfade-out {
+  animation-name: xfade-screen-out;
+}
+
+.xfade-in[data-variant="copy"] {
+  animation-name: xfade-copy-in;
+}
+.xfade-out[data-variant="copy"] {
+  animation-name: xfade-copy-out;
+}
+
+@keyframes xfade-screen-in {
+  from {
+    opacity: 0;
+    transform: translateY(8%) scale(1.04);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes xfade-screen-out {
+  from {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6%) scale(0.97);
+    filter: blur(5px);
+  }
+}
+
+@keyframes xfade-copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes xfade-copy-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
 /* --------------------------------------------------------- reduced motion
    Framer Motion components are additionally gated with useReducedMotion(), and
    the Lenis provider refuses to start. This is the belt-and-braces guard for

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Crossfade } from "@/components/ui/Crossfade";
 import { PhoneShell } from "@/components/device/PhoneShell";
 import { Tilt } from "@/components/ui/Tilt";
 import { useMotionTier } from "@/components/providers/MotionProvider";
@@ -78,8 +78,10 @@ export function PhoneScene({
   const [paused, setPaused] = useState(false);
   const [visible, setVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
   const tier = useMotionTier();
+  /* The provider already resolves prefers-reduced-motion into the tier, so
+     there is no second source of truth to keep in step. */
+  const reduce = tier === "none";
 
   /* Only run the timer while the device is actually on screen. */
   useEffect(() => {
@@ -117,18 +119,6 @@ export function PhoneScene({
 
   const active = slides[index];
 
-  const variants = reduce
-    ? {
-        enter: { opacity: 1 },
-        center: { opacity: 1 },
-        exit: { opacity: 0 },
-      }
-    : {
-        enter: { opacity: 0, y: "8%", scale: 1.04, filter: "blur(6px)" },
-        center: { opacity: 1, y: "0%", scale: 1, filter: "blur(0px)" },
-        exit: { opacity: 0, y: "-6%", scale: 0.97, filter: "blur(5px)" },
-      };
-
   const device = (
     <div
       className={deviceClassName}
@@ -151,23 +141,13 @@ export function PhoneScene({
             overlay={overlay}
             notch={!realShots}
           >
-            <AnimatePresence mode="popLayout" initial={false}>
-              <motion.div
-                key={active.id}
-                variants={variants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={
-                  reduce
-                    ? { duration: 0 }
-                    : { duration: 0.62, ease: [0.16, 1, 0.3, 1] }
-                }
-                className="absolute inset-0"
-              >
-                {active.screen}
-              </motion.div>
-            </AnimatePresence>
+            <Crossfade
+              slotKey={active.id}
+              variant="screen"
+              durationMs={reduce ? 0 : 620}
+            >
+              {active.screen}
+            </Crossfade>
           </PhoneShell>
         </div>
       </Tilt>
@@ -246,21 +226,13 @@ export function PhoneScene({
             does; that ordering is deliberate — the reverse makes the text feel
             like it is chasing the picture.
           */}
-          <AnimatePresence mode="popLayout" initial={false}>
-            <motion.div
-              key={active.id}
-              initial={reduce ? false : { opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
-              transition={
-                reduce
-                  ? { duration: 0 }
-                  : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
-              }
-            >
-              {active.aside}
-            </motion.div>
-          </AnimatePresence>
+          <Crossfade
+            slotKey={active.id}
+            variant="copy"
+            durationMs={reduce ? 0 : 500}
+          >
+            {active.aside}
+          </Crossfade>
           {selector}
         </div>
 

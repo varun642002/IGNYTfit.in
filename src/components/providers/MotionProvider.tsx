@@ -49,6 +49,17 @@ function readCapability(): MotionTier {
     return "none";
   }
 
+  /* Touch devices get the lite tier, regardless of how fast they are.
+     
+     This is not a guess about capability — it is what the effects themselves
+     require. Magnetic, Tilt and Spotlight all follow a cursor and cannot fire
+     without one; a particle field and smooth-scroll hijacking are pure cost on
+     a phone that already has excellent native inertia. The core-count check
+     below never caught this: a current mid-range Android reports eight cores
+     and sails through as "full", then pays for a full desktop effect stack it
+     can never actually use. */
+  if (window.matchMedia("(pointer: coarse)").matches) return "lite";
+
   /* `deviceMemory` and `hardwareConcurrency` are both absent on some browsers.
      Absence is not evidence of a weak device, so only ever act on a value that
      is actually present. */
